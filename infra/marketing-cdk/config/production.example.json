@@ -1,0 +1,22 @@
+{
+  "environment": "production",
+  "account": "111111111111",
+  "region": "ca-central-1",
+  "allowedOrigins": [
+    "https://maplespire.ca",
+    "https://www.maplespire.ca"
+  ],
+  "emailFrom": "MapleSpire <no-reply@maplespire.ca>",
+  "websiteAssetPath": "../../website/dist",
+  "domainName": "maplespire.ca",
+  "domainAliases": ["www.maplespire.ca"],
+  "certificateArn": "arn:aws:acm:us-east-1:111111111111:certificate/replace-me",
+  "webAclArn": "arn:aws:wafv2:us-east-1:111111111111:global/webacl/replace-with-rate-limited-web-acl/id",
+  "applicationBaseUrl": "https://app.maplespire.ca",
+  "alarmTopicArn": "arn:aws:sns:ca-central-1:111111111111:replace-with-operations-topic",
+  "maximumSubmitAgeMs": 86400000,
+  "throttlingRatePerSecond": 5,
+  "throttlingBurst": 10,
+  "retentionDays": 90,
+  "protectData": true
+}

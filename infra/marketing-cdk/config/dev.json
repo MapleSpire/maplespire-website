@@ -1,0 +1,14 @@
+{
+  "environment": "dev",
+  "account": "111111111111",
+  "region": "ca-central-1",
+  "allowedOrigins": [
+    "http://localhost:4321",
+    "https://maplespire.ca"
+  ],
+  "maximumSubmitAgeMs": 86400000,
+  "throttlingRatePerSecond": 5,
+  "throttlingBurst": 10,
+  "retentionDays": 14,
+  "protectData": false
+}

@@ -1,0 +1,41 @@
+{
+  "qualityClass": "Excellent",
+  "thresholds": {
+    "ssimOverall": 0.99,
+    "ssimLuma": 0.99,
+    "vmaf": 95
+  },
+  "evaluation": {
+    "resolution": "native",
+    "fps": 24,
+    "frames": 24,
+    "vmafModel": "vmaf_v0.6.1"
+  },
+  "assets": [
+    {
+      "id": "before",
+      "reference": "public/media/story-before.png",
+      "served": "dist/media/story-before.webp"
+    },
+    {
+      "id": "product",
+      "reference": "public/media/story-product.png",
+      "served": "dist/media/story-product.webp"
+    },
+    {
+      "id": "collaboration",
+      "reference": "public/media/story-collaboration.png",
+      "served": "dist/media/story-collaboration.webp"
+    },
+    {
+      "id": "exploded",
+      "reference": "public/media/story-exploded.png",
+      "served": "dist/media/story-exploded.webp"
+    },
+    {
+      "id": "closeup",
+      "reference": "public/media/story-closeup.jpeg",
+      "served": "dist/media/story-closeup.jpeg"
+    }
+  ]
+}

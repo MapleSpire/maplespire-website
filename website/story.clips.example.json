@@ -1,0 +1,17 @@
+{
+  "baseDir": "./public/story/clips/light",
+  "thresholds": {
+    "overall": 0.985,
+    "luma": 0.99,
+    "motionDelta": 0.030
+  },
+  "clips": [
+    { "id": "the-request", "file": "01-the-request.webm" },
+    { "id": "file-archaeology", "file": "02-file-archaeology.webm" },
+    { "id": "domino-effect", "file": "03-domino-effect.webm" },
+    { "id": "the-turn", "file": "04-the-turn.webm" },
+    { "id": "one-model", "file": "05-one-model.webm" },
+    { "id": "shared-understanding", "file": "06-shared-understanding.webm" },
+    { "id": "free-to-continue", "file": "07-free-to-continue.webm" }
+  ]
+}

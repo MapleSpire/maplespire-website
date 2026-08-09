@@ -1,0 +1,29 @@
+{
+  "name": "@maplespire/marketing-contact-cdk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "synth": "pnpm build && cdk synth",
+    "diff": "pnpm build && cdk diff",
+    "deploy": "pnpm build && cdk deploy --require-approval broadening"
+  },
+  "dependencies": {
+    "@aws-sdk/client-sesv2": "3.1100.0",
+    "@aws-sdk/client-sqs": "3.1100.0",
+    "aws-cdk-lib": "2.263.0",
+    "constructs": "10.8.1",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.162",
+    "@types/node": "26.1.2",
+    "cdk": "2.1135.0",
+    "esbuild": "^0.28.1",
+    "typescript": "7.0.2",
+    "vitest": "4.1.10"
+  }
+}

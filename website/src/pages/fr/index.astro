@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteShell from '../../components/SiteShell';
+import { getCopy } from '../../lib/content';
+
+const content = getCopy('fr');
+const appUrl = import.meta.env.PUBLIC_APP_URL ?? 'https://app.maplespire.ca';
+const contactEndpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? '/api/contact';
+---
+
+<BaseLayout locale="fr" title={content.meta.title} description={content.meta.description} features={content.chapters.map((chapter) => chapter.detail)}>
+  <SiteShell content={content} appUrl={appUrl} contactEndpoint={contactEndpoint} client:idle={{ timeout: 1000 }} />
+</BaseLayout>

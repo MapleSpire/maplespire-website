@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.astro/
+artifacts/
+.claude/
+cdk.out/
+cdk.out-validation/
+*.local
+.env
+*.stdout.log
+*.stderr.log
+infra/marketing-cdk/config/production.json
+infra/marketing-cdk/cdk-outputs.json

@@ -1,0 +1,12 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import { localeOptions } from '../../lib/content';
+import type { Locale } from '../../lib/content';
+
+export function getStaticPaths() {
+  return localeOptions.map(({ locale }) => ({ params: { locale }, props: { locale } }));
+}
+
+const { locale } = Astro.props as { locale: Locale };
+---
+<LegalLayout locale={locale} kind="privacystatement" />

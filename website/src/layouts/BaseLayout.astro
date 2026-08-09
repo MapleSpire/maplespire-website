@@ -1,0 +1,122 @@
+---
+import '../styles/global.css';
+import '../styles/revamp.css';
+import { localeOptions } from '../lib/content';
+import type { Locale } from '../lib/content';
+import { serializeJsonLd } from '../lib/jsonLd';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  features: string[];
+}
+
+const { locale, title, description, features } = Astro.props;
+const localeMeta = localeOptions.find((option) => option.locale === locale) ?? localeOptions[0];
+const canonical = new URL(`/${locale}/`, Astro.site ?? Astro.url.origin);
+const alternates = localeOptions.map((option) => ({
+  ...option,
+  href: new URL(`/${option.locale}/`, Astro.site ?? Astro.url.origin),
+}));
+const siteUrl = new URL('/', Astro.site ?? Astro.url.origin);
+const defaultLocaleUrl = new URL('/en/', siteUrl);
+const ogImage = new URL(
+  locale === 'fr' ? '/social/maplespire-og-fr.png' : '/social/maplespire-og.png',
+  Astro.site ?? Astro.url.origin,
+);
+const organizationId = new URL('/#organization', siteUrl);
+const websiteId = new URL('/#website', siteUrl);
+const softwareId = new URL('/#software', siteUrl);
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': organizationId.href,
+      name: 'MapleSpire',
+      url: siteUrl.href,
+      logo: new URL('/brand/maplespire-azure-logo-192.png', siteUrl).href,
+      sameAs: ['https://github.com/MapleSpire'],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': websiteId.href,
+      name: 'MapleSpire',
+      url: siteUrl.href,
+      publisher: { '@id': organizationId.href },
+      inLanguage: localeOptions.map((option) => option.htmlLang),
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': softwareId.href,
+      name: 'MapleSpire',
+      url: defaultLocaleUrl.href,
+      description,
+      publisher: { '@id': organizationId.href },
+      inLanguage: localeMeta.htmlLang,
+      isAccessibleForFree: true,
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'Web',
+      screenshot: new URL('/media/audit-model-light.png', siteUrl).href,
+      featureList: features,
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang={localeMeta.htmlLang} data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f2efe9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#141516" media="(prefers-color-scheme: dark)" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonical} />
+    {alternates.map((alternate) => (
+      <link rel="alternate" hreflang={alternate.htmlLang} href={alternate.href} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={defaultLocaleUrl} />
+    <link rel="icon" href="/brand/maplespire-mark.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/brand/maplespire-azure-logo-192.png" />
+    <link rel="preload" href="/media/story-before.webp" as="image" type="image/webp" fetchpriority="high" />
+    <title>{title}</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MapleSpire" />
+    <meta property="og:locale" content={localeMeta.ogLocale} />
+    {localeOptions.filter((option) => option.locale !== locale).map((option) => (
+      <meta property="og:locale:alternate" content={option.ogLocale} />
+    ))}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={title} />
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem('maplespire:theme');
+          const theme = saved === 'dark' || saved === 'light'
+            ? saved
+            : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          document.documentElement.dataset.theme = theme;
+          document.documentElement.style.colorScheme = theme;
+        } catch (_) {}
+      })();
+    </script>
+    <script is:inline type="application/ld+json" set:html={serializeJsonLd(schema)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

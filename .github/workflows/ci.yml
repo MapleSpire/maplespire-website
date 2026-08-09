@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          version: 11.9.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: |
+            website/pnpm-lock.yaml
+            infra/marketing-cdk/pnpm-lock.yaml
+      - name: Install website dependencies
+        run: pnpm --dir website install --frozen-lockfile
+      - name: Verify website
+        run: pnpm --dir website test
+      - name: Install infrastructure dependencies
+        run: pnpm --dir infra/marketing-cdk install --frozen-lockfile
+      - name: Verify infrastructure
+        run: pnpm --dir infra/marketing-cdk test
+      - name: Build infrastructure
+        run: pnpm --dir infra/marketing-cdk build

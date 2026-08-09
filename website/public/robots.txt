@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /app/
+Disallow: /login/
+Disallow: /invite/
+Disallow: /share/
+Disallow: /embed/
+Disallow: /org/
+Disallow: /platform/
+Disallow: /auth/
+
+Sitemap: https://maplespire.ca/sitemap-index.xml

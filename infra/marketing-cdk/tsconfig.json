@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "rootDir": ".",
+    "types": ["node", "aws-lambda", "vitest/globals"]
+  },
+  "include": [
+    "bin/**/*.ts",
+    "lib/**/*.ts",
+    "lambda/**/*.ts",
+    "test/**/*.ts",
+    "vitest.config.ts"
+  ]
+}

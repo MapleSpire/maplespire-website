@@ -1,0 +1,166 @@
+---
+import '../styles/global.css';
+import '../styles/legal.css';
+import { localeOptions } from '../lib/content';
+import type { Locale } from '../lib/content';
+import { getLegalDocument, legalCopy } from '../lib/legal';
+import type { LegalKind } from '../lib/legal';
+import { serializeJsonLd } from '../lib/jsonLd';
+
+interface Props {
+  locale: Locale;
+  kind: LegalKind;
+}
+
+const { locale, kind } = Astro.props;
+const labels = legalCopy[locale];
+const document = getLegalDocument(locale, kind);
+const localeMeta = localeOptions.find((option) => option.locale === locale) ?? localeOptions[0];
+const siteUrl = new URL('/', Astro.site ?? Astro.url.origin);
+const canonical = new URL(`/${locale}/${kind}/`, siteUrl);
+const ogImage = new URL(
+  locale === 'fr' ? '/social/maplespire-og-fr.png' : '/social/maplespire-og.png',
+  siteUrl,
+);
+const otherKind: LegalKind = kind === 'termsofservice' ? 'privacystatement' : 'termsofservice';
+const otherDocument = getLegalDocument(locale, otherKind);
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${canonical.href}#webpage`,
+  url: canonical.href,
+  name: document.title,
+  description: document.description,
+  inLanguage: localeMeta.htmlLang,
+  isPartOf: { '@id': `${siteUrl.href}#website` },
+  publisher: { '@id': `${siteUrl.href}#organization` },
+  dateModified: '2026-08-02',
+};
+---
+
+<!doctype html>
+<html lang={localeMeta.htmlLang} data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={document.description} />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="theme-color" content="#f2efe9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#141516" media="(prefers-color-scheme: dark)" />
+    <link rel="canonical" href={canonical} />
+    {localeOptions.map((option) => (
+      <link rel="alternate" hreflang={option.htmlLang} href={new URL(`/${option.locale}/${kind}/`, siteUrl)} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={new URL(`/en/${kind}/`, siteUrl)} />
+    <link rel="icon" href="/brand/maplespire-mark.svg" type="image/svg+xml" />
+    <title>{document.title} · MapleSpire</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MapleSpire" />
+    <meta property="og:locale" content={localeMeta.ogLocale} />
+    {localeOptions.filter((option) => option.locale !== locale).map((option) => (
+      <meta property="og:locale:alternate" content={option.ogLocale} />
+    ))}
+    <meta property="og:title" content={`${document.title} · MapleSpire`} />
+    <meta property="og:description" content={document.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={`${document.title} · MapleSpire`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${document.title} · MapleSpire`} />
+    <meta name="twitter:description" content={document.description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={`${document.title} · MapleSpire`} />
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem('maplespire:theme');
+          const theme = saved === 'dark' || saved === 'light'
+            ? saved
+            : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          document.documentElement.dataset.theme = theme;
+          document.documentElement.style.colorScheme = theme;
+        } catch (_) {}
+      })();
+    </script>
+    <script is:inline type="application/ld+json" set:html={serializeJsonLd(schema)} />
+  </head>
+  <body class="legal-body">
+    <a class="legal-skip" href="#legal-content">{locale === 'fr' ? 'Passer au contenu' : 'Skip to content'}</a>
+    <header class="legal-header">
+      <a class="legal-brand" href={`/${locale}/`} aria-label={`MapleSpire · ${labels.home}`}>
+        <span>
+          <img class="mark-light" src="/brand/maplespire-mark.svg" alt="" width="28" height="34" />
+          <img class="mark-dark" src="/brand/maplespire-mark-dark.svg" alt="" width="28" height="34" />
+        </span>
+        <b>MapleSpire</b>
+      </a>
+      <nav aria-label={labels.languageLabel}>
+        <a href={`/${locale}/${otherKind}/`}>{otherDocument.title}</a>
+        <details>
+          <summary>{localeMeta.code}</summary>
+          <div>
+            {localeOptions.map((option) => (
+              <a
+                href={`/${option.locale}/${kind}/`}
+                hreflang={option.htmlLang}
+                lang={option.htmlLang}
+                aria-current={option.locale === locale ? 'page' : undefined}
+              >
+                <span>{option.code}</span>{option.name}
+              </a>
+            ))}
+          </div>
+        </details>
+      </nav>
+    </header>
+
+    <main id="legal-content" class="legal-main">
+      <aside class="legal-index" aria-label={document.title}>
+        <p>{document.eyebrow}</p>
+        <a class={kind === 'termsofservice' ? 'is-active' : ''} href={`/${locale}/termsofservice/`}>{labels.terms}</a>
+        <a class={kind === 'privacystatement' ? 'is-active' : ''} href={`/${locale}/privacystatement/`}>{labels.privacy}</a>
+        <span />
+        {document.sections.map((section, index) => (
+          <a href={`#section-${index + 1}`}>{section.title}</a>
+        ))}
+      </aside>
+
+      <article class="legal-article">
+        <header class="legal-hero">
+          <p>{document.eyebrow}</p>
+          <h1>{document.title}</h1>
+          <div class="legal-meta">
+            <span>{document.updatedLabel} · {document.updatedDate}</span>
+            <span>{labels.operatorLabel} · {labels.operator}</span>
+          </div>
+          <p class="legal-summary">{document.summary}</p>
+          {document.important && <p class="legal-important">{document.important}</p>}
+        </header>
+
+        <div class="legal-sections">
+          {document.sections.map((section, index) => (
+            <section id={`section-${index + 1}`}>
+              <h2>{section.title}</h2>
+              {section.paragraphs?.map((paragraph) => <p>{paragraph}</p>)}
+              {section.bullets && (
+                <ul>
+                  {section.bullets.map((bullet) => <li>{bullet}</li>)}
+                </ul>
+              )}
+            </section>
+          ))}
+        </div>
+      </article>
+    </main>
+
+    <footer class="legal-footer">
+      <span>© 2026 MapleSpire contributors · {labels.operator}</span>
+      <nav>
+        <a href={`/${locale}/`}>{labels.home}</a>
+        <a href={`/${locale}/termsofservice/`}>{labels.terms}</a>
+        <a href={`/${locale}/privacystatement/`}>{labels.privacy}</a>
+        <a href="mailto:support@maplespire.ca">support@maplespire.ca</a>
+      </nav>
+    </footer>
+  </body>
+</html>

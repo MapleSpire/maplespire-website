@@ -1,0 +1,47 @@
+version: 2
+
+# Cooldowns keep a freshly published release out of a proposal until it has been
+# in the wild long enough for a compromised publish to surface. A dependency
+# that reaches this repository is either bundled into the Lambda or executed on
+# the build host, so the delay is worth more than the currency.
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ['*']
+
+  - package-ecosystem: npm
+    directory: /website
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    groups:
+      website:
+        patterns: ['*']
+        update-types: [minor, patch]
+
+  - package-ecosystem: npm
+    directory: /infra/marketing-cdk
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    groups:
+      infrastructure:
+        patterns: ['*']
+        update-types: [minor, patch]
+
+  - package-ecosystem: docker
+    directory: /website/media-pipeline
+    schedule:
+      interval: monthly
+    cooldown:
+      default-days: 7

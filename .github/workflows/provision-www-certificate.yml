@@ -1,0 +1,91 @@
+name: Provision www certificate
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  certificate:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      # See deploy.yml: the deploy role is a secret so the runner redacts it, and
+      # masking the account id keeps it out of every certificate arn printed here.
+      - uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: us-east-1
+          mask-aws-account-id: true
+
+      - name: Request or reuse the canonical-domain certificate
+        id: certificate
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          certificate_arn=""
+          while read -r candidate_arn; do
+            [[ -z "$candidate_arn" ]] && continue
+            sans=$(aws acm describe-certificate \
+              --region us-east-1 \
+              --certificate-arn "$candidate_arn" \
+              --query 'Certificate.SubjectAlternativeNames' \
+              --output text)
+            if [[ " $sans " == *" maplespire.ca "* && " $sans " == *" www.maplespire.ca "* ]]; then
+              certificate_arn="$candidate_arn"
+              break
+            fi
+          done < <(aws acm list-certificates \
+            --region us-east-1 \
+            --certificate-statuses PENDING_VALIDATION ISSUED \
+            --query "CertificateSummaryList[?DomainName=='maplespire.ca'].CertificateArn" \
+            --output text | tr '\t' '\n')
+
+          if [[ -z "$certificate_arn" ]]; then
+            certificate_arn=$(aws acm request-certificate \
+              --region us-east-1 \
+              --domain-name maplespire.ca \
+              --subject-alternative-names www.maplespire.ca \
+              --validation-method DNS \
+              --key-algorithm RSA_2048 \
+              --options CertificateTransparencyLoggingPreference=ENABLED \
+              --tags Key=Project,Value=MapleSpire Key=Purpose,Value=marketing-www \
+              --query CertificateArn \
+              --output text)
+          fi
+
+          for _ in {1..12}; do
+            aws acm describe-certificate \
+              --region us-east-1 \
+              --certificate-arn "$certificate_arn" \
+              --output json > certificate.json
+            if jq -e '[.Certificate.DomainValidationOptions[] | select(.ResourceRecord != null)] | length > 0' certificate.json > /dev/null; then
+              break
+            fi
+            sleep 5
+          done
+
+          jq -e '.Certificate.DomainValidationOptions[] | select(.ResourceRecord != null)' certificate.json > /dev/null
+          echo "certificate_arn=$certificate_arn" >> "$GITHUB_OUTPUT"
+
+          # Run summaries and artifacts of a public repository are world-readable.
+          # Publish only the DNS records the operator has to create — they end up
+          # in public DNS anyway — and mask the account id inside the ARN. The
+          # unredacted value stays in the step output for this run.
+          redacted_arn=$(printf '%s' "$certificate_arn" | sed -E 's/:[0-9]{12}:/:<account>:/')
+
+          {
+            echo '## MapleSpire www certificate'
+            echo
+            echo "Certificate: \`$redacted_arn\`"
+            echo
+            echo '| Domain | Type | DNS name | DNS value |'
+            echo '| --- | --- | --- | --- |'
+            jq -r '.Certificate.DomainValidationOptions[] | select(.ResourceRecord != null) | "| \(.DomainName) | \(.ResourceRecord.Type) | `\(.ResourceRecord.Name)` | `\(.ResourceRecord.Value)` |"' certificate.json
+            echo
+            echo 'Copy the full ARN into the `ACM_CERTIFICATE_ARN` repository variable from'
+            echo 'the ACM console, or with `aws acm list-certificates --region us-east-1`.'
+          } >> "$GITHUB_STEP_SUMMARY"

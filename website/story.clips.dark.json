@@ -1,0 +1,52 @@
+{
+  "baseDir": "./public/story/clips/dark",
+  "thresholds": {
+    "overall": 0.985,
+    "luma": 0.99,
+    "motionDelta": 0.03
+  },
+  "clips": [
+    {
+      "id": "static-drawing",
+      "file": "01-static-drawing.webm",
+      "startFrame": 0,
+      "endFrame": 22
+    },
+    {
+      "id": "lost-decision",
+      "file": "02-lost-decision.webm",
+      "startFrame": 22,
+      "endFrame": 37
+    },
+    {
+      "id": "living-source",
+      "file": "03-living-source.webm",
+      "startFrame": 37,
+      "endFrame": 59
+    },
+    {
+      "id": "right-depth",
+      "file": "04-right-depth.webm",
+      "startFrame": 59,
+      "endFrame": 89
+    },
+    {
+      "id": "same-thread",
+      "file": "05-same-thread.webm",
+      "startFrame": 89,
+      "endFrame": 114
+    },
+    {
+      "id": "your-architecture",
+      "file": "06-your-architecture.webm",
+      "startFrame": 114,
+      "endFrame": 145
+    },
+    {
+      "id": "clear-tomorrow",
+      "file": "07-clear-tomorrow.webm",
+      "startFrame": 145,
+      "endFrame": 168
+    }
+  ]
+}

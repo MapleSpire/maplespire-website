@@ -1,0 +1,66 @@
+name: Deploy production
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          version: 11.9.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: |
+            website/pnpm-lock.yaml
+            infra/marketing-cdk/pnpm-lock.yaml
+      - name: Install website dependencies
+        run: pnpm --dir website install --frozen-lockfile
+      - name: Test and build website
+        run: pnpm --dir website test
+      - name: Install infrastructure dependencies
+        run: pnpm --dir infra/marketing-cdk install --frozen-lockfile
+      - name: Verify infrastructure
+        run: pnpm --dir infra/marketing-cdk test
+      # Every deployment coordinate lives in a secret rather than a variable so
+      # the runner redacts it from every log line. Variables are echoed verbatim
+      # in the `with:` and `env:` headers a step prints before it runs, which is
+      # earlier than any masking a step could perform itself. Masking the account
+      # id alone would still leave the certificate id and the webacl and topic
+      # names readable, and the run logs of a public repository are world-readable.
+      - uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ca-central-1
+          mask-aws-account-id: true
+      - name: Write validated production configuration
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_REGION: ca-central-1
+          ACM_CERTIFICATE_ARN: ${{ secrets.ACM_CERTIFICATE_ARN }}
+          WAF_WEB_ACL_ARN: ${{ secrets.WAF_WEB_ACL_ARN }}
+          ALARM_TOPIC_ARN: ${{ secrets.ALARM_TOPIC_ARN }}
+        run: node scripts/write-production-config.mjs
+      - name: Deploy CloudFront and contact service
+        working-directory: infra/marketing-cdk
+        run: pnpm build && pnpm exec cdk deploy -c config=config/production.json --require-approval never --outputs-file cdk-outputs.json
+      - name: Smoke-test CloudFront origin
+        working-directory: infra/marketing-cdk
+        run: |
+          DISTRIBUTION_DOMAIN=$(node -e "const o=require('./cdk-outputs.json'); const s=Object.values(o)[0]; process.stdout.write(s.DistributionDomain)")
+          curl --fail --silent --show-error --retry 8 --retry-delay 10 "https://${DISTRIBUTION_DOMAIN}/en/" > /dev/null
