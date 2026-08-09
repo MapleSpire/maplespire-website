@@ -18,7 +18,7 @@ RUN meson setup build --buildtype release \
 
 # Even-numbered releases only: odd Node lines get six months of support and are
 # already out of maintenance by the time they are the newest tag.
-FROM node:24-bookworm-slim
+FROM node:25-bookworm-slim
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ffmpeg ca-certificates \
