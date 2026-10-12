@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import '../styles/revamp.css';
-import { localeOptions } from '../lib/content';
+import { LICENSE_URL, REPOSITORY_URL, localeOptions } from '../lib/content';
 import type { Locale } from '../lib/content';
 import { serializeJsonLd } from '../lib/jsonLd';
 
@@ -10,9 +10,10 @@ interface Props {
   title: string;
   description: string;
   features: string[];
+  faq: Array<{ question: string; answer: string }>;
 }
 
-const { locale, title, description, features } = Astro.props;
+const { locale, title, description, features, faq } = Astro.props;
 const localeMeta = localeOptions.find((option) => option.locale === locale) ?? localeOptions[0];
 const canonical = new URL(`/${locale}/`, Astro.site ?? Astro.url.origin);
 const alternates = localeOptions.map((option) => ({
@@ -28,6 +29,7 @@ const ogImage = new URL(
 const organizationId = new URL('/#organization', siteUrl);
 const websiteId = new URL('/#website', siteUrl);
 const softwareId = new URL('/#software', siteUrl);
+const sourceCodeId = new URL('/#source-code', siteUrl);
 const schema = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -37,7 +39,7 @@ const schema = {
       name: 'MapleSpire',
       url: siteUrl.href,
       logo: new URL('/brand/maplespire-azure-logo-192.png', siteUrl).href,
-      sameAs: ['https://github.com/MapleSpire'],
+      sameAs: ['https://github.com/MapleSpire', REPOSITORY_URL],
     },
     {
       '@type': 'WebSite',
@@ -57,9 +59,33 @@ const schema = {
       inLanguage: localeMeta.htmlLang,
       isAccessibleForFree: true,
       applicationCategory: 'DeveloperApplication',
+      applicationSubCategory: 'C4 architecture modeling',
       operatingSystem: 'Web',
+      license: LICENSE_URL,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'CAD' },
       screenshot: new URL('/media/audit-model-light.png', siteUrl).href,
       featureList: features,
+      sameAs: [REPOSITORY_URL],
+    },
+    {
+      '@type': 'SoftwareSourceCode',
+      '@id': sourceCodeId.href,
+      name: 'MapleSpire',
+      codeRepository: REPOSITORY_URL,
+      license: LICENSE_URL,
+      programmingLanguage: 'TypeScript',
+      targetProduct: { '@id': softwareId.href },
+      publisher: { '@id': organizationId.href },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonical.href}#faq`,
+      inLanguage: localeMeta.htmlLang,
+      mainEntity: faq.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: { '@type': 'Answer', text: item.answer },
+      })),
     },
   ],
 };
@@ -82,6 +108,7 @@ const schema = {
     <link rel="alternate" hreflang="x-default" href={defaultLocaleUrl} />
     <link rel="icon" href="/brand/maplespire-mark.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/brand/maplespire-azure-logo-192.png" />
+    <link rel="alternate" type="text/plain" title="MapleSpire for LLMs" href="/llms.txt" />
     <link rel="preload" href="/media/story-before.webp" as="image" type="image/webp" fetchpriority="high" />
     <title>{title}</title>
     <meta property="og:type" content="website" />

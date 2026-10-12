@@ -21,11 +21,12 @@ describe('honest alternatives comparison', () => {
     }
   });
 
-  it('does not present pending MapleSpire releases as available today', () => {
+  it('presents MapleSpire as released open source with its public repository', () => {
     const maplespire = alternativeProducts.find(({ id }) => id === 'maplespire');
-    expect(maplespire?.deployment).toBe('pending');
-    expect(maplespire?.sourceCode).toBe('announced');
-    expect(alternativesCopy.en.takes.maplespire).toMatch(/not released yet/i);
+    expect(maplespire?.deployment).toBe('yes');
+    expect(maplespire?.sourceCode).toBe('open');
+    expect(maplespire?.sources[0]?.url).toBe('https://github.com/MapleSpire/maplespire');
+    expect(alternativesCopy.en.takes.maplespire).toMatch(/single instance/i);
   });
 
   it('treats C4 Model as a method rather than a product', () => {

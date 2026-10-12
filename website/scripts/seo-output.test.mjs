@@ -7,6 +7,8 @@ import test from 'node:test';
 const root = resolve(import.meta.dirname, '..');
 const dist = join(root, 'dist');
 const locales = ['fr', 'en', 'zh', 'ja', 'ko', 'hi'];
+const articleLocales = ['fr', 'en'];
+const articleSlug = 'maplespire-vs-structurizr';
 const languageUrls = {
   'fr-CA': 'https://maplespire.ca/fr/',
   'en-CA': 'https://maplespire.ca/en/',
@@ -57,7 +59,9 @@ test('the sitemap contains only canonical localized URLs with complete reciproca
       `https://maplespire.ca/${locale}/termsofservice/`,
       `https://maplespire.ca/${locale}/privacystatement/`,
     ]),
+    ...articleLocales.map((locale) => `https://maplespire.ca/${locale}/${articleSlug}/`),
   ].sort();
+  const localizedEverywhere = expected.length - articleLocales.length;
   assert.deepEqual(locations, expected);
   assert.ok(!sitemap.includes('<loc>https://maplespire.ca/</loc>'));
   assert.ok(!sitemap.includes('<loc>https://maplespire.ca/termsofservice/</loc>'));
@@ -66,7 +70,7 @@ test('the sitemap contains only canonical localized URLs with complete reciproca
   for (const locale of Object.keys(languageUrls)) {
     assert.equal(
       (sitemap.match(new RegExp(`hreflang="${locale}"`, 'g')) ?? []).length,
-      expected.length,
+      ['fr-CA', 'en-CA', 'x-default'].includes(locale) ? expected.length : localizedEverywhere,
       `sitemap alternate count for ${locale}`,
     );
   }
@@ -89,6 +93,22 @@ test('legal documents are prerendered, localized and reciprocal', async () => {
       assert.match(html, /support@maplespire\.ca/);
       assert.doesNotMatch(html, /\uFFFD|Ã.|Â.|â€|â€™/);
     }
+  }
+});
+
+test('the Structurizr comparison article is prerendered in French and English with reciprocal alternates', async () => {
+  for (const locale of articleLocales) {
+    const html = await readFile(join(dist, locale, articleSlug, 'index.html'), 'utf8');
+    assert.equal((html.match(/<h1(?:\s|>)/g) ?? []).length, 1, `${locale} article must contain one H1`);
+    assert.equal(capture(html, /<link rel="canonical" href="([^"]+)"/, `${locale} article canonical`), `https://maplespire.ca/${locale}/${articleSlug}/`);
+    assert.deepEqual(alternateMap(html), {
+      'fr-CA': `https://maplespire.ca/fr/${articleSlug}/`,
+      'en-CA': `https://maplespire.ca/en/${articleSlug}/`,
+      'x-default': `https://maplespire.ca/en/${articleSlug}/`,
+    });
+    assert.match(html, /<table class="article-table">/);
+    assert.match(html, /https:\/\/github\.com\/MapleSpire\/maplespire/);
+    assert.doesNotMatch(html, /�|Ã.|Â.|â€|â€™/);
   }
 });
 
@@ -136,22 +156,43 @@ test('hero media is preloaded and full React hydration is deferred off the criti
   }
 });
 
-test('JSON-LD is parseable, uses stable entity IDs and contains no unpublished claims', async () => {
+test('JSON-LD is parseable, uses stable entity IDs and states the published license and FAQ', async () => {
   for (const locale of locales) {
     const html = await htmlFor(locale);
     const raw = capture(html, /<script type="application\/ld\+json">([^<]+)<\/script>/, `${locale} JSON-LD`);
     const graph = JSON.parse(raw);
-    assert.deepEqual(graph['@graph'].map((node) => node['@type']), ['Organization', 'WebSite', 'SoftwareApplication']);
-    assert.deepEqual(graph['@graph'].map((node) => node['@id']), [
+    assert.deepEqual(graph['@graph'].map((node) => node['@type']), ['Organization', 'WebSite', 'SoftwareApplication', 'SoftwareSourceCode', 'FAQPage']);
+    assert.deepEqual(graph['@graph'].slice(0, 4).map((node) => node['@id']), [
       'https://maplespire.ca/#organization',
       'https://maplespire.ca/#website',
       'https://maplespire.ca/#software',
+      'https://maplespire.ca/#source-code',
     ]);
-    assert.equal(graph['@graph'][2].isAccessibleForFree, true);
-    assert.equal(graph['@graph'][2].url, 'https://maplespire.ca/en/');
-    assert.ok(Array.isArray(graph['@graph'][2].featureList));
-    assert.doesNotMatch(raw, /"(?:license|codeRepository|aggregateRating|review)"/);
+    const [, , software, sourceCode, faq] = graph['@graph'];
+    assert.equal(software.isAccessibleForFree, true);
+    assert.equal(software.url, 'https://maplespire.ca/en/');
+    assert.equal(software.license, 'https://www.gnu.org/licenses/agpl-3.0.html');
+    assert.ok(Array.isArray(software.featureList));
+    assert.equal(sourceCode.codeRepository, 'https://github.com/MapleSpire/maplespire');
+    assert.equal(faq.mainEntity.length, 5);
+    assert.doesNotMatch(raw, /"(?:aggregateRating|review)"/);
+    assert.doesNotMatch(raw, /Apache/);
   }
+});
+
+test('llms.txt and llms-full.txt summarize the product for AI crawlers', async () => {
+  const summary = await readFile(join(dist, 'llms.txt'), 'utf8');
+  assert.match(summary, /^# MapleSpire\n\n> /);
+  assert.match(summary, /AGPL-3\.0/);
+  assert.match(summary, /https:\/\/github\.com\/MapleSpire\/maplespire/);
+  for (const locale of locales) assert.ok(summary.includes(`https://maplespire.ca/${locale}/`), `llms.txt links ${locale}`);
+  for (const locale of articleLocales) assert.ok(summary.includes(`https://maplespire.ca/${locale}/${articleSlug}/`));
+  const full = await readFile(join(dist, 'llms-full.txt'), 'utf8');
+  assert.match(full, /## Frequently asked questions/);
+  assert.match(full, /### Structurizr/);
+  assert.doesNotMatch(full, /Apache|undefined|\[object Object\]/);
+  const robots = await readFile(join(dist, 'robots.txt'), 'utf8');
+  for (const bot of ['GPTBot', 'ClaudeBot', 'PerplexityBot', 'Google-Extended']) assert.match(robots, new RegExp(`^User-agent: ${bot}$`, 'm'));
 });
 
 test('the root is a noindex fallback for the permanent CDN redirect to English', async () => {

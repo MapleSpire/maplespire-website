@@ -282,6 +282,11 @@ describe('independent marketing contact AWS architecture', () => {
       .toEqual({ value: 'public, max-age=2592000' })
     expect(responseFor('/sitemap-0.xml').headers['cache-control'])
       .toEqual({ value: 'public, max-age=3600' })
+    expect(responseFor('/llms.txt').headers).toEqual({
+      'cache-control': { value: 'public, max-age=3600' },
+      'content-type': { value: 'text/plain; charset=utf-8' },
+    })
+    expect(responseFor('/fr/index.html').headers['content-type']).toBeUndefined()
   })
 
   it('creates privacy-minimized log groups and actionable failure alarms', () => {

@@ -2,9 +2,10 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { CSSProperties, PointerEvent, ReactNode } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { localeOptions } from '../lib/content';
+import { REPOSITORY_URL, localeOptions } from '../lib/content';
 import type { Locale, SiteCopy } from '../lib/content';
 import { legalCopy } from '../lib/legal';
+import { structurizrArticlePath } from '../lib/articles';
 import { alternativesCopy, filterAlternativeProducts, statusTone } from '../lib/alternatives';
 import type { AlternativeFilter } from '../lib/alternatives';
 import {
@@ -478,6 +479,7 @@ export default function SiteShell({ content, appUrl, contactEndpoint }: SiteShel
         <nav className="desktop-nav" aria-label={content.nav.primaryLabel}>
           <a href="#comparison">{content.nav.story}</a>
           <a href="#product" onClick={(event) => { event.preventDefault(); scrollToFlightStep(0); }}>{content.nav.product}</a>
+          <a href="#governance">{content.nav.governance}</a>
           <a href="#alternatives">{alternatives.nav}</a>
           <a href="#open-source">{content.nav.openSource}</a>
           <a href="#contact">{content.nav.contact}</a>
@@ -663,6 +665,27 @@ export default function SiteShell({ content, appUrl, contactEndpoint }: SiteShel
           </div>
         </section>
 
+        <section className="ms-open-source ms-governance" id="governance" aria-labelledby="governance-title">
+          <div className="ms-open-source-heading">
+            <p className="eyebrow"><span />{content.governance.eyebrow}</p>
+            <h2 id="governance-title">{content.governance.title}</h2>
+            <p>{content.governance.body}</p>
+          </div>
+          <div className="ms-proof-grid ms-governance-grid">
+            {content.governance.items.map((item, index) => (
+              <article className="ms-proof-card" key={item.title}>
+                <span>0{index + 1}</span>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </article>
+            ))}
+          </div>
+          <a className="ms-governance-article" href={structurizrArticlePath(content.locale)}>
+            <span>{content.governance.articleLabel}</span>
+            <b>{content.governance.articleCta}<i aria-hidden="true">→</i></b>
+          </a>
+        </section>
+
         <section className="ms-open-source" id="open-source" aria-labelledby="open-source-title">
           <div className="ms-open-source-heading">
             <p className="eyebrow"><span />{content.openSource.eyebrow}</p>
@@ -680,8 +703,8 @@ export default function SiteShell({ content, appUrl, contactEndpoint }: SiteShel
           </div>
           <div className="ms-open-source-actions">
             <a className="button button-primary" href={appUrl}>{content.actions.openApp}<i aria-hidden="true">↗</i></a>
-            <a className="button button-ghost" href="https://github.com/MapleSpire" target="_blank" rel="noreferrer">
-              {content.actions.github}<span className="ms-coming-soon">{content.actions.comingSoon}</span><i aria-hidden="true">↗</i>
+            <a className="button button-ghost" href={REPOSITORY_URL} target="_blank" rel="noreferrer">
+              {content.actions.github}<i aria-hidden="true">↗</i>
             </a>
           </div>
         </section>
@@ -860,7 +883,7 @@ export default function SiteShell({ content, appUrl, contactEndpoint }: SiteShel
           <div><b>MapleSpire</b><p>{content.footer.promise}</p></div>
         </div>
         <nav aria-label={content.footer.navLabel}>
-          <a href="https://github.com/MapleSpire" target="_blank" rel="noreferrer">{content.footer.github}</a>
+          <a href={REPOSITORY_URL} target="_blank" rel="noreferrer">{content.footer.github}</a>
           <a href={appUrl}>{content.footer.app}</a>
           <a href="mailto:support@maplespire.ca">{content.footer.contact}</a>
           <a href={`/${content.locale}/termsofservice/`}>{legal.terms}</a>

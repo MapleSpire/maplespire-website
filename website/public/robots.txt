@@ -1,4 +1,17 @@
+# Search engines and AI assistants are welcome on the public site.
+# LLM-friendly summaries: https://maplespire.ca/llms.txt and https://maplespire.ca/llms-full.txt
 User-agent: *
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Bingbot
 Allow: /
 Disallow: /api/
 Disallow: /app/

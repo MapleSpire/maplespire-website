@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { copy, localeOptions } from './content';
+import { REPOSITORY_URL, copy, localeOptions } from './content';
 
 const locales = ['fr', 'en', 'zh', 'ja', 'ko', 'hi'] as const;
 
@@ -26,8 +26,19 @@ describe('localized site content', () => {
     expect(collectStrings(content).every((text) => text.trim().length > 0)).toBe(true);
   });
 
-  it('does not claim that unpublished source or self-hosting packages are already available', () => {
+  it.each(locales)('%s announces the released open-source code and self-hosting', (locale) => {
+    const content = copy[locale];
+    expect(content.hero.open).toContain('AGPL-3.0');
+    expect(content.governance.items).toHaveLength(4);
+    expect(collectStrings(content).join(' ')).toContain('github.com/MapleSpire/maplespire');
+  });
+
+  it('no longer describes the source code or self-hosting as upcoming', () => {
     const text = collectStrings(copy).join(' ');
-    expect(text).not.toMatch(/Apache-2\.0|codeRepository|self-hostable\.|auto-hébergeable\.|开源且可自行托管|オープンソース、セルフホスト対応|오픈 소스이고 직접 호스팅|ओपन सोर्स और सेल्फ-होस्ट करने योग्य/i);
+    expect(text).not.toMatch(/coming soon|bientôt|announced|annoncé|not been published|pas encore publié|prévu|planned|即将推出|近日公開|곧 공개|जल्द उपलब्ध/i);
+  });
+
+  it('points GitHub links at the public repository', () => {
+    expect(REPOSITORY_URL).toBe('https://github.com/MapleSpire/maplespire');
   });
 });

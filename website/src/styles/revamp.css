@@ -593,22 +593,6 @@
   white-space: nowrap;
 }
 
-.ms-coming-soon {
-  display: inline-flex;
-  min-height: 23px;
-  padding: 0 8px;
-  align-items: center;
-  border: 1px solid color-mix(in srgb, var(--clay-deep) 44%, transparent);
-  border-radius: 999px;
-  color: var(--clay-deep);
-  background: color-mix(in srgb, var(--clay-pale) 52%, transparent);
-  font-size: 8px;
-  font-weight: 820;
-  letter-spacing: 0.07em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
 .ms-closeup-callouts span {
   padding: 8px 11px;
   border: 1px solid rgba(255, 255, 255, 0.22);
@@ -695,6 +679,56 @@
   color: var(--ink-soft);
   font-size: 14px;
   line-height: 1.62;
+}
+
+.ms-governance {
+  padding-bottom: clamp(24px, 4vw, 56px);
+}
+
+.ms-governance-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.ms-governance-article {
+  display: flex;
+  margin-top: 13px;
+  padding: clamp(20px, 2.4vw, 30px) clamp(24px, 3vw, 42px);
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border: 1px solid var(--line-strong);
+  border-radius: 26px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.ms-governance-article:hover,
+.ms-governance-article:focus-visible {
+  border-color: var(--clay-deep);
+  background: color-mix(in srgb, var(--clay-pale) 22%, transparent);
+}
+
+.ms-governance-article span {
+  font-size: clamp(18px, 1.8vw, 24px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.3;
+}
+
+.ms-governance-article b {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 10px;
+  color: var(--clay-deep);
+  font-size: 13px;
+  font-weight: 780;
+  white-space: nowrap;
+}
+
+.ms-governance-article i {
+  font-style: normal;
 }
 
 .ms-facts {
@@ -1468,6 +1502,11 @@
     grid-template-columns: 1fr;
   }
 
+  .ms-governance-article {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .ms-proof-card {
     min-height: 210px;
   }
@@ -1763,6 +1802,10 @@
 
   .ms-open-source {
     padding: 90px 16px;
+  }
+
+  .ms-governance {
+    padding-bottom: 24px;
   }
 
   .ms-open-source-heading h2 {
