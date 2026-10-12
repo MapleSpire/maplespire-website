@@ -283,14 +283,51 @@ function handler(event) {
   if (canonicalDomain && alternateDomains.indexOf(host) !== -1) {
     return permanentRedirect('https://' + canonicalDomain + uri);
   }
-  if (uri === '/') return permanentRedirect('/en/');
+  var publishedLocales = ['fr', 'en', 'zh', 'ja', 'ko', 'hi'];
+  // Unlocalized entry points follow the visitor: an explicit choice saved by the
+  // language picker wins, then the browser's Accept-Language, then English.
+  function preferredLocale() {
+    var cookies = request.cookies || {};
+    var saved = cookies.maplespire_locale ? cookies.maplespire_locale.value : '';
+    if (publishedLocales.indexOf(saved) !== -1) return saved;
+    var header = request.headers['accept-language'] ? request.headers['accept-language'].value : '';
+    var best = 'en';
+    var bestWeight = 0;
+    var ranges = header.split(',');
+    for (var r = 0; r < ranges.length; r++) {
+      var pieces = ranges[r].trim().split(';');
+      var language = pieces[0].trim().toLowerCase().split('-')[0];
+      var weight = 1;
+      for (var p = 1; p < pieces.length; p++) {
+        var param = pieces[p].trim();
+        if (param.indexOf('q=') === 0) weight = parseFloat(param.substring(2));
+      }
+      if (!(weight > bestWeight)) continue;
+      if (publishedLocales.indexOf(language) !== -1) {
+        best = language;
+        bestWeight = weight;
+      }
+    }
+    return best;
+  }
+  function localeRedirect(path) {
+    return {
+      statusCode: 302,
+      statusDescription: 'Found',
+      headers: {
+        location: { value: '/' + preferredLocale() + path + querySuffix },
+        'cache-control': { value: 'private, no-store' },
+        vary: { value: 'Accept-Language, Cookie' }
+      }
+    };
+  }
+  if (uri === '/') return localeRedirect('/');
   if (uri === '/termsofservice' || uri === '/termsofservice/') {
-    return permanentRedirect('/en/termsofservice/');
+    return localeRedirect('/termsofservice/');
   }
   if (uri === '/privacystatement' || uri === '/privacystatement/') {
-    return permanentRedirect('/en/privacystatement/');
+    return localeRedirect('/privacystatement/');
   }
-  var publishedLocales = ['fr', 'en', 'zh', 'ja', 'ko', 'hi'];
   var legalKinds = ['termsofservice', 'privacystatement'];
   for (var localeIndex = 0; localeIndex < publishedLocales.length; localeIndex++) {
     var localePath = '/' + publishedLocales[localeIndex];

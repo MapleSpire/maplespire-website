@@ -215,15 +215,42 @@ describe('independent marketing contact AWS architecture', () => {
     expect(redirect.headers.location.value)
       .toBe('https://app.maplespire.ca/invite/team-token?source=old%20link')
 
-    const rootRedirect = handler({
+    type RootRedirect = { statusCode: number; headers: Record<string, { value: string }> }
+    const rootFor = (
+      headers: Record<string, { value: string }>,
+      cookies: Record<string, { value: string }> = {},
+      uri = '/',
+    ) => handler({
       request: {
-        uri: '/',
-        headers: { host: { value: 'maplespire.ca' } },
+        uri,
+        headers: { host: { value: 'maplespire.ca' }, ...headers },
+        cookies,
         querystring: { campaign: { value: 'launch' } },
       },
-    }) as { statusCode: number; headers: { location: { value: string } } }
-    expect(rootRedirect.statusCode).toBe(308)
+    }) as RootRedirect
+
+    const rootRedirect = rootFor({})
+    expect(rootRedirect.statusCode).toBe(302)
     expect(rootRedirect.headers.location.value).toBe('/en/?campaign=launch')
+    expect(rootRedirect.headers['cache-control'].value).toBe('private, no-store')
+    expect(rootRedirect.headers.vary.value).toBe('Accept-Language, Cookie')
+    expect(rootFor({ 'accept-language': { value: 'fr-CA,fr;q=0.9,en;q=0.8' } }).headers.location.value)
+      .toBe('/fr/?campaign=launch')
+    expect(rootFor({ 'accept-language': { value: 'de-DE,de;q=0.9,ja;q=0.7,en;q=0.5' } }).headers.location.value)
+      .toBe('/ja/?campaign=launch')
+    expect(rootFor({ 'accept-language': { value: 'zh-Hans-CN' } }).headers.location.value)
+      .toBe('/zh/?campaign=launch')
+    expect(rootFor({ 'accept-language': { value: 'de, it;q=0.8' } }).headers.location.value)
+      .toBe('/en/?campaign=launch')
+    expect(rootFor(
+      { 'accept-language': { value: 'fr-CA' } },
+      { maplespire_locale: { value: 'ko' } },
+    ).headers.location.value).toBe('/ko/?campaign=launch')
+    expect(rootFor(
+      { 'accept-language': { value: 'hi-IN' } },
+      { maplespire_locale: { value: 'xx' } },
+      '/privacystatement',
+    ).headers.location.value).toBe('/hi/privacystatement/?campaign=launch')
 
     const localeRedirect = handler({
       request: { uri: '/fr', headers: { host: { value: 'maplespire.ca' } }, querystring: {} },
@@ -244,7 +271,7 @@ describe('independent marketing contact AWS architecture', () => {
       statusCode: number
       headers: { location: { value: string } }
     }
-    expect(legalRedirect.statusCode).toBe(308)
+    expect(legalRedirect.statusCode).toBe(302)
     expect(legalRedirect.headers.location.value).toBe('/en/termsofservice/')
 
     const wwwRedirect = handler({

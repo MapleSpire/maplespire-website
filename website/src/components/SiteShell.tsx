@@ -411,6 +411,8 @@ export default function SiteShell({ content, appUrl, contactEndpoint }: SiteShel
 
   function rememberLocale(locale: Locale) {
     localStorage.setItem('maplespire:locale', locale);
+    // The CDN reads this cookie so maplespire.ca/ reopens in the language the visitor picked.
+    document.cookie = `maplespire_locale=${locale}; Path=/; Max-Age=31536000; SameSite=Lax; Secure`;
   }
 
   function updateComparison(value: number) {
