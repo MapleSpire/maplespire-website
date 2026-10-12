@@ -23,7 +23,7 @@ const localizedPath = (locale: string) => legalKind
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="robots" content="noindex,follow" />
-    <meta http-equiv="refresh" content={`0;url=${targetPath}`} />
+    <noscript><meta http-equiv="refresh" content={`0;url=${targetPath}`} /></noscript>
     <link rel="canonical" href={canonical} />
     {localeOptions.map((option) => (
       <link rel="alternate" hreflang={option.htmlLang} href={new URL(localizedPath(option.locale), siteUrl)} />
@@ -31,8 +31,22 @@ const localizedPath = (locale: string) => legalKind
     <link rel="alternate" hreflang="x-default" href={canonical} />
     <link rel="icon" href="/brand/maplespire-mark.svg" type="image/svg+xml" />
     <title>{title}</title>
-    <script is:inline define:vars={{ targetPath }}>
-      window.location.replace(targetPath + window.location.search + window.location.hash);
+    <script is:inline define:vars={{ targetPath, locales: localeOptions.map((option) => option.locale) }}>
+      // Fallback for hosts without the CDN redirect: saved choice, then browser language, then the default.
+      const pick = () => {
+        try {
+          const saved = document.cookie.match(/(?:^|; )maplespire_locale=([a-z]+)/)?.[1] ?? localStorage.getItem('maplespire:locale');
+          if (locales.includes(saved)) return saved;
+        } catch (_) {}
+        for (const language of navigator.languages ?? [navigator.language]) {
+          const base = String(language).toLowerCase().split('-')[0];
+          if (locales.includes(base)) return base;
+        }
+        return null;
+      };
+      const locale = pick();
+      const path = locale ? targetPath.replace(/^\/[a-z]+\//, `/${locale}/`) : targetPath;
+      window.location.replace(path + window.location.search + window.location.hash);
     </script>
   </head>
   <body>

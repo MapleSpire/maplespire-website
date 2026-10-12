@@ -195,14 +195,15 @@ test('llms.txt and llms-full.txt summarize the product for AI crawlers', async (
   for (const bot of ['GPTBot', 'ClaudeBot', 'PerplexityBot', 'Google-Extended']) assert.match(robots, new RegExp(`^User-agent: ${bot}$`, 'm'));
 });
 
-test('the root is a noindex fallback for the permanent CDN redirect to English', async () => {
+test('the root is a noindex fallback that follows the visitor language like the CDN redirect', async () => {
   const html = await readFile(join(dist, 'index.html'), 'utf8');
   assert.equal(capture(html, /<link rel="canonical" href="([^"]+)"/, 'root canonical'), 'https://maplespire.ca/en/');
   assert.deepEqual(alternateMap(html), languageUrls);
   assert.match(html, /<meta name="robots" content="noindex,follow">/);
   assert.match(html, /<meta http-equiv="refresh" content="0;url=\/en\/">/);
-  assert.match(html, /window\.location\.replace\(targetPath \+ window\.location\.search \+ window\.location\.hash\)/);
-  assert.doesNotMatch(html, /navigator\.language|maplespire:locale/);
+  assert.match(html, /window\.location\.replace\(path \+ window\.location\.search \+ window\.location\.hash\)/);
+  assert.match(html, /navigator\.languages/);
+  assert.match(html, /maplespire_locale/);
 });
 
 test('the generated 404 is useful and explicitly excluded from indexing', async () => {
