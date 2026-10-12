@@ -199,7 +199,8 @@ describe('independent marketing contact AWS architecture', () => {
       (event: {
         request: {
           uri: string
-          headers: { host: { value: string } }
+          headers: { host: { value: string } } & Record<string, { value: string }>
+          cookies?: Record<string, { value: string }>
           querystring: Record<string, unknown>
         }
       }) => Record<string, unknown>
@@ -215,7 +216,10 @@ describe('independent marketing contact AWS architecture', () => {
     expect(redirect.headers.location.value)
       .toBe('https://app.maplespire.ca/invite/team-token?source=old%20link')
 
-    type RootRedirect = { statusCode: number; headers: Record<string, { value: string }> }
+    type RootRedirect = {
+      statusCode: number
+      headers: { location: { value: string }; 'cache-control': { value: string }; vary: { value: string } }
+    }
     const rootFor = (
       headers: Record<string, { value: string }>,
       cookies: Record<string, { value: string }> = {},
