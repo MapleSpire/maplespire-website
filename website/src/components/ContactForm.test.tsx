@@ -21,7 +21,7 @@ describe('ContactForm', () => {
       target: { value: 'We would like to discuss our deployment.' },
     });
     fireEvent.click(screen.getByRole('checkbox'));
-    fireEvent.click(screen.getByRole('button', { name: /send the message/i }));
+    fireEvent.click(screen.getByRole('button', { name: /send message/i }));
 
     await waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
     const [url, request] = fetchMock.mock.calls[0] as [string, RequestInit];
@@ -40,7 +40,7 @@ describe('ContactForm', () => {
       locale: 'en',
     });
     expect(payload.startedAt).toEqual(expect.any(Number));
-    expect(await screen.findByText(/confirmation is on its way/i)).toBeInTheDocument();
+    expect(await screen.findByText(/confirmation email is on its way/i)).toBeInTheDocument();
   });
 
   it('keeps the user message and announces an error when the request fails', async () => {
@@ -56,7 +56,7 @@ describe('ContactForm', () => {
     fireEvent.click(screen.getByRole('checkbox'));
     fireEvent.click(screen.getByRole('button', { name: /envoyer le message/i }));
 
-    expect(await screen.findByText(/n’a pas pu partir/i)).toBeInTheDocument();
+    expect(await screen.findByText(/n’a pas pu être envoyé/i)).toBeInTheDocument();
     expect(screen.getByLabelText('Votre message')).toHaveValue('Nous aimerions discuter de notre architecture.');
   });
 });

@@ -1,0 +1,13 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { articleLocales, structurizrArticle } from '../../lib/articles';
+import type { ArticleLocale } from '../../lib/articles';
+
+export function getStaticPaths() {
+  return articleLocales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+
+const { locale } = Astro.props as { locale: ArticleLocale };
+const appUrl = import.meta.env.PUBLIC_APP_URL ?? 'https://app.maplespire.ca';
+---
+<ArticleLayout locale={locale} document={structurizrArticle[locale]} appUrl={appUrl} />

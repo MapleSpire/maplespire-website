@@ -336,8 +336,11 @@ function handler(event) {
     cacheControl = 'public, max-age=31536000, immutable';
   } else if (uri.indexOf('/media/') === 0 || uri.indexOf('/brand/') === 0 || uri.indexOf('/social/') === 0) {
     cacheControl = 'public, max-age=2592000';
-  } else if (uri === '/robots.txt' || uri === '/sitemap-index.xml' || uri === '/sitemap-0.xml') {
+  } else if (uri === '/robots.txt' || uri === '/llms.txt' || uri === '/llms-full.txt' || uri === '/sitemap-index.xml' || uri === '/sitemap-0.xml') {
     cacheControl = 'public, max-age=3600';
+  }
+  if (uri.endsWith('.txt')) {
+    response.headers['content-type'] = { value: 'text/plain; charset=utf-8' };
   }
   response.headers['cache-control'] = { value: cacheControl };
   return response;
