@@ -1961,3 +1961,12 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Tall desktop viewports (a large portrait monitor, a zoomed-out browser): the hero no
+   longer centres its content in the full viewport height, which left a band of empty
+   page above the title; it sits under the header instead. */
+@media (min-width: 901px) and (min-height: 1100px) {
+  .ms-hero-inner {
+    align-items: start;
+  }
+}
