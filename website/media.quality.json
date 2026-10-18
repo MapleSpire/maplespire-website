@@ -33,6 +33,16 @@
       "served": "dist/media/story-exploded.webp"
     },
     {
+      "id": "video-tour-en",
+      "reference": "public/media/video-tour-en.png",
+      "served": "dist/media/video-tour-en.webp"
+    },
+    {
+      "id": "video-tour-fr",
+      "reference": "public/media/video-tour-fr.png",
+      "served": "dist/media/video-tour-fr.webp"
+    },
+    {
       "id": "closeup",
       "reference": "public/media/story-closeup.jpeg",
       "served": "dist/media/story-closeup.jpeg"
