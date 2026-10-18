@@ -18,6 +18,7 @@ import {
 import { normalizeWheelDelta, resolveSmartTableScroll } from '../lib/smartTableScroll';
 import ContactForm from './ContactForm';
 import SceneVisual from './SceneVisual';
+import TourVideo from './TourVideo';
 
 type SiteShellProps = {
   content: SiteCopy;
@@ -666,6 +667,8 @@ export default function SiteShell({ content, appUrl, contactEndpoint }: SiteShel
             </nav>
           </div>
         </section>
+
+        <TourVideo locale={content.locale} />
 
         <section className="ms-open-source ms-governance" id="governance" aria-labelledby="governance-title">
           <div className="ms-open-source-heading">

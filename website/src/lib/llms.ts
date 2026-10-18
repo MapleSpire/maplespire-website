@@ -1,6 +1,7 @@
 import { alternativeProducts, alternativesCopy } from './alternatives';
 import { STRUCTURIZR_ARTICLE_SLUG, articleLocales, structurizrArticle } from './articles';
 import { LICENSE_ID, LICENSE_URL, REPOSITORY_URL, copy, localeOptions } from './content';
+import { YOUTUBE_CHANNEL_URL, tourVideos, youtubeWatchUrl } from './video';
 
 /**
  * Plain-text summaries for LLM crawlers and answer engines (https://llmstxt.org).
@@ -33,6 +34,11 @@ const keyFacts = [
   '- Origin: Canadian project (Québec).',
 ];
 
+const videoLinks = [
+  `- [${tourVideos.en.title}](${youtubeWatchUrl(tourVideos.en)}): 2:29 product tour in English, English and French captions`,
+  `- [${tourVideos.fr.title}](${youtubeWatchUrl(tourVideos.fr)}): the same tour narrated in French`,
+];
+
 export function renderLlmsTxt(): string {
   return [
     '# MapleSpire',
@@ -52,6 +58,11 @@ export function renderLlmsTxt(): string {
     '',
     `- [Source code on GitHub](${REPOSITORY_URL}): ${LICENSE_ID} repository with Docker Compose setup`,
     `- [Hosted demo](${appUrl}): free evaluation instance, not for production`,
+    '',
+    '## Video',
+    '',
+    ...videoLinks,
+    `- [YouTube channel](${YOUTUBE_CHANNEL_URL}): MapleSpire product videos`,
     '',
     '## Optional',
     '',
@@ -118,6 +129,18 @@ export function renderLlmsFullTxt(): string {
     en.governance.body,
     '',
     ...en.governance.items.map((item) => `- **${item.title}**: ${item.body}`),
+    '',
+    '## Product tour video',
+    '',
+    tourVideos.en.description,
+    '',
+    ...videoLinks,
+    '',
+    'Chapters:',
+    '',
+    ...tourVideos.en.chapters.map((chapter) => (
+      `- ${Math.floor(chapter.start / 60)}:${String(chapter.start % 60).padStart(2, '0')} ${chapter.label}`
+    )),
     '',
     '## Frequently asked questions',
     '',

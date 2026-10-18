@@ -161,7 +161,7 @@ test('JSON-LD is parseable, uses stable entity IDs and states the published lice
     const html = await htmlFor(locale);
     const raw = capture(html, /<script type="application\/ld\+json">([^<]+)<\/script>/, `${locale} JSON-LD`);
     const graph = JSON.parse(raw);
-    assert.deepEqual(graph['@graph'].map((node) => node['@type']), ['Organization', 'WebSite', 'SoftwareApplication', 'SoftwareSourceCode', 'FAQPage']);
+    assert.deepEqual(graph['@graph'].map((node) => node['@type']), ['Organization', 'WebSite', 'SoftwareApplication', 'SoftwareSourceCode', 'FAQPage', 'VideoObject']);
     assert.deepEqual(graph['@graph'].slice(0, 4).map((node) => node['@id']), [
       'https://maplespire.ca/#organization',
       'https://maplespire.ca/#website',
@@ -175,6 +175,13 @@ test('JSON-LD is parseable, uses stable entity IDs and states the published lice
     assert.ok(Array.isArray(software.featureList));
     assert.equal(sourceCode.codeRepository, 'https://github.com/MapleSpire/maplespire');
     assert.equal(faq.mainEntity.length, 5);
+    // The product tour: French recording on /fr/, English everywhere else.
+    const video = graph['@graph'][5];
+    const youtubeId = locale === 'fr' ? '9KxfEjkmCxo' : 'ZCAHP50Zly8';
+    assert.equal(software.subjectOf['@id'], video['@id']);
+    assert.equal(video.embedUrl, `https://www.youtube-nocookie.com/embed/${youtubeId}`);
+    assert.ok(video.name && video.description && video.uploadDate && video.thumbnailUrl.length);
+    assert.ok(html.includes(`href="https://www.youtube.com/watch?v=${youtubeId}"`), `${locale} links the tour video`);
     assert.doesNotMatch(raw, /"(?:aggregateRating|review)"/);
     assert.doesNotMatch(raw, /Apache/);
   }

@@ -4,6 +4,7 @@ import '../styles/revamp.css';
 import { LICENSE_URL, REPOSITORY_URL, localeOptions } from '../lib/content';
 import type { Locale } from '../lib/content';
 import { serializeJsonLd } from '../lib/jsonLd';
+import { YOUTUBE_CHANNEL_URL, tourVideoFor, videoObject } from '../lib/video';
 
 interface Props {
   locale: Locale;
@@ -30,6 +31,7 @@ const organizationId = new URL('/#organization', siteUrl);
 const websiteId = new URL('/#website', siteUrl);
 const softwareId = new URL('/#software', siteUrl);
 const sourceCodeId = new URL('/#source-code', siteUrl);
+const video = { ...videoObject(tourVideoFor(locale), siteUrl.href, canonical.href), publisher: { '@id': organizationId.href } };
 const schema = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -39,7 +41,7 @@ const schema = {
       name: 'MapleSpire',
       url: siteUrl.href,
       logo: new URL('/brand/maplespire-azure-logo-192.png', siteUrl).href,
-      sameAs: ['https://github.com/MapleSpire', REPOSITORY_URL],
+      sameAs: ['https://github.com/MapleSpire', REPOSITORY_URL, YOUTUBE_CHANNEL_URL],
     },
     {
       '@type': 'WebSite',
@@ -66,6 +68,7 @@ const schema = {
       screenshot: new URL('/media/audit-model-light.png', siteUrl).href,
       featureList: features,
       sameAs: [REPOSITORY_URL],
+      subjectOf: { '@id': video['@id'] },
     },
     {
       '@type': 'SoftwareSourceCode',
@@ -87,6 +90,7 @@ const schema = {
         acceptedAnswer: { '@type': 'Answer', text: item.answer },
       })),
     },
+    video,
   ],
 };
 ---

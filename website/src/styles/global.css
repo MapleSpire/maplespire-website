@@ -436,6 +436,10 @@ img {
 
 .site-header .header-cta {
   align-self: center;
+  /* One line in every language: in the compact header on wide screens the button was
+     squeezed (157 → 123 px) and "Essayer la démo" broke over two lines. */
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .site-header .header-cta:hover {
