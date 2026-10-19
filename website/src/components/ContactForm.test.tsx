@@ -43,6 +43,31 @@ describe('ContactForm', () => {
     expect(await screen.findByText(/confirmation email is on its way/i)).toBeInTheDocument();
   });
 
+  // The contact API only accepts 'en' | 'fr' (it selects the receipt language) and answers
+  // 400 to anything else, so a Spanish, German or Japanese page must still send one of those.
+  it.each([
+    ['es', 'en'],
+    ['de', 'en'],
+    ['ja', 'en'],
+    ['fr', 'fr'],
+  ] as const)('sends a receipt locale the contact API accepts from the %s page', async (locale, expected) => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, status: 200 });
+    vi.stubGlobal('fetch', fetchMock);
+    const content = getCopy(locale);
+
+    render(<ContactForm content={content} endpoint="/api/contact" />);
+    fireEvent.change(screen.getByLabelText(content.contact.name), { target: { value: 'Ada Lovelace' } });
+    fireEvent.change(screen.getByLabelText(content.contact.email), { target: { value: 'ada@example.com' } });
+    fireEvent.change(screen.getByLabelText(content.contact.subject), { target: { value: 'MapleSpire' } });
+    fireEvent.change(screen.getByLabelText(content.contact.message), { target: { value: 'We would like to discuss our deployment.' } });
+    fireEvent.click(screen.getByRole('checkbox'));
+    fireEvent.click(screen.getByRole('button', { name: content.contact.submit }));
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledOnce());
+    const [, request] = fetchMock.mock.calls[0] as [string, RequestInit];
+    expect(JSON.parse(request.body as string).locale).toBe(expected);
+  });
+
   it('keeps the user message and announces an error when the request fails', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 503 }));
     render(<ContactForm content={getCopy('fr')} endpoint="/api/contact" />);

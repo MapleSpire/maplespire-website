@@ -10,6 +10,13 @@ type ContactFormProps = {
 
 type FormStatus = 'idle' | 'sending' | 'success' | 'error';
 
+/**
+ * The contact API (infra/marketing-cdk/lambda/contact-schema.ts) accepts only 'en' | 'fr'
+ * and rejects anything else with a 400: it picks the language of the receipt email. Every
+ * page other than French gets the English receipt.
+ */
+const receiptLocale = (locale: SiteCopy['locale']): 'en' | 'fr' => (locale === 'fr' ? 'fr' : 'en');
+
 export default function ContactForm({ content, endpoint }: ContactFormProps) {
   const legal = legalCopy[content.locale];
   const [status, setStatus] = useState<FormStatus>('idle');
@@ -34,7 +41,7 @@ export default function ContactForm({ content, endpoint }: ContactFormProps) {
           website: data.get('website'),
           consent: data.get('consent') === 'on',
           startedAt: startedAt.current,
-          locale: content.locale,
+          locale: receiptLocale(content.locale),
         }),
       });
 
