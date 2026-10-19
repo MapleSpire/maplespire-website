@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { normalizeWheelDelta, resolveSmartTableScroll } from './smartTableScroll';
+import { fromScrollProgress, normalizeWheelDelta, resolveSmartTableScroll, toScrollProgress } from './smartTableScroll';
 
 const framedTable = {
   scrollLeft: 0,
@@ -44,5 +44,20 @@ describe('smart comparison table scrolling', () => {
   it('normalizes line and page wheel units', () => {
     expect(normalizeWheelDelta(3, 1, 720)).toBe(54);
     expect(normalizeWheelDelta(1, 2, 720)).toBe(720);
+  });
+});
+
+describe('scroll progress in either direction', () => {
+  // A right-to-left (Arabic) scroller starts at scrollLeft 0 and goes negative toward the end.
+  it('reads distance from the inline start', () => {
+    expect(toScrollProgress(120, false)).toBe(120);
+    expect(toScrollProgress(-120, true)).toBe(120);
+  });
+
+  it('round-trips the wheel resolution through a right-to-left scroller', () => {
+    const scrollLeft = -40;
+    const result = resolveSmartTableScroll({ ...framedTable, scrollLeft: toScrollProgress(scrollLeft, true), delta: 100 });
+    expect(result.handled).toBe(true);
+    expect(fromScrollProgress(result.nextScrollLeft, true)).toBe(-140);
   });
 });

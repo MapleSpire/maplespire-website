@@ -59,3 +59,11 @@ export function normalizeWheelDelta(delta: number, deltaMode: number, viewportHe
   if (deltaMode === 2) return delta * viewportHeight;
   return delta;
 }
+
+/**
+ * Distance scrolled from the inline start of a horizontal scroller. In a right-to-left
+ * scroller `scrollLeft` starts at 0 and goes negative toward the end, so code that
+ * reasons in "0 = start, max = end" converts through these two helpers.
+ */
+export const toScrollProgress = (scrollLeft: number, rtl: boolean) => (rtl ? -scrollLeft : scrollLeft);
+export const fromScrollProgress = (progress: number, rtl: boolean) => (rtl ? -progress : progress);

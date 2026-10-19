@@ -6,16 +6,22 @@ import test from 'node:test';
 
 const root = resolve(import.meta.dirname, '..');
 const dist = join(root, 'dist');
-const locales = ['fr', 'en', 'zh', 'ja', 'ko', 'hi'];
-const articleLocales = ['fr', 'en'];
+const locales = ['fr', 'en', 'es', 'pt', 'it', 'de', 'zh', 'ja', 'ko', 'hi', 'ar'];
+// The comparison article is published in every locale.
+const articleLocales = locales;
 const articleSlug = 'maplespire-vs-structurizr';
 const languageUrls = {
   'fr-CA': 'https://maplespire.ca/fr/',
   'en-CA': 'https://maplespire.ca/en/',
+  es: 'https://maplespire.ca/es/',
+  'pt-BR': 'https://maplespire.ca/pt/',
+  it: 'https://maplespire.ca/it/',
+  de: 'https://maplespire.ca/de/',
   'zh-Hans': 'https://maplespire.ca/zh/',
   ja: 'https://maplespire.ca/ja/',
   ko: 'https://maplespire.ca/ko/',
   hi: 'https://maplespire.ca/hi/',
+  ar: 'https://maplespire.ca/ar/',
   'x-default': 'https://maplespire.ca/en/',
 };
 
@@ -61,7 +67,6 @@ test('the sitemap contains only canonical localized URLs with complete reciproca
     ]),
     ...articleLocales.map((locale) => `https://maplespire.ca/${locale}/${articleSlug}/`),
   ].sort();
-  const localizedEverywhere = expected.length - articleLocales.length;
   assert.deepEqual(locations, expected);
   assert.ok(!sitemap.includes('<loc>https://maplespire.ca/</loc>'));
   assert.ok(!sitemap.includes('<loc>https://maplespire.ca/termsofservice/</loc>'));
@@ -70,7 +75,7 @@ test('the sitemap contains only canonical localized URLs with complete reciproca
   for (const locale of Object.keys(languageUrls)) {
     assert.equal(
       (sitemap.match(new RegExp(`hreflang="${locale}"`, 'g')) ?? []).length,
-      ['fr-CA', 'en-CA', 'x-default'].includes(locale) ? expected.length : localizedEverywhere,
+      expected.length,
       `sitemap alternate count for ${locale}`,
     );
   }
@@ -86,6 +91,7 @@ test('legal documents are prerendered, localized and reciprocal', async () => {
     for (const locale of locales) {
       const html = await readFile(join(dist, locale, kind, 'index.html'), 'utf8');
       assert.equal((html.match(/<h1(?:\s|>)/g) ?? []).length, 1, `${locale}/${kind} must contain one H1`);
+      assert.equal(capture(html, /<html\b[^>]*\sdir="([^"]+)"/, `${locale}/${kind} dir`), locale === 'ar' ? 'rtl' : 'ltr');
       assert.equal(capture(html, /<link rel="canonical" href="([^"]+)"/, `${locale}/${kind} canonical`), `https://maplespire.ca/${locale}/${kind}/`);
       assert.equal(Object.keys(alternateMap(html)).length, locales.length + 1, `${locale}/${kind} hreflang count`);
       assert.equal((html.match(/<meta property="og:locale:alternate"/g) ?? []).length, locales.length - 1);
@@ -96,16 +102,15 @@ test('legal documents are prerendered, localized and reciprocal', async () => {
   }
 });
 
-test('the Structurizr comparison article is prerendered in French and English with reciprocal alternates', async () => {
+test('the Structurizr comparison article is prerendered in every locale with reciprocal alternates', async () => {
+  const articleAlternates = Object.fromEntries(Object.entries(languageUrls).map(([lang, url]) => [lang, `${url}${articleSlug}/`]));
   for (const locale of articleLocales) {
     const html = await readFile(join(dist, locale, articleSlug, 'index.html'), 'utf8');
     assert.equal((html.match(/<h1(?:\s|>)/g) ?? []).length, 1, `${locale} article must contain one H1`);
     assert.equal(capture(html, /<link rel="canonical" href="([^"]+)"/, `${locale} article canonical`), `https://maplespire.ca/${locale}/${articleSlug}/`);
-    assert.deepEqual(alternateMap(html), {
-      'fr-CA': `https://maplespire.ca/fr/${articleSlug}/`,
-      'en-CA': `https://maplespire.ca/en/${articleSlug}/`,
-      'x-default': `https://maplespire.ca/en/${articleSlug}/`,
-    });
+    assert.deepEqual(alternateMap(html), articleAlternates);
+    assert.equal(capture(html, /<html\b[^>]*\sdir="([^"]+)"/, `${locale} article dir`), locale === 'ar' ? 'rtl' : 'ltr');
+    assert.equal((html.match(/<table class="article-table">/g) ?? []).length, 2, `${locale} article tables`);
     assert.match(html, /<table class="article-table">/);
     assert.match(html, /https:\/\/github\.com\/MapleSpire\/maplespire/);
     assert.doesNotMatch(html, /�|Ã.|Â.|â€|â€™/);
@@ -123,6 +128,7 @@ test('localized HTML has unique metadata, absolute self-canonicals and reciproca
     const canonical = capture(html, /<link rel="canonical" href="([^"]+)"/, `${locale} canonical`);
 
     assert.equal(canonical, `https://maplespire.ca/${locale}/`);
+    assert.equal(capture(html, /<html\b[^>]*\sdir="([^"]+)"/, `${locale} dir`), locale === 'ar' ? 'rtl' : 'ltr', `${locale} text direction`);
     assert.doesNotThrow(() => new URL(canonical));
     assert.deepEqual(alternateMap(html), languageUrls, `${locale} hreflang set is incomplete or non-reciprocal`);
     titles.add(title);
@@ -218,6 +224,17 @@ test('the generated 404 is useful and explicitly excluded from indexing', async 
   assert.match(html, /<meta name="robots" content="noindex,follow">/);
   assert.equal((html.match(/<h1(?:\s|>)/g) ?? []).length, 1);
   for (const locale of locales) assert.match(html, new RegExp(`href="/${locale}/"`));
+});
+
+test('every local image on each landing page, including the tour video poster, exists in the build', async () => {
+  for (const locale of locales) {
+    const html = await htmlFor(locale);
+    const sources = [...html.matchAll(/<img\b[^>]*\ssrc="(\/[^"]+)"/g)].map((match) => match[1]);
+    assert.ok(sources.some((src) => /^\/media\/video-tour-[a-z]+\.webp$/.test(src)), `${locale} renders the tour video poster`);
+    for (const src of sources) {
+      assert.ok(existsSync(join(dist, decodeURIComponent(src))), `${locale} image does not resolve: ${src}`);
+    }
+  }
 });
 
 test('important internal links resolve to generated static files and app links use the application domain', async () => {

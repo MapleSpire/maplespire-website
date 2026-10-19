@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import '../styles/legal.css';
+import '../styles/rtl.css';
 import { localeOptions } from '../lib/content';
 import type { Locale } from '../lib/content';
 import { getLegalDocument, legalCopy } from '../lib/legal';
@@ -39,7 +40,7 @@ const schema = {
 ---
 
 <!doctype html>
-<html lang={localeMeta.htmlLang} data-theme="light">
+<html lang={localeMeta.htmlLang} dir={localeMeta.dir} data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -128,7 +129,7 @@ const schema = {
       <article class="legal-article">
         <header class="legal-hero">
           <p>{document.eyebrow}</p>
-          <h1>{document.title}</h1>
+          <h1>{document.heading ?? document.title}</h1>
           <div class="legal-meta">
             <span>{document.updatedLabel} · {document.updatedDate}</span>
             <span>{labels.operatorLabel} · {labels.operator}</span>

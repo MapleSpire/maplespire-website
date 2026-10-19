@@ -283,7 +283,7 @@ function handler(event) {
   if (canonicalDomain && alternateDomains.indexOf(host) !== -1) {
     return permanentRedirect('https://' + canonicalDomain + uri);
   }
-  var publishedLocales = ['fr', 'en', 'zh', 'ja', 'ko', 'hi'];
+  var publishedLocales = ['fr', 'en', 'es', 'pt', 'it', 'de', 'zh', 'ja', 'ko', 'hi', 'ar'];
   // Unlocalized entry points follow the visitor: an explicit choice saved by the
   // language picker wins, then the browser's Accept-Language, then English.
   function preferredLocale() {

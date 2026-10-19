@@ -240,12 +240,28 @@ describe('independent marketing contact AWS architecture', () => {
     expect(rootRedirect.headers.vary.value).toBe('Accept-Language, Cookie')
     expect(rootFor({ 'accept-language': { value: 'fr-CA,fr;q=0.9,en;q=0.8' } }).headers.location.value)
       .toBe('/fr/?campaign=launch')
-    expect(rootFor({ 'accept-language': { value: 'de-DE,de;q=0.9,ja;q=0.7,en;q=0.5' } }).headers.location.value)
+    expect(rootFor({ 'accept-language': { value: 'nl-NL,nl;q=0.9,ja;q=0.7,en;q=0.5' } }).headers.location.value)
       .toBe('/ja/?campaign=launch')
     expect(rootFor({ 'accept-language': { value: 'zh-Hans-CN' } }).headers.location.value)
       .toBe('/zh/?campaign=launch')
-    expect(rootFor({ 'accept-language': { value: 'de, it;q=0.8' } }).headers.location.value)
+    expect(rootFor({ 'accept-language': { value: 'nl, ru;q=0.8' } }).headers.location.value)
       .toBe('/en/?campaign=launch')
+    expect(rootFor({ 'accept-language': { value: 'es-MX,es;q=0.9,en;q=0.8' } }).headers.location.value)
+      .toBe('/es/?campaign=launch')
+    expect(rootFor({ 'accept-language': { value: 'pt-BR,pt;q=0.9,en;q=0.8' } }).headers.location.value)
+      .toBe('/pt/?campaign=launch')
+    expect(rootFor({ 'accept-language': { value: 'ar-SA,ar;q=0.9,en;q=0.8' } }).headers.location.value)
+      .toBe('/ar/?campaign=launch')
+    expect(rootFor({ 'accept-language': { value: 'it-IT' } }).headers.location.value)
+      .toBe('/it/?campaign=launch')
+    expect(rootFor({ 'accept-language': { value: 'de-DE,de;q=0.9,ja;q=0.7,en;q=0.5' } }).headers.location.value)
+      .toBe('/de/?campaign=launch')
+    expect(rootFor({ 'accept-language': { value: 'sv-SE, de;q=0.8, en;q=0.5' } }).headers.location.value)
+      .toBe('/de/?campaign=launch')
+    expect(rootFor(
+      { 'accept-language': { value: 'en-US' } },
+      { maplespire_locale: { value: 'it' } },
+    ).headers.location.value).toBe('/it/?campaign=launch')
     expect(rootFor(
       { 'accept-language': { value: 'fr-CA' } },
       { maplespire_locale: { value: 'ko' } },

@@ -1,0 +1,163 @@
+/*
+ * Right-to-left adjustments (Arabic). Every rule is scoped to [dir='rtl'] or :lang(ar),
+ * so the left-to-right pages render exactly as before. Flex and grid rows already
+ * mirror with `dir`; these rules fix what is positioned with physical properties.
+ */
+
+/* Arabic glyphs: Inter and the display font have none. Latin words inside Arabic
+   sentences (MapleSpire, C4, GitHub...) keep the brand fonts, Arabic falls through. */
+html:lang(ar) body {
+  font-family: Inter, 'Segoe UI', 'Noto Sans Arabic', 'Geeza Pro', Tahoma, ui-sans-serif, sans-serif;
+}
+
+html:lang(ar) :is(.ms-hero h1, .hero h1, .ms-flight-copy h2, .ms-open-source-heading h2, .ms-facts-heading h2, .ms-alternatives-intro h2, .ms-contact-intro h2, .legal-hero h1) {
+  font-family: 'Maple Display', Inter, 'Segoe UI', 'Noto Sans Arabic', 'Geeza Pro', Tahoma, sans-serif;
+}
+
+html:lang(ar) :is(.ms-hero h1 em, .hero h1 em) {
+  font-family: Georgia, 'Noto Naskh Arabic', 'Times New Roman', serif;
+}
+
+/* Arabic is a joined script: tracking (negative on headings, positive on eyebrows)
+   pulls letters apart or crushes them, and uppercase does not apply. Tall letters and
+   marks (shadda, hamza) need more line height than the Latin display setting of ~0.92. */
+[dir='rtl'] * {
+  letter-spacing: 0 !important;
+}
+
+[dir='rtl'] :is(.ms-hero h1, .hero h1, .ms-flight-copy h2, .ms-open-source-heading h2, .ms-facts-heading h2, .ms-alternatives-intro h2, .ms-contact-intro h2, .legal-hero h1) {
+  line-height: 1.16;
+}
+
+/* Directional arrows point the reading way. */
+[dir='rtl'] :is(a, button, b) > i[aria-hidden='true'],
+[dir='rtl'] .header-cta > i {
+  display: inline-block;
+  transform: scaleX(-1);
+}
+
+[dir='rtl'] .button:hover i {
+  transform: translate(-2px, -2px) scaleX(-1);
+}
+
+/* Header language menu: anchored to the picker's outer (left) edge, not off-screen. */
+[dir='rtl'] .locale-menu {
+  right: auto;
+  left: 0;
+}
+
+/* Before/after slider: the images, handle and range input are physical (left = before),
+   so the widget stays left-to-right; its captions keep Arabic shaping and order. */
+[dir='rtl'] .ms-comparison {
+  direction: ltr;
+}
+
+[dir='rtl'] :is(.ms-comparison-label, .ms-comparison-caption > *) {
+  direction: rtl;
+}
+
+/* E-mail addresses read left-to-right even in an Arabic form. */
+[dir='rtl'] input[type='email'] {
+  direction: ltr;
+  text-align: right;
+}
+
+/* Market comparison table: sticky product column, separators, featured marker. */
+[dir='rtl'] .ms-alternatives-table :is(th, td) {
+  border-right: 0;
+  border-left: 1px solid var(--line);
+  text-align: right;
+}
+
+[dir='rtl'] .ms-alternatives-table :is(th, td):last-child {
+  border-left: 0;
+}
+
+[dir='rtl'] .ms-alternatives-table thead th:first-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 23px;
+}
+
+[dir='rtl'] .ms-alternatives-table thead th:last-child {
+  border-top-right-radius: 0;
+  border-top-left-radius: 23px;
+}
+
+[dir='rtl'] .ms-alternatives-table th:first-child {
+  right: 0;
+  left: auto;
+  box-shadow: -10px 0 20px -18px rgba(0, 0, 0, 0.54);
+}
+
+[dir='rtl'] .ms-alternatives-table tbody tr.is-featured th:first-child {
+  box-shadow: inset -4px 0 0 var(--clay-deep), -10px 0 20px -18px rgba(0, 0, 0, 0.54);
+}
+
+[dir='rtl'] .ms-alternatives-sticky-table thead th:first-child {
+  right: auto;
+}
+
+@media (max-width: 760px) {
+  [dir='rtl'] .ms-alternatives-table th:first-child {
+    right: auto;
+    border-left: 0;
+    box-shadow: none;
+  }
+
+  [dir='rtl'] .ms-alternatives-table tbody tr.is-featured th:first-child {
+    box-shadow: inset -4px 0 0 var(--clay-deep);
+  }
+
+  [dir='rtl'] .ms-alternatives-table td {
+    border-left: 0;
+    text-align: right;
+  }
+}
+
+/* The copyright line is laid out left-to-right (dir="auto", it opens with "© 2026
+   MapleSpire") but still sits on the reading edge of an Arabic footer. */
+[dir='rtl'] .site-footer small {
+  text-align: right;
+}
+
+/* Legal pages: section index marker, language menu and list indent on the reading side. */
+[dir='rtl'] .legal-index {
+  padding: 8px 0 20px 16px;
+}
+
+[dir='rtl'] .legal-index a {
+  border-left: 0;
+  border-right: 2px solid transparent;
+  padding: 7px 13px 7px 0;
+}
+
+[dir='rtl'] .legal-index a.is-active {
+  border-color: var(--coral, #bd8068);
+}
+
+[dir='rtl'] .legal-header details > div {
+  right: auto;
+  left: 0;
+}
+
+[dir='rtl'] .legal-sections ul {
+  padding-left: 0;
+  padding-right: 24px;
+}
+
+@media (max-width: 900px) {
+  [dir='rtl'] .legal-index {
+    padding: 0 0 8px;
+  }
+
+  [dir='rtl'] .legal-index a {
+    border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+    padding: 9px 13px;
+  }
+}
+
+/* Comparison article tables: cells and caption start on the right. */
+[dir='rtl'] .article-table caption,
+[dir='rtl'] .article-table :is(th, td) {
+  text-align: right;
+}

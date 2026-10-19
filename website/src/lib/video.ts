@@ -1,17 +1,27 @@
 import type { Locale } from './content';
 
 /**
- * The product tour on YouTube, in English and in French. The French page plays the
- * French recording; every other locale plays the English one (captions on YouTube).
- * Shared by the landing section, the VideoObject structured data, the video sitemap
- * and llms.txt, so the four never drift apart.
+ * The product tour on YouTube. Each locale plays its own recording when `tourVideos`
+ * has one, and the English recording otherwise (captions on YouTube). Shared by the
+ * landing section, the VideoObject structured data, the video sitemap and llms.txt,
+ * so the four never drift apart.
+ *
+ * Adding a recording for another locale is one entry in `tourVideos` (its own
+ * youtubeId, title, description and chapters). Its poster is used only once the
+ * language is listed in `posterLanguages` (files `public/media/video-tour-<lang>.{webp,png}`);
+ * until then the English poster stands in.
  */
 
 export const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@MapleSpire';
-/** The poster, in the video's language: WebP on the page, PNG for crawlers (thumbnails). */
-export const videoPosterPath = (video: { language: string }, format: 'webp' | 'png' = 'webp') => `/media/video-tour-${video.language}.${format}`;
 
-export type VideoLanguage = 'en' | 'fr';
+/** Languages that have a poster in `public/media/` (video.test.ts checks the files exist). */
+export const posterLanguages: ReadonlySet<Locale> = new Set<Locale>(['en', 'fr']);
+
+/** The poster, in the video's language when one exists, else English: WebP on the page, PNG for crawlers (thumbnails). */
+export const videoPosterPath = (video: { language: Locale }, format: 'webp' | 'png' = 'webp') =>
+  `/media/video-tour-${posterLanguages.has(video.language) ? video.language : 'en'}.${format}`;
+
+export type VideoLanguage = Locale;
 
 export type TourVideo = {
   language: VideoLanguage;
@@ -27,7 +37,8 @@ export type TourVideo = {
 
 const shared = { duration: 'PT2M29S', uploadDate: '2026-10-18T12:00:00-04:00' } as const;
 
-export const tourVideos: Record<VideoLanguage, TourVideo> = {
+/** English is the fallback for every locale without its own recording; French has one. */
+export const tourVideos: { en: TourVideo; fr: TourVideo } & Partial<Record<Locale, TourVideo>> = {
   en: {
     ...shared,
     language: 'en',
@@ -80,12 +91,19 @@ export const tourVideos: Record<VideoLanguage, TourVideo> = {
   },
 };
 
-export const videoLanguageFor = (locale: Locale): VideoLanguage => (locale === 'fr' ? 'fr' : 'en');
-export const tourVideoFor = (locale: Locale): TourVideo => tourVideos[videoLanguageFor(locale)];
+export const tourVideoFor = (locale: Locale): TourVideo => tourVideos[locale] ?? tourVideos.en;
+export const videoLanguageFor = (locale: Locale): VideoLanguage => tourVideoFor(locale).language;
+/** The "other language" link: English from a page that plays a non-English recording, French from one that plays English. */
+export const alternateTourVideoFor = (locale: Locale): TourVideo => (videoLanguageFor(locale) === 'en' ? tourVideos.fr : tourVideos.en);
 export const youtubeWatchUrl = (video: TourVideo) => `https://www.youtube.com/watch?v=${video.youtubeId}`;
 /** youtube-nocookie: no YouTube cookie until the visitor presses play. */
 export const youtubeEmbedUrl = (video: TourVideo) => `https://www.youtube-nocookie.com/embed/${video.youtubeId}`;
 
+/**
+ * Section copy. `otherLanguage` labels the link to `alternateTourVideoFor(locale)` and
+ * `captionsNote` describes the recording that plays, so a locale that gains its own
+ * recording updates both lines here along with its `tourVideos` entry.
+ */
 export type VideoSectionCopy = {
   eyebrow: string;
   title: string;
@@ -150,6 +168,51 @@ export const videoCopy: Record<Locale, VideoSectionCopy> = {
     watchOnYoutube: 'YouTube पर देखें',
     otherLanguage: 'Version française',
     captionsNote: 'वीडियो अंग्रेज़ी में है; YouTube पर अंग्रेज़ी और फ़्रेंच उपशीर्षक उपलब्ध हैं।',
+  },
+  ar: {
+    eyebrow: 'جولة في المنتج',
+    title: 'MapleSpire في دقيقتين ونصف.',
+    body: 'من وصف النظام إلى نموذج C4 حيّ: الذكاء الاصطناعي، وعروض مترابطة، والتحرير دون اتصال، وسجلات القرارات، والمسودات، والتعاون، وMCP، والعرض ثلاثي الأبعاد.',
+    play: 'تشغيل الفيديو',
+    watchOnYoutube: 'المشاهدة على YouTube',
+    otherLanguage: 'Version française',
+    captionsNote: 'الفيديو باللغة الإنجليزية، وتتوفر على YouTube ترجمة مكتوبة بالإنجليزية والفرنسية.',
+  },
+  es: {
+    eyebrow: 'Recorrido por el producto',
+    title: 'MapleSpire en 2 minutos y medio.',
+    body: 'De la descripción de un sistema a un modelo C4 vivo: IA, vistas conectadas, edición sin conexión, registros de decisiones, borradores, colaboración, MCP y 3D.',
+    play: 'Reproducir el vídeo',
+    watchOnYoutube: 'Ver en YouTube',
+    otherLanguage: 'Version française',
+    captionsNote: 'El vídeo está en inglés; en YouTube hay subtítulos en inglés y francés.',
+  },
+  pt: {
+    eyebrow: 'Tour pelo produto',
+    title: 'O MapleSpire em dois minutos e meio.',
+    body: 'Da descrição de um sistema a um modelo C4 vivo: IA, visões conectadas, edição offline, registros de decisões, rascunhos, colaboração, MCP e 3D.',
+    play: 'Reproduzir o vídeo',
+    watchOnYoutube: 'Assistir no YouTube',
+    otherLanguage: 'Version française',
+    captionsNote: 'O vídeo está em inglês; o YouTube oferece legendas em inglês e francês.',
+  },
+  it: {
+    eyebrow: 'Tour del prodotto',
+    title: 'MapleSpire in due minuti e mezzo.',
+    body: 'Dalla descrizione di un sistema a un modello C4 vivo: IA, viste collegate, modifica offline, registri delle decisioni, bozze, collaborazione, MCP e 3D.',
+    play: 'Riproduci il video',
+    watchOnYoutube: 'Guarda su YouTube',
+    otherLanguage: 'Version française',
+    captionsNote: 'Il video è in inglese; su YouTube sono disponibili sottotitoli in inglese e francese.',
+  },
+  de: {
+    eyebrow: 'Produkttour',
+    title: 'MapleSpire in zweieinhalb Minuten.',
+    body: 'Von der Systembeschreibung zum lebendigen C4-Modell: KI, verknüpfte Ansichten, Offline-Bearbeitung, Architekturentscheidungen, Entwürfe, Zusammenarbeit, MCP und 3D.',
+    play: 'Video abspielen',
+    watchOnYoutube: 'Auf YouTube ansehen',
+    otherLanguage: 'Version française',
+    captionsNote: 'Das Video ist auf Englisch; auf YouTube gibt es englische und französische Untertitel.',
   },
 };
 

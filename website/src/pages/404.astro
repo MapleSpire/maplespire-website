@@ -1,5 +1,9 @@
 ---
+import { localeOptions } from '../lib/content';
+
 const siteUrl = new URL('/', Astro.site ?? Astro.url.origin);
+// English first (the page itself is in English), then the picker order.
+const languages = [...localeOptions].sort((a, b) => Number(b.locale === 'en') - Number(a.locale === 'en'));
 ---
 
 <!doctype html>
@@ -16,14 +20,11 @@ const siteUrl = new URL('/', Astro.site ?? Astro.url.origin);
     <main>
       <p>404</p>
       <h1>This page does not exist.</h1>
-      <p>The MapleSpire landing page is available in six languages.</p>
+      <p>The MapleSpire landing page is available in {languages.length} languages.</p>
       <nav aria-label="Available languages">
-        <a href="/en/">English</a>
-        <a href="/fr/">Français</a>
-        <a href="/zh/">简体中文</a>
-        <a href="/ja/">日本語</a>
-        <a href="/ko/">한국어</a>
-        <a href="/hi/">हिन्दी</a>
+        {languages.map((option) => (
+          <a href={`/${option.locale}/`} hreflang={option.htmlLang} lang={option.htmlLang}>{option.name}</a>
+        ))}
       </nav>
     </main>
     <style>

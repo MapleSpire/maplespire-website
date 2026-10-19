@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import '../styles/legal.css';
 import '../styles/article.css';
+import '../styles/rtl.css';
 import { REPOSITORY_URL, localeOptions } from '../lib/content';
 import { STRUCTURIZR_ARTICLE_SLUG, articleLocales } from '../lib/articles';
 import type { ArticleDocument, ArticleLocale } from '../lib/articles';
@@ -61,7 +62,7 @@ const schema = {
 ---
 
 <!doctype html>
-<html lang={localeMeta.htmlLang} data-theme="light">
+<html lang={localeMeta.htmlLang} dir={localeMeta.dir} data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -105,7 +106,7 @@ const schema = {
     <script is:inline type="application/ld+json" set:html={serializeJsonLd(schema)} />
   </head>
   <body class="legal-body">
-    <a class="legal-skip" href="#article-content">{locale === 'fr' ? 'Passer au contenu' : 'Skip to content'}</a>
+    <a class="legal-skip" href="#article-content">{document.skipLabel}</a>
     <header class="legal-header">
       <a class="legal-brand" href={`/${locale}/`} aria-label={`MapleSpire · ${labels.home}`}>
         <span>
