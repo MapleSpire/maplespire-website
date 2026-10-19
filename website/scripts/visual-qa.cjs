@@ -25,6 +25,9 @@ mkdirSync(artifacts, { recursive: true })
 const localeExpectations = {
   fr: { htmlLang: 'fr-CA', copyright: '© 2026 MapleSpire contributors · Projet canadien' },
   en: { htmlLang: 'en-CA', copyright: '© 2026 MapleSpire contributors · Canadian project' },
+  es: { htmlLang: 'es', copyright: '© 2026 MapleSpire contributors · Proyecto canadiense' },
+  it: { htmlLang: 'it', copyright: '© 2026 MapleSpire contributors · Progetto canadese' },
+  de: { htmlLang: 'de', copyright: '© 2026 MapleSpire contributors · Kanadisches Projekt' },
   zh: { htmlLang: 'zh-Hans', copyright: '© 2026 MapleSpire 贡献者 · 加拿大项目' },
   ja: { htmlLang: 'ja', copyright: '© 2026 MapleSpire コントリビューター · カナダ発のプロジェクト' },
   ko: { htmlLang: 'ko', copyright: '© 2026 MapleSpire 기여자 · 캐나다 프로젝트' },
@@ -150,7 +153,7 @@ async function assertHealthyPage(page, locale, label) {
     (await page.locator('.site-footer small').textContent())?.trim(),
     localeExpectations[locale].copyright,
   )
-  assert.equal(await page.locator('.locale-menu a').count(), 6)
+  assert.equal(await page.locator('.locale-menu a').count(), Object.keys(localeExpectations).length)
   assert.equal(await page.locator('.ms-contact').count(), 1)
   assert.equal(await page.locator('form.contact-form').count(), 1)
   assert.equal(await page.locator('a[href="https://github.com/MapleSpire"]').count() > 0, true)
@@ -812,7 +815,7 @@ async function translatedLocalesQa(browser) {
   const page = await context.newPage()
   const errors = monitorPage(page)
 
-  for (const locale of ['zh', 'ja', 'ko', 'hi']) {
+  for (const locale of ['es', 'it', 'de', 'zh', 'ja', 'ko', 'hi']) {
     await gotoLocale(page, locale)
     await assertHealthyPage(page, locale, `desktop ${locale.toUpperCase()}`)
     assert.ok((await page.locator('h1').innerText()).trim().length > 8)
@@ -855,10 +858,10 @@ async function translatedLocalesQa(browser) {
       passed: true,
       baseUrl,
       checkedAt: new Date().toISOString(),
-      scenarios: ['seo-http-default-redirect', 'desktop-fr-light-dark', 'desktop-fr-wide-short-hero', 'desktop-fr-recorded-wide-hero', 'desktop-en-comparison-contact', 'reduced-motion', 'mobile-fr-comparison', 'desktop-zh-ja-ko-hi', 'locale-selector-navigation'],
+      scenarios: ['seo-http-default-redirect', 'desktop-fr-light-dark', 'desktop-fr-wide-short-hero', 'desktop-fr-recorded-wide-hero', 'desktop-en-comparison-contact', 'reduced-motion', 'mobile-fr-comparison', 'desktop-es-it-de-zh-ja-ko-hi', 'locale-selector-navigation'],
     }
     writeFileSync(resolve(artifacts, 'report.json'), `${JSON.stringify(report, null, 2)}\n`)
-    console.log('Playwright visual QA passed for all six locales, locale navigation, comparator, wide-short hero pinning, market comparison, flight, themes, reduced motion, mobile, assets, overflow, and mocked contact submission.')
+    console.log('Playwright visual QA passed for all nine locales, locale navigation, comparator, wide-short hero pinning, market comparison, flight, themes, reduced motion, mobile, assets, overflow, and mocked contact submission.')
   } finally {
     await browser.close()
   }

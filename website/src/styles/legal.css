@@ -90,6 +90,11 @@
 
 .legal-hero > p:first-child { margin: 0 0 20px; color: var(--coral-dark, #945d49); font-size: 11px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
 .legal-hero h1 { max-width: 800px; margin: 0; font-size: clamp(52px, 8vw, 104px); line-height: .92; letter-spacing: -.065em; }
+/* German compounds ("Nutzungsbedingungen", "Datenschutzerklärung") are wider than a phone at
+   this size and widened the whole page to ~550px at 375px; let them hyphenate. Scoped to German
+   so the other locales keep their measured line breaks. */
+.legal-hero h1:lang(de),
+.legal-sections h2:lang(de) { hyphens: auto; overflow-wrap: anywhere; }
 .legal-meta { display: flex; flex-wrap: wrap; gap: 10px 24px; margin: 28px 0; color: var(--muted, #6f6a64); font-size: 12px; }
 .legal-summary { max-width: 760px; margin: 0; font-size: clamp(20px, 2.3vw, 30px); line-height: 1.38; letter-spacing: -.025em; }
 .legal-important { margin: 30px 0 0; padding: 22px 24px; border: 1px solid color-mix(in srgb, var(--coral, #bd8068) 55%, transparent); border-radius: 20px; background: color-mix(in srgb, var(--coral, #bd8068) 9%, transparent); font-size: 15px; font-weight: 650; line-height: 1.55; }

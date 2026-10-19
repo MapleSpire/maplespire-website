@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { alternativeProducts, alternativesCopy, filterAlternativeProducts, statusTone } from './alternatives';
 
-const locales = ['fr', 'en', 'zh', 'ja', 'ko', 'hi'] as const;
+const locales = ['fr', 'en', 'es', 'it', 'de', 'zh', 'ja', 'ko', 'hi'] as const;
 
 describe('honest alternatives comparison', () => {
   it('covers the requested market set plus relevant diagram-as-code options', () => {

@@ -128,7 +128,7 @@ const schema = {
       <article class="legal-article">
         <header class="legal-hero">
           <p>{document.eyebrow}</p>
-          <h1>{document.title}</h1>
+          <h1>{document.heading ?? document.title}</h1>
           <div class="legal-meta">
             <span>{document.updatedLabel} · {document.updatedDate}</span>
             <span>{labels.operatorLabel} · {labels.operator}</span>

@@ -6,12 +6,15 @@ import test from 'node:test';
 
 const root = resolve(import.meta.dirname, '..');
 const dist = join(root, 'dist');
-const locales = ['fr', 'en', 'zh', 'ja', 'ko', 'hi'];
+const locales = ['fr', 'en', 'es', 'it', 'de', 'zh', 'ja', 'ko', 'hi'];
 const articleLocales = ['fr', 'en'];
 const articleSlug = 'maplespire-vs-structurizr';
 const languageUrls = {
   'fr-CA': 'https://maplespire.ca/fr/',
   'en-CA': 'https://maplespire.ca/en/',
+  es: 'https://maplespire.ca/es/',
+  it: 'https://maplespire.ca/it/',
+  de: 'https://maplespire.ca/de/',
   'zh-Hans': 'https://maplespire.ca/zh/',
   ja: 'https://maplespire.ca/ja/',
   ko: 'https://maplespire.ca/ko/',
@@ -218,6 +221,17 @@ test('the generated 404 is useful and explicitly excluded from indexing', async 
   assert.match(html, /<meta name="robots" content="noindex,follow">/);
   assert.equal((html.match(/<h1(?:\s|>)/g) ?? []).length, 1);
   for (const locale of locales) assert.match(html, new RegExp(`href="/${locale}/"`));
+});
+
+test('every local image on each landing page, including the tour video poster, exists in the build', async () => {
+  for (const locale of locales) {
+    const html = await htmlFor(locale);
+    const sources = [...html.matchAll(/<img\b[^>]*\ssrc="(\/[^"]+)"/g)].map((match) => match[1]);
+    assert.ok(sources.some((src) => /^\/media\/video-tour-[a-z]+\.webp$/.test(src)), `${locale} renders the tour video poster`);
+    for (const src of sources) {
+      assert.ok(existsSync(join(dist, decodeURIComponent(src))), `${locale} image does not resolve: ${src}`);
+    }
+  }
 });
 
 test('important internal links resolve to generated static files and app links use the application domain', async () => {

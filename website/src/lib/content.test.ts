@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { REPOSITORY_URL, copy, localeOptions } from './content';
 
-const locales = ['fr', 'en', 'zh', 'ja', 'ko', 'hi'] as const;
+const locales = ['fr', 'en', 'es', 'it', 'de', 'zh', 'ja', 'ko', 'hi'] as const;
 
 function collectStrings(value: unknown): string[] {
   if (typeof value === 'string') return [value];
@@ -35,7 +35,7 @@ describe('localized site content', () => {
 
   it('no longer describes the source code or self-hosting as upcoming', () => {
     const text = collectStrings(copy).join(' ');
-    expect(text).not.toMatch(/coming soon|bientôt|announced|annoncé|not been published|pas encore publié|prévu|planned|即将推出|近日公開|곧 공개|जल्द उपलब्ध/i);
+    expect(text).not.toMatch(/coming soon|bientôt|announced|annoncé|not been published|pas encore publié|prévu|planned|próximamente|anunciado|todavía no (?:se ha )?publicado|prossimamente|annunciato|non ancora pubblicato|demnächst|angekündigt|noch nicht veröffentlicht|即将推出|近日公開|곧 공개|जल्द उपलब्ध/i);
   });
 
   it('points GitHub links at the public repository', () => {

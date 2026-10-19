@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import type { Locale } from '../lib/content';
 import {
+  alternateTourVideoFor,
   tourVideoFor,
-  tourVideos,
   videoCopy,
-  videoLanguageFor,
   videoPosterPath,
   youtubeEmbedUrl,
   youtubeWatchUrl,
@@ -20,7 +19,7 @@ const clock = (seconds: number) => `${Math.floor(seconds / 60)}:${String(seconds
 export default function TourVideo({ locale }: { locale: Locale }) {
   const text = videoCopy[locale];
   const video = tourVideoFor(locale);
-  const other = tourVideos[videoLanguageFor(locale) === 'fr' ? 'en' : 'fr'];
+  const other = alternateTourVideoFor(locale);
   const [start, setStart] = useState<number | null>(null);
 
   const play = (seconds: number) => setStart(seconds);

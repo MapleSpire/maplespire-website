@@ -4,7 +4,7 @@ This repository contains only the public MapleSpire landing page and its dedicat
 
 ## Structure
 
-- `website/`: multilingual Astro landing page (`fr`, `en`, `zh`, `ja`, `ko`, `hi`)
+- `website/`: multilingual Astro landing page (`fr`, `en`, `es`, `it`, `de`, `zh`, `ja`, `ko`, `hi`)
 - `infra/marketing-cdk/`: S3, CloudFront, contact API, SQS, Lambda, SES, alarms, and deployment infrastructure
 - `docs/`: operational and architectural notes for the public website
 
