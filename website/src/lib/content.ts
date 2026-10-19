@@ -542,7 +542,7 @@ export const copy: Record<Locale, SiteCopy> = {
           body: 'Prepara una evolución en un borrador, revisa la lista de cambios y fusiona con detección de conflictos. El historial por diagrama, los puntos de restauración y los ADR completan la trazabilidad.',
         },
       ],
-      articleLabel: 'MapleSpire o Structurizr: ¿cuál escala a la gobernanza de una gran empresa? (en inglés)',
+      articleLabel: 'MapleSpire o Structurizr: ¿cuál escala a la gobernanza de una gran empresa?',
       articleCta: 'Leer la comparativa',
     },
     openSource: {
@@ -700,7 +700,7 @@ export const copy: Record<Locale, SiteCopy> = {
           body: 'Prepara un’evoluzione in una bozza, rivedi l’elenco delle modifiche, poi esegui il merge con rilevamento dei conflitti. Cronologia per diagramma, punti di ripristino e ADR completano la tracciabilità.',
         },
       ],
-      articleLabel: 'MapleSpire o Structurizr: quale regge la governance di una grande azienda? (in inglese)',
+      articleLabel: 'MapleSpire o Structurizr: quale regge la governance di una grande azienda?',
       articleCta: 'Leggi il confronto',
     },
     openSource: {
@@ -858,7 +858,7 @@ export const copy: Record<Locale, SiteCopy> = {
           body: 'Bereiten Sie eine Änderung in einem Entwurf vor, prüfen Sie die Änderungsliste und führen Sie sie dann mit Konflikterkennung zusammen. Verlauf pro Diagramm, Wiederherstellungspunkte und ADRs machen jede Änderung nachvollziehbar.',
         },
       ],
-      articleLabel: 'MapleSpire oder Structurizr: Welches Werkzeug trägt Governance im Unternehmensmaßstab? (auf Englisch)',
+      articleLabel: 'MapleSpire oder Structurizr: Welches Werkzeug trägt Governance im Unternehmensmaßstab?',
       articleCta: 'Vergleich lesen',
     },
     openSource: {
@@ -1016,7 +1016,7 @@ export const copy: Record<Locale, SiteCopy> = {
           body: 'Prepare uma evolução em um rascunho, revise a lista de alterações e faça o merge com detecção de conflitos. Histórico por diagrama, pontos de restauração e ADRs completam a rastreabilidade.',
         },
       ],
-      articleLabel: 'MapleSpire ou Structurizr: qual acompanha a governança de uma grande empresa? (em inglês)',
+      articleLabel: 'MapleSpire ou Structurizr: qual acompanha a governança de uma grande empresa?',
       articleCta: 'Ler a comparação',
     },
     openSource: {
@@ -1156,7 +1156,7 @@ export const copy: Record<Locale, SiteCopy> = {
         { title: '按团队授权', body: '组织角色、按景观授予并向下继承的团队读写权限，以及通过 Google 或 Microsoft 的 OIDC 单点登录。' },
         { title: '可控的变更', body: '在草稿中准备变更，查看变更清单，再通过冲突检测进行合并。按图表的历史记录、还原点和 ADR 让变更可追溯。' },
       ],
-      articleLabel: 'MapleSpire 与 Structurizr：哪一个更适合企业级治理？（英文）',
+      articleLabel: 'MapleSpire 与 Structurizr：哪一个更适合企业级治理？',
       articleCta: '阅读对比',
     },
     openSource: {
@@ -1294,7 +1294,7 @@ export const copy: Record<Locale, SiteCopy> = {
         { title: 'チーム単位のアクセス', body: '組織ロール、ランドスケープごとに付与され下位へ継承されるチームの読み取り・書き込み権限、Google または Microsoft による OIDC シングルサインオン。' },
         { title: '管理された変更', body: '変更をドラフトで準備し、変更一覧を確認してから、競合検出付きでマージします。図ごとの履歴、復元ポイント、ADR が追跡性を支えます。' },
       ],
-      articleLabel: 'MapleSpire と Structurizr：企業のガバナンスに向いているのは？（英語）',
+      articleLabel: 'MapleSpire と Structurizr：企業のガバナンスに向いているのは？',
       articleCta: '比較を読む',
     },
     openSource: {
@@ -1432,7 +1432,7 @@ export const copy: Record<Locale, SiteCopy> = {
         { title: '팀 단위 접근 제어', body: '조직 역할, 랜드스케이프별로 부여되고 하위로 상속되는 팀의 읽기·쓰기 권한, Google 또는 Microsoft를 통한 OIDC 싱글 사인온.' },
         { title: '통제된 변경', body: '초안에서 변경을 준비하고 변경 목록을 검토한 뒤 충돌 감지와 함께 병합합니다. 다이어그램별 이력, 복원 지점, ADR이 추적성을 보완합니다.' },
       ],
-      articleLabel: 'MapleSpire와 Structurizr: 엔터프라이즈 거버넌스에 더 잘 맞는 것은? (영문)',
+      articleLabel: 'MapleSpire와 Structurizr: 엔터프라이즈 거버넌스에 더 잘 맞는 것은?',
       articleCta: '비교 읽기',
     },
     openSource: {
@@ -1570,7 +1570,7 @@ export const copy: Record<Locale, SiteCopy> = {
         { title: 'टीम-आधारित पहुँच', body: 'संगठन भूमिकाएँ, हर लैंडस्केप के लिए टीमों को पढ़ने या लिखने की अनुमति जो नीचे तक विरासत में मिलती है, और Google या Microsoft के साथ OIDC सिंगल साइन-ऑन।' },
         { title: 'नियंत्रित बदलाव', body: 'बदलाव को ड्राफ़्ट में तैयार करें, बदलावों की सूची देखें, फिर टकराव पहचान के साथ मर्ज करें। हर आरेख का इतिहास, रिस्टोर पॉइंट और ADR ट्रेसबिलिटी पूरी करते हैं।' },
       ],
-      articleLabel: 'MapleSpire या Structurizr: एंटरप्राइज़ गवर्नेंस के लिए कौन बेहतर है? (अंग्रेज़ी में)',
+      articleLabel: 'MapleSpire या Structurizr: एंटरप्राइज़ गवर्नेंस के लिए कौन बेहतर है?',
       articleCta: 'तुलना पढ़ें',
     },
     openSource: {
@@ -1726,7 +1726,7 @@ export const copy: Record<Locale, SiteCopy> = {
           body: 'حضّر التغيير في مسودة، وراجع قائمة التغييرات، ثم ادمجه مع كشف التعارضات. ويكمل سجلُّ كل مخطط ونقاطُ الاستعادة وسجلاتُ القرارات المعمارية (ADR) إمكانيةَ التتبّع.',
         },
       ],
-      articleLabel: 'MapleSpire أم Structurizr: أيّهما يواكب الحوكمة على مستوى المؤسسات؟ (بالإنجليزية)',
+      articleLabel: 'MapleSpire أم Structurizr: أيّهما يواكب الحوكمة على مستوى المؤسسات؟',
       articleCta: 'اقرأ المقارنة',
     },
     openSource: {
