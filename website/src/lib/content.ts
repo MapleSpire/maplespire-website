@@ -1,4 +1,4 @@
-export type Locale = 'fr' | 'en' | 'es' | 'it' | 'de' | 'zh' | 'ja' | 'ko' | 'hi';
+export type Locale = 'fr' | 'en' | 'es' | 'pt' | 'it' | 'de' | 'zh' | 'ja' | 'ko' | 'hi' | 'ar';
 
 export const REPOSITORY_URL = 'https://github.com/MapleSpire/maplespire';
 export const LICENSE_ID = 'AGPL-3.0';
@@ -10,16 +10,20 @@ export const localeOptions: Array<{
   name: string;
   htmlLang: string;
   ogLocale: string;
+  /** Text direction of the page; every locale is left-to-right except Arabic. */
+  dir: 'ltr' | 'rtl';
 }> = [
-  { locale: 'fr', code: 'FR', name: 'Français', htmlLang: 'fr-CA', ogLocale: 'fr_CA' },
-  { locale: 'en', code: 'EN', name: 'English', htmlLang: 'en-CA', ogLocale: 'en_CA' },
-  { locale: 'es', code: 'ES', name: 'Español', htmlLang: 'es', ogLocale: 'es_ES' },
-  { locale: 'it', code: 'IT', name: 'Italiano', htmlLang: 'it', ogLocale: 'it_IT' },
-  { locale: 'de', code: 'DE', name: 'Deutsch', htmlLang: 'de', ogLocale: 'de_DE' },
-  { locale: 'zh', code: 'ZH', name: '简体中文', htmlLang: 'zh-Hans', ogLocale: 'zh_CN' },
-  { locale: 'ja', code: 'JA', name: '日本語', htmlLang: 'ja', ogLocale: 'ja_JP' },
-  { locale: 'ko', code: 'KO', name: '한국어', htmlLang: 'ko', ogLocale: 'ko_KR' },
-  { locale: 'hi', code: 'HI', name: 'हिन्दी', htmlLang: 'hi', ogLocale: 'hi_IN' },
+  { locale: 'fr', code: 'FR', name: 'Français', htmlLang: 'fr-CA', ogLocale: 'fr_CA', dir: 'ltr' },
+  { locale: 'en', code: 'EN', name: 'English', htmlLang: 'en-CA', ogLocale: 'en_CA', dir: 'ltr' },
+  { locale: 'es', code: 'ES', name: 'Español', htmlLang: 'es', ogLocale: 'es_ES', dir: 'ltr' },
+  { locale: 'pt', code: 'PT', name: 'Português', htmlLang: 'pt-BR', ogLocale: 'pt_BR', dir: 'ltr' },
+  { locale: 'it', code: 'IT', name: 'Italiano', htmlLang: 'it', ogLocale: 'it_IT', dir: 'ltr' },
+  { locale: 'de', code: 'DE', name: 'Deutsch', htmlLang: 'de', ogLocale: 'de_DE', dir: 'ltr' },
+  { locale: 'zh', code: 'ZH', name: '简体中文', htmlLang: 'zh-Hans', ogLocale: 'zh_CN', dir: 'ltr' },
+  { locale: 'ja', code: 'JA', name: '日本語', htmlLang: 'ja', ogLocale: 'ja_JP', dir: 'ltr' },
+  { locale: 'ko', code: 'KO', name: '한국어', htmlLang: 'ko', ogLocale: 'ko_KR', dir: 'ltr' },
+  { locale: 'hi', code: 'HI', name: 'हिन्दी', htmlLang: 'hi', ogLocale: 'hi_IN', dir: 'ltr' },
+  { locale: 'ar', code: 'AR', name: 'العربية', htmlLang: 'ar', ogLocale: 'ar_AR', dir: 'rtl' },
 ];
 
 export type Chapter = {
@@ -907,6 +911,164 @@ export const copy: Record<Locale, SiteCopy> = {
       copyright: '© 2026 MapleSpire contributors · Kanadisches Projekt',
     },
   },
+  pt: {
+    locale: 'pt',
+    languageName: 'Português',
+    meta: {
+      title: 'MapleSpire — Modelagem de arquitetura C4 colaborativa e de código aberto',
+      description:
+        'Ferramenta de código aberto para modelagem de arquitetura C4: um modelo compartilhado, tags e tecnologias governadas e colaboração em tempo real. Gratuita, AGPL-3.0 e auto-hospedável.',
+    },
+    nav: {
+      home: 'Página inicial do MapleSpire',
+      primaryLabel: 'Navegação principal',
+      sequenceLabel: 'Etapas da apresentação',
+      story: 'Antes / depois',
+      product: 'Produto',
+      governance: 'Governança',
+      openSource: 'Código aberto',
+      contact: 'Contato',
+    },
+    actions: {
+      discover: 'Veja a diferença',
+      openApp: 'Experimente a demo',
+      github: 'Ver o código no GitHub',
+      language: 'Escolher idioma',
+      themeLight: 'Ativar o tema claro',
+      themeDark: 'Ativar o tema escuro',
+      skip: 'Pular para o contato',
+    },
+    hero: {
+      kicker: 'Modelagem C4 · código aberto',
+      titleStart: 'Um único modelo C4.',
+      titleAccent: 'Todas as visões em dia.',
+      body:
+        'O MapleSpire substitui diagramas que ficam desatualizados por um modelo compartilhado: cada objeto existe uma única vez, cada visão o reflete, e tags e tecnologias são gerenciadas em um só lugar para toda a organização.',
+      free: 'Gratuito',
+      open: 'Código aberto · AGPL-3.0',
+      selfHosted: 'Auto-hospedável',
+      promisesLabel: 'Os compromissos do MapleSpire',
+    },
+    comparison: {
+      before: 'Diagramas desenhados',
+      after: 'MapleSpire',
+      beforeAlt: 'Arquiteto diante de muitas relações difíceis de manter atualizadas em uma ferramenta de desenho.',
+      control: 'Comparar diagramas desenhados com o MapleSpire',
+      beforeMetric: 'Cópias para conciliar',
+      afterMetric: 'Uma única fonte da verdade',
+      hint: 'Arraste para comparar',
+    },
+    chapters: [
+      {
+        id: 'modelo-vivo',
+        eyebrow: 'O modelo',
+        shortLabel: 'Modelo',
+        title: 'Altere uma vez. Todas as visões acompanham.',
+        body:
+          'Cada objeto e cada relação existem uma única vez. Os diagramas fazem referência a eles: renomear um serviço ou corrigir uma dependência atualiza todas as visões em que ele aparece.',
+        detail: 'Modele uma vez, explique de todos os ângulos.',
+        visualLabel: 'O MapleSpire mostra um modelo de arquitetura claro na tela de trabalho.',
+        callouts: ['Objetos únicos', 'Visões coerentes', 'Decisões rastreadas'],
+      },
+      {
+        id: 'arquitetura-completa',
+        eyebrow: 'O sistema',
+        shortLabel: 'Sistema',
+        title: 'Do contexto ao componente, sem perder o fio da meada.',
+        body:
+          'Sistemas, contêineres, componentes e dependências são compreendidos num relance e se abrem até o nível de detalhe que cada conversa exige.',
+        detail: 'A visão certa para cada público.',
+        visualLabel: 'Os componentes da arquitetura se reconectam em torno de um serviço central.',
+        callouts: ['Sistemas', 'Domínios', 'Dependências'],
+      },
+      {
+        id: 'arquitetura-viva',
+        eyebrow: 'Colaboração',
+        shortLabel: 'Tempo real',
+        title: 'O time inteiro, um só modelo.',
+        body:
+          'Edite com a equipe em tempo real ou continue trabalhando offline: suas alterações são sincronizadas assim que a rede volta.',
+        detail: 'A arquitetura continua atualizada muito depois da reunião.',
+        visualLabel: 'Close de um serviço conectado em tempo real a sistemas, dados e equipes.',
+        callouts: ['Tempo real', 'Offline', 'Sincronizado'],
+      },
+    ],
+    governance: {
+      eyebrow: 'Governança',
+      title: 'Um repositório governado, não uma pilha de arquivos.',
+      body:
+        'Em ferramentas de desenho e em DSLs, tags e tecnologias são texto livre, copiado de elemento em elemento e de repositório em repositório. O MapleSpire as centraliza em catálogos da organização: uma correção feita no lugar certo vale para tudo.',
+      items: [
+        {
+          title: 'Tags centralizadas',
+          body: 'Tags e grupos de tags são definidos uma única vez para toda a organização. Renomear, mudar a cor, mesclar ou arquivar uma tag vale para cada objeto que a usa, em todas as paisagens.',
+        },
+        {
+          title: 'Catálogo de tecnologias',
+          body: 'As tecnologias vêm de um catálogo gerenciado, com aliases, ícones e ciclo de vida (ativa, obsoleta, descontinuada). Cada uso registra a versão empregada, e novas entradas passam por submissão e aprovação.',
+        },
+        {
+          title: 'Acesso por equipe',
+          body: 'Papéis na organização, equipes com permissão de leitura ou escrita por paisagem, herdada para baixo, e login único OIDC com Google ou Microsoft.',
+        },
+        {
+          title: 'Mudanças sob controle',
+          body: 'Prepare uma evolução em um rascunho, revise a lista de alterações e faça o merge com detecção de conflitos. Histórico por diagrama, pontos de restauração e ADRs completam a rastreabilidade.',
+        },
+      ],
+      articleLabel: 'MapleSpire ou Structurizr: qual acompanha a governança de uma grande empresa? (em inglês)',
+      articleCta: 'Ler a comparação',
+    },
+    openSource: {
+      eyebrow: 'Código aberto',
+      title: 'Seu modelo, na sua infraestrutura.',
+      body:
+        'O código do MapleSpire é publicado sob a licença AGPL-3.0. Hospede-o você mesmo com Docker Compose ou experimente antes a demo hospedada, feita para avaliação, não para produção.',
+      proofs: [
+        { title: 'Gratuito', body: 'Sem licença por editor: o software e a demo são gratuitos.' },
+        { title: 'Código aberto', body: 'Código público sob licença AGPL-3.0 em github.com/MapleSpire/maplespire.' },
+        { title: 'Auto-hospedável', body: 'Docker Compose com PostgreSQL e Redis: seus dados ficam na sua infraestrutura.' },
+      ],
+    },
+    facts: {
+      eyebrow: 'Em resumo',
+      title: 'Perguntas frequentes.',
+      items: [
+        { question: 'O MapleSpire é gratuito?', answer: 'Sim. O software é gratuito e de código aberto, assim como a demo hospedada.' },
+        { question: 'A demo serve para produção?', answer: 'Não. A instância hospedada serve para conhecer e avaliar o produto. Para uso real, hospede o MapleSpire na sua própria infraestrutura.' },
+        { question: 'Como hospedar por conta própria?', answer: 'O repositório inclui uma configuração Docker Compose: PostgreSQL 16, Redis, o servidor de sincronização e a aplicação web.' },
+        { question: 'Sob qual licença o código é publicado?', answer: 'AGPL-3.0 (GNU Affero General Public License v3). Você pode usar, modificar e hospedar o MapleSpire livremente; se oferecer uma versão modificada como serviço online, deve publicar o código-fonte dela. O repositório está em github.com/MapleSpire/maplespire.' },
+        { question: 'Dá para migrar do Structurizr?', answer: 'Sim. O MapleSpire importa um workspace Structurizr DSL e gera os diagramas C4 correspondentes. Também exporta para DSL, Mermaid, JSON, SVG e PNG.' },
+      ],
+    },
+    contact: {
+      eyebrow: 'Contato',
+      title: 'Conte-nos sobre a sua arquitetura.',
+      body:
+        'Um sistema para modelar, uma equipe para equipar, um projeto de auto-hospedagem ou uma migração do Structurizr: escreva para nós e responderemos diretamente.',
+      name: 'Nome',
+      email: 'E-mail corporativo',
+      company: 'Organização (opcional)',
+      subject: 'Assunto',
+      message: 'Sua mensagem',
+      messagePlaceholder: 'Hoje, nossos diagramas…',
+      consent: 'Concordo que o MapleSpire use estas informações para responder à minha solicitação.',
+      submit: 'Enviar mensagem',
+      sending: 'Enviando…',
+      success: 'Mensagem recebida. Um e-mail de confirmação está a caminho.',
+      error: 'Não foi possível enviar a mensagem. Tente novamente ou escreva diretamente para nós.',
+      privacy: 'Usamos seus dados apenas para responder à sua solicitação.',
+      direct: 'Ou escreva para support@maplespire.ca',
+    },
+    footer: {
+      promise: 'Arquitetura clara, do primeiro contexto à próxima mudança.',
+      github: 'GitHub',
+      app: 'Demo',
+      contact: 'Contato',
+      navLabel: 'Navegação do rodapé',
+      copyright: '© 2026 MapleSpire contributors · Projeto canadense',
+    },
+  },
   zh: {
     locale: 'zh',
     languageName: '简体中文',
@@ -1457,6 +1619,164 @@ export const copy: Record<Locale, SiteCopy> = {
       contact: 'संपर्क',
       navLabel: 'फुटर नेविगेशन',
       copyright: '© 2026 MapleSpire योगदानकर्ता · कनाडाई परियोजना',
+    },
+  },
+  ar: {
+    locale: 'ar',
+    languageName: 'العربية',
+    meta: {
+      title: 'MapleSpire — نمذجة معمارية وفق C4، تعاونية ومفتوحة المصدر',
+      description:
+        'أداة مفتوحة المصدر لنمذجة البنية المعمارية وفق C4: نموذج مشترك، ووسوم وتقنيات خاضعة للحوكمة، وتعاون في الوقت الفعلي. مجانية، بترخيص AGPL-3.0، وقابلة للاستضافة الذاتية.',
+    },
+    nav: {
+      home: 'الصفحة الرئيسية لـ MapleSpire',
+      primaryLabel: 'التنقل الرئيسي',
+      sequenceLabel: 'مراحل العرض',
+      story: 'قبل / بعد',
+      product: 'المنتج',
+      governance: 'الحوكمة',
+      openSource: 'مفتوح المصدر',
+      contact: 'تواصل معنا',
+    },
+    actions: {
+      discover: 'شاهد الفرق',
+      openApp: 'جرّب العرض التجريبي',
+      github: 'عرض الشيفرة على GitHub',
+      language: 'اختر اللغة',
+      themeLight: 'التبديل إلى المظهر الفاتح',
+      themeDark: 'التبديل إلى المظهر الداكن',
+      skip: 'الانتقال إلى نموذج التواصل',
+    },
+    hero: {
+      kicker: 'نمذجة C4 · مفتوحة المصدر',
+      titleStart: 'نموذج C4 واحد.',
+      titleAccent: 'وكل العروض محدّثة.',
+      body:
+        'يستبدل MapleSpire المخططات التي تتقادم بنموذج مشترك: كل عنصر موجود مرة واحدة فقط، وكل عرض يعكسه، وتُدار الوسوم والتقنيات في مكان واحد للمؤسسة بأكملها.',
+      free: 'مجاني',
+      open: 'مفتوح المصدر · AGPL-3.0',
+      selfHosted: 'قابل للاستضافة الذاتية',
+      promisesLabel: 'التزامات MapleSpire',
+    },
+    comparison: {
+      before: 'مخططات مرسومة',
+      after: 'MapleSpire',
+      beforeAlt: 'مهندس معماري أمام علاقات كثيرة يصعب إبقاؤها محدّثة في أداة رسم.',
+      control: 'قارن بين المخططات المرسومة وMapleSpire',
+      beforeMetric: 'نسخ تحتاج إلى مواءمة',
+      afterMetric: 'مصدر واحد للحقيقة',
+      hint: 'اسحب للمقارنة',
+    },
+    chapters: [
+      {
+        id: 'living-model',
+        eyebrow: 'النموذج',
+        shortLabel: 'النموذج',
+        title: 'عدّل مرة واحدة، فتتبعك كل العروض.',
+        body:
+          'كل عنصر وكل علاقة موجودان مرة واحدة فقط، والمخططات تشير إليهما؛ لذا فإن إعادة تسمية خدمة أو تصحيح اعتمادية يحدّث كل عرض تظهر فيه.',
+        detail: 'نمذج مرة واحدة، واشرح من كل زاوية.',
+        visualLabel: 'يعرض MapleSpire نموذجًا معماريًا واضحًا على شاشة العمل.',
+        callouts: ['عناصر فريدة', 'عروض متّسقة', 'قرارات موثّقة'],
+      },
+      {
+        id: 'complete-architecture',
+        eyebrow: 'النظام',
+        shortLabel: 'النظام',
+        title: 'من السياق إلى المكوّن، دون أن تفقد الخيط.',
+        body:
+          'تُقرأ الأنظمة والحاويات والمكوّنات والاعتماديات بنظرة واحدة، ثم تتكشّف حتى مستوى التفصيل الذي يحتاجه كل نقاش.',
+        detail: 'العرض المناسب لكل جمهور.',
+        visualLabel: 'تعيد مكوّنات البنية المعمارية الاتصال حول خدمة مركزية.',
+        callouts: ['الأنظمة', 'النطاقات', 'الاعتماديات'],
+      },
+      {
+        id: 'living-architecture',
+        eyebrow: 'التعاون',
+        shortLabel: 'الوقت الفعلي',
+        title: 'الفريق كله على نموذج واحد.',
+        body:
+          'حرّر مع فريقك في الوقت الفعلي أو تابع العمل دون اتصال: تُزامَن تعديلاتك فور عودة الشبكة.',
+        detail: 'تبقى البنية المعمارية محدّثة بعد الاجتماع بوقت طويل.',
+        visualLabel: 'لقطة مقرّبة لخدمة متصلة في الوقت الفعلي بالأنظمة والبيانات والفرق.',
+        callouts: ['الوقت الفعلي', 'دون اتصال', 'متزامن'],
+      },
+    ],
+    governance: {
+      eyebrow: 'الحوكمة',
+      title: 'مستودع خاضع للحوكمة، لا كومة من الملفات.',
+      body:
+        'في أدوات الرسم كما في لغات DSL، الوسوم والتقنيات نص حر يُنسخ من عنصر إلى آخر ومن مستودع إلى آخر. يجمعها MapleSpire في كتالوجات على مستوى المؤسسة، فيسري التصحيح المُجرى في المكان الصحيح على كل شيء.',
+      items: [
+        {
+          title: 'وسوم مركزية',
+          body: 'تُعرَّف الوسوم ومجموعاتها مرة واحدة للمؤسسة بأكملها. وإعادة تسمية وسم أو تغيير لونه أو دمجه أو أرشفته تنطبق على كل عنصر يحمله، في جميع المشاهد المعمارية.',
+        },
+        {
+          title: 'كتالوج التقنيات',
+          body: 'تأتي التقنيات من كتالوج مُدار يتضمن أسماء بديلة وأيقونات ودورة حياة (نشطة، متقادمة، متوقفة). يسجّل كل استخدام الإصدار المعتمد، وتمر الإدخالات الجديدة بمرحلتَي تقديم وموافقة.',
+        },
+        {
+          title: 'وصول حسب الفريق',
+          body: 'أدوار على مستوى المؤسسة، وفرق بصلاحيات قراءة أو كتابة لكل مشهد معماري تُورَّث إلى المستويات الأدنى، وتسجيل دخول موحّد عبر OIDC مع Google أو Microsoft.',
+        },
+        {
+          title: 'تغييرات منضبطة',
+          body: 'حضّر التغيير في مسودة، وراجع قائمة التغييرات، ثم ادمجه مع كشف التعارضات. ويكمل سجلُّ كل مخطط ونقاطُ الاستعادة وسجلاتُ القرارات المعمارية (ADR) إمكانيةَ التتبّع.',
+        },
+      ],
+      articleLabel: 'MapleSpire أم Structurizr: أيّهما يواكب الحوكمة على مستوى المؤسسات؟ (بالإنجليزية)',
+      articleCta: 'اقرأ المقارنة',
+    },
+    openSource: {
+      eyebrow: 'مفتوح المصدر',
+      title: 'نموذجك، على بنيتك التحتية.',
+      body:
+        'شيفرة MapleSpire منشورة بترخيص AGPL-3.0. استضفه بنفسك باستخدام Docker Compose، أو جرّب أولًا العرض التجريبي المستضاف، المصمَّم للتقييم لا للإنتاج.',
+      proofs: [
+        { title: 'مجاني', body: 'لا تراخيص لكل محرّر: البرنامج وعرضه التجريبي مجانيان.' },
+        { title: 'مفتوح المصدر', body: 'شيفرة عامة بترخيص AGPL-3.0 على github.com/MapleSpire/maplespire.' },
+        { title: 'قابل للاستضافة الذاتية', body: 'Docker Compose مع PostgreSQL وRedis: تبقى بياناتك على بنيتك التحتية.' },
+      ],
+    },
+    facts: {
+      eyebrow: 'باختصار',
+      title: 'الأسئلة الشائعة.',
+      items: [
+        { question: 'هل MapleSpire مجاني؟', answer: 'نعم. البرنامج مجاني ومفتوح المصدر، وكذلك العرض التجريبي المستضاف.' },
+        { question: 'هل العرض التجريبي مخصص للإنتاج؟', answer: 'لا. النسخة المستضافة مخصّصة لاكتشاف المنتج وتقييمه. للاستخدام الفعلي، استضف MapleSpire بنفسك.' },
+        { question: 'كيف أستضيفه بنفسي؟', answer: 'يتضمن المستودع إعداد Docker Compose يضم PostgreSQL 16 وRedis وخادم المزامنة وتطبيق الويب.' },
+        { question: 'ما ترخيص الشيفرة؟', answer: 'AGPL-3.0 (رخصة جنو العمومية أفيرو، الإصدار 3). يمكنك استخدام MapleSpire وتعديله واستضافته بحرية؛ وإذا قدّمت نسخة معدّلة منه كخدمة عبر الإنترنت، فعليك نشر شيفرتها المصدرية. المستودع متاح على github.com/MapleSpire/maplespire.' },
+        { question: 'هل يمكن الانتقال من Structurizr؟', answer: 'نعم. يستورد MapleSpire مساحة عمل Structurizr DSL وينشئ منها مخططات C4، كما يصدّر إلى DSL وMermaid وJSON وSVG وPNG.' },
+      ],
+    },
+    contact: {
+      eyebrow: 'تواصل معنا',
+      title: 'حدّثنا عن بنيتك المعمارية.',
+      body:
+        'نظام تريد نمذجته، أو فريق تريد تجهيزه، أو مشروع استضافة ذاتية، أو انتقال من Structurizr: راسلنا وسنرد عليك مباشرة.',
+      name: 'الاسم',
+      email: 'البريد الإلكتروني المهني',
+      company: 'المؤسسة (اختياري)',
+      subject: 'الموضوع',
+      message: 'رسالتك',
+      messagePlaceholder: 'اليوم، مخططاتنا…',
+      consent: 'أوافق على أن يستخدم MapleSpire هذه المعلومات للرد على طلبي.',
+      submit: 'إرسال الرسالة',
+      sending: 'جارٍ الإرسال…',
+      success: 'تم استلام رسالتك. رسالة تأكيد في طريقها إلى بريدك الإلكتروني.',
+      error: 'تعذّر إرسال الرسالة. حاول مرة أخرى أو راسلنا مباشرة.',
+      privacy: 'نستخدم بياناتك فقط للرد على طلبك.',
+      direct: 'أو راسلنا على support@maplespire.ca',
+    },
+    footer: {
+      promise: 'بنية معمارية واضحة، من السياق الأول إلى التغيير التالي.',
+      github: 'GitHub',
+      app: 'العرض التجريبي',
+      contact: 'تواصل معنا',
+      navLabel: 'تنقل التذييل',
+      copyright: '© 2026 MapleSpire contributors · مشروع كندي',
     },
   },
 };

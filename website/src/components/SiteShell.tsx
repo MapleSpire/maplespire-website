@@ -15,7 +15,7 @@ import {
   createManualComparison,
   resolveComparisonDivider,
 } from '../lib/comparison';
-import { normalizeWheelDelta, resolveSmartTableScroll } from '../lib/smartTableScroll';
+import { fromScrollProgress, normalizeWheelDelta, resolveSmartTableScroll, toScrollProgress } from '../lib/smartTableScroll';
 import ContactForm from './ContactForm';
 import SceneVisual from './SceneVisual';
 import TourVideo from './TourVideo';
@@ -73,17 +73,19 @@ export default function SiteShell({ content, appUrl, contactEndpoint }: SiteShel
     const rail = alternativeFiltersRef.current;
     if (!rail) return;
 
+    const rtl = getComputedStyle(rail).direction === 'rtl';
     const onWheel = (event: WheelEvent) => {
       const maxScroll = rail.scrollWidth - rail.clientWidth;
       const delta = normalizeWheelDelta(event.deltaY, event.deltaMode, window.innerHeight);
       if (maxScroll <= 1 || Math.abs(delta) < 0.5 || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
 
-      const atStart = rail.scrollLeft <= 1;
-      const atEnd = maxScroll - rail.scrollLeft <= 1;
+      const progress = toScrollProgress(rail.scrollLeft, rtl);
+      const atStart = progress <= 1;
+      const atEnd = maxScroll - progress <= 1;
       if ((delta < 0 && atStart) || (delta > 0 && atEnd)) return;
 
       event.preventDefault();
-      rail.scrollLeft = Math.min(maxScroll, Math.max(0, rail.scrollLeft + delta));
+      rail.scrollLeft = fromScrollProgress(Math.min(maxScroll, Math.max(0, progress + delta)), rtl);
     };
 
     rail.addEventListener('wheel', onWheel, { passive: false });
@@ -103,6 +105,8 @@ export default function SiteShell({ content, appUrl, contactEndpoint }: SiteShel
     let exitScrollFrame = 0;
     let dragPointer: number | null = null;
     let dragOffset = 0;
+    // Right-to-left (Arabic): scrollLeft runs 0 → -max, and the thumb rests at the right.
+    const rtl = getComputedStyle(wrap).direction === 'rtl';
 
     const syncStickyHeader = () => {
       const headerBottom = window.innerWidth > 800 && window.scrollY > 48
@@ -129,7 +133,7 @@ export default function SiteShell({ content, appUrl, contactEndpoint }: SiteShel
       scrollbarThumb.style.width = `${thumbWidth}px`;
       scrollbarThumb.style.transform = `translate3d(${thumbOffset}px, 0, 0)`;
       scrollbar.setAttribute('aria-valuemax', `${Math.round(maxScroll)}`);
-      scrollbar.setAttribute('aria-valuenow', `${Math.round(wrap.scrollLeft)}`);
+      scrollbar.setAttribute('aria-valuenow', `${Math.round(toScrollProgress(wrap.scrollLeft, rtl))}`);
     };
 
     const scrollFromPointer = (clientX: number) => {
@@ -137,7 +141,8 @@ export default function SiteShell({ content, appUrl, contactEndpoint }: SiteShel
       const thumbWidth = scrollbarThumb.getBoundingClientRect().width;
       const thumbTravel = Math.max(1, bounds.width - thumbWidth);
       const pointerPosition = Math.min(thumbTravel, Math.max(0, clientX - bounds.left - dragOffset));
-      wrap.scrollLeft = (pointerPosition / thumbTravel) * Math.max(0, wrap.scrollWidth - wrap.clientWidth);
+      const ratio = rtl ? 1 - pointerPosition / thumbTravel : pointerPosition / thumbTravel;
+      wrap.scrollLeft = fromScrollProgress(ratio * Math.max(0, wrap.scrollWidth - wrap.clientWidth), rtl);
       syncStickyHeader();
     };
 
@@ -167,7 +172,7 @@ export default function SiteShell({ content, appUrl, contactEndpoint }: SiteShel
       if (event.key === 'ArrowLeft' || event.key === 'PageUp') wrap.scrollLeft -= step;
       else if (event.key === 'ArrowRight' || event.key === 'PageDown') wrap.scrollLeft += step;
       else if (event.key === 'Home') wrap.scrollLeft = 0;
-      else if (event.key === 'End') wrap.scrollLeft = wrap.scrollWidth;
+      else if (event.key === 'End') wrap.scrollLeft = fromScrollProgress(wrap.scrollWidth, rtl);
       else return;
       syncStickyHeader();
       event.preventDefault();
@@ -181,7 +186,7 @@ export default function SiteShell({ content, appUrl, contactEndpoint }: SiteShel
       const delta = normalizeWheelDelta(event.deltaY, event.deltaMode, window.innerHeight);
       const result = resolveSmartTableScroll({
         delta,
-        scrollLeft: wrap.scrollLeft,
+        scrollLeft: toScrollProgress(wrap.scrollLeft, rtl),
         maxScroll: wrap.scrollWidth - wrap.clientWidth,
         tableTop: bounds.top,
         tableBottom: bounds.bottom,
@@ -196,7 +201,7 @@ export default function SiteShell({ content, appUrl, contactEndpoint }: SiteShel
       if (alignmentOffset > 0.5 && alignmentOffset <= 24) {
         window.scrollBy({ top: alignmentOffset, behavior: 'instant' as ScrollBehavior });
       }
-      wrap.scrollLeft = result.nextScrollLeft;
+      wrap.scrollLeft = fromScrollProgress(result.nextScrollLeft, rtl);
       syncStickyHeader();
 
       if (result.overflowY !== 0) {
@@ -894,7 +899,8 @@ export default function SiteShell({ content, appUrl, contactEndpoint }: SiteShel
           <a href={`/${content.locale}/termsofservice/`}>{legal.terms}</a>
           <a href={`/${content.locale}/privacystatement/`}>{legal.privacy}</a>
         </nav>
-        <small>{content.footer.copyright}</small>
+        {/* dir="auto": the line opens with "© 2026 MapleSpire", which an Arabic paragraph would reorder. */}
+        <small dir="auto">{content.footer.copyright}</small>
       </footer>
     </div>
   );

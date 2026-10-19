@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { localeOptions } from '../lib/content';
 import type { Locale } from '../lib/content';
 import {
   alternateTourVideoFor,
@@ -20,6 +21,11 @@ export default function TourVideo({ locale }: { locale: Locale }) {
   const text = videoCopy[locale];
   const video = tourVideoFor(locale);
   const other = alternateTourVideoFor(locale);
+  // Chapter titles are in the recording's language: mark it, so an Arabic page lays
+  // out English titles left-to-right instead of reordering their punctuation.
+  const chapterLanguage = video.language === locale
+    ? {}
+    : { lang: video.htmlLang, dir: localeOptions.find((option) => option.locale === video.language)?.dir ?? 'ltr' };
   const [start, setStart] = useState<number | null>(null);
 
   const play = (seconds: number) => setStart(seconds);
@@ -61,7 +67,7 @@ export default function TourVideo({ locale }: { locale: Locale }) {
         </div>
 
         <div className="ms-video-side">
-          <ol className="ms-video-chapters">
+          <ol className="ms-video-chapters" {...chapterLanguage}>
             {video.chapters.map((chapter) => (
               <li key={chapter.start}>
                 <a

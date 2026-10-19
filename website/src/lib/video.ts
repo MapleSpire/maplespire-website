@@ -169,6 +169,15 @@ export const videoCopy: Record<Locale, VideoSectionCopy> = {
     otherLanguage: 'Version française',
     captionsNote: 'वीडियो अंग्रेज़ी में है; YouTube पर अंग्रेज़ी और फ़्रेंच उपशीर्षक उपलब्ध हैं।',
   },
+  ar: {
+    eyebrow: 'جولة في المنتج',
+    title: 'MapleSpire في دقيقتين ونصف.',
+    body: 'من وصف النظام إلى نموذج C4 حيّ: الذكاء الاصطناعي، وعروض مترابطة، والتحرير دون اتصال، وسجلات القرارات، والمسودات، والتعاون، وMCP، والعرض ثلاثي الأبعاد.',
+    play: 'تشغيل الفيديو',
+    watchOnYoutube: 'المشاهدة على YouTube',
+    otherLanguage: 'Version française',
+    captionsNote: 'الفيديو باللغة الإنجليزية، وتتوفر على YouTube ترجمة مكتوبة بالإنجليزية والفرنسية.',
+  },
   es: {
     eyebrow: 'Recorrido por el producto',
     title: 'MapleSpire en 2 minutos y medio.',
@@ -177,6 +186,15 @@ export const videoCopy: Record<Locale, VideoSectionCopy> = {
     watchOnYoutube: 'Ver en YouTube',
     otherLanguage: 'Version française',
     captionsNote: 'El vídeo está en inglés; en YouTube hay subtítulos en inglés y francés.',
+  },
+  pt: {
+    eyebrow: 'Tour pelo produto',
+    title: 'O MapleSpire em dois minutos e meio.',
+    body: 'Da descrição de um sistema a um modelo C4 vivo: IA, visões conectadas, edição offline, registros de decisões, rascunhos, colaboração, MCP e 3D.',
+    play: 'Reproduzir o vídeo',
+    watchOnYoutube: 'Assistir no YouTube',
+    otherLanguage: 'Version française',
+    captionsNote: 'O vídeo está em inglês; o YouTube oferece legendas em inglês e francês.',
   },
   it: {
     eyebrow: 'Tour del prodotto',

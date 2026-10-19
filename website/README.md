@@ -11,9 +11,9 @@ npm run dev
 
 `npm run build` writes the deployable site to `dist/`. It generates an indexable
 language selector at `/`, localized documents for French, English, Spanish,
-Italian, German, Simplified Chinese, Japanese, Korean and Hindi, plus
-`sitemap-index.xml`. The sitemap lists
-only the nine substantive localized landing pages.
+Brazilian Portuguese, Italian, German, Simplified Chinese, Japanese, Korean,
+Hindi and Arabic (right-to-left), plus `sitemap-index.xml`. The sitemap lists
+only the eleven substantive localized landing pages.
 
 The apex is the public website only. Every editor CTA targets
 `https://app.maplespire.ca`; technical application paths are redirected at the

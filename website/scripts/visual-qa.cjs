@@ -26,12 +26,14 @@ const localeExpectations = {
   fr: { htmlLang: 'fr-CA', copyright: '© 2026 MapleSpire contributors · Projet canadien' },
   en: { htmlLang: 'en-CA', copyright: '© 2026 MapleSpire contributors · Canadian project' },
   es: { htmlLang: 'es', copyright: '© 2026 MapleSpire contributors · Proyecto canadiense' },
+  pt: { htmlLang: 'pt-BR', copyright: '© 2026 MapleSpire contributors · Projeto canadense' },
   it: { htmlLang: 'it', copyright: '© 2026 MapleSpire contributors · Progetto canadese' },
   de: { htmlLang: 'de', copyright: '© 2026 MapleSpire contributors · Kanadisches Projekt' },
   zh: { htmlLang: 'zh-Hans', copyright: '© 2026 MapleSpire 贡献者 · 加拿大项目' },
   ja: { htmlLang: 'ja', copyright: '© 2026 MapleSpire コントリビューター · カナダ発のプロジェクト' },
   ko: { htmlLang: 'ko', copyright: '© 2026 MapleSpire 기여자 · 캐나다 프로젝트' },
   hi: { htmlLang: 'hi', copyright: '© 2026 MapleSpire योगदानकर्ता · कनाडाई परियोजना' },
+  ar: { htmlLang: 'ar', copyright: '© 2026 MapleSpire contributors · مشروع كندي' },
 }
 
 function monitorPage(page) {
@@ -815,7 +817,7 @@ async function translatedLocalesQa(browser) {
   const page = await context.newPage()
   const errors = monitorPage(page)
 
-  for (const locale of ['es', 'it', 'de', 'zh', 'ja', 'ko', 'hi']) {
+  for (const locale of ['es', 'pt', 'it', 'de', 'zh', 'ja', 'ko', 'hi', 'ar']) {
     await gotoLocale(page, locale)
     await assertHealthyPage(page, locale, `desktop ${locale.toUpperCase()}`)
     assert.ok((await page.locator('h1').innerText()).trim().length > 8)
@@ -858,10 +860,10 @@ async function translatedLocalesQa(browser) {
       passed: true,
       baseUrl,
       checkedAt: new Date().toISOString(),
-      scenarios: ['seo-http-default-redirect', 'desktop-fr-light-dark', 'desktop-fr-wide-short-hero', 'desktop-fr-recorded-wide-hero', 'desktop-en-comparison-contact', 'reduced-motion', 'mobile-fr-comparison', 'desktop-es-it-de-zh-ja-ko-hi', 'locale-selector-navigation'],
+      scenarios: ['seo-http-default-redirect', 'desktop-fr-light-dark', 'desktop-fr-wide-short-hero', 'desktop-fr-recorded-wide-hero', 'desktop-en-comparison-contact', 'reduced-motion', 'mobile-fr-comparison', 'desktop-es-pt-it-de-zh-ja-ko-hi-ar', 'locale-selector-navigation'],
     }
     writeFileSync(resolve(artifacts, 'report.json'), `${JSON.stringify(report, null, 2)}\n`)
-    console.log('Playwright visual QA passed for all nine locales, locale navigation, comparator, wide-short hero pinning, market comparison, flight, themes, reduced motion, mobile, assets, overflow, and mocked contact submission.')
+    console.log('Playwright visual QA passed for all eleven locales, locale navigation, comparator, wide-short hero pinning, market comparison, flight, themes, reduced motion, mobile, assets, overflow, and mocked contact submission.')
   } finally {
     await browser.close()
   }
