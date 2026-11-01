@@ -12,18 +12,18 @@
     "deploy": "pnpm build && cdk deploy --require-approval broadening"
   },
   "dependencies": {
-    "@aws-sdk/client-sesv2": "3.1152.0",
-    "@aws-sdk/client-sqs": "3.1152.0",
-    "aws-cdk-lib": "2.273.0",
+    "@aws-sdk/client-sesv2": "3.1156.0",
+    "@aws-sdk/client-sqs": "3.1156.0",
+    "aws-cdk-lib": "2.274.0",
     "constructs": "10.8.1",
     "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.164",
     "@types/node": "26.6.5",
-    "cdk": "2.1145.0",
+    "cdk": "2.1146.1",
     "esbuild": "^0.28.2",
     "typescript": "7.0.2",
-    "vitest": "5.0.4"
+    "vitest": "5.0.5"
   }
 }
