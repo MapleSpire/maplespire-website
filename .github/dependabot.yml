@@ -22,6 +22,11 @@ updates:
     cooldown:
       default-days: 7
       semver-major-days: 14
+    # @astrojs/check (the `astro check` step of `pnpm build`) supports TypeScript
+    # 5 and 6 only; TypeScript 7 made the build fail. Lift this when it does.
+    ignore:
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
     groups:
       website:
         patterns: ['*']
