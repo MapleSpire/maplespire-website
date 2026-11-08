@@ -36,7 +36,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       play: 'Lire la vidéo',
       watchOnYoutube: 'Voir sur YouTube',
       otherLanguage: 'English version',
-      captionsNote: 'Sous-titres français intégrés à l’image.',
+      captionsNote: 'Vidéo sans narration, avec les textes à l’écran en français.',
     },
     sections: [
       {
@@ -145,7 +145,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       play: 'Play the video',
       watchOnYoutube: 'Watch on YouTube',
       otherLanguage: 'Version française',
-      captionsNote: 'English captions are part of the image.',
+      captionsNote: 'No narration: the on-screen text is in English.',
     },
     sections: [
       {
@@ -254,7 +254,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       play: 'Reproducir el vídeo',
       watchOnYoutube: 'Ver en YouTube',
       otherLanguage: 'Version française',
-      captionsNote: 'El vídeo está en inglés, con subtítulos en inglés integrados en la imagen.',
+      captionsNote: 'El vídeo no tiene narración; los textos en pantalla están en inglés.',
     },
     sections: [
       {
@@ -363,7 +363,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       play: 'Reproduzir o vídeo',
       watchOnYoutube: 'Assistir no YouTube',
       otherLanguage: 'Version française',
-      captionsNote: 'O vídeo está em inglês, com legendas em inglês incorporadas à imagem.',
+      captionsNote: 'O vídeo não tem narração; os textos na tela estão em inglês.',
     },
     sections: [
       {
@@ -472,7 +472,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       play: 'Riproduci il video',
       watchOnYoutube: 'Guarda su YouTube',
       otherLanguage: 'Version française',
-      captionsNote: 'Il video è in inglese, con sottotitoli in inglese impressi nell’immagine.',
+      captionsNote: 'Il video non ha narrazione; i testi sullo schermo sono in inglese.',
     },
     sections: [
       {
@@ -581,7 +581,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       play: 'Video abspielen',
       watchOnYoutube: 'Auf YouTube ansehen',
       otherLanguage: 'Version française',
-      captionsNote: 'Das Video ist auf Englisch, mit englischen Untertiteln direkt im Bild.',
+      captionsNote: 'Das Video hat keinen Sprecher; die Texte im Bild sind auf Englisch.',
     },
     sections: [
       {
@@ -690,7 +690,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       play: '播放视频',
       watchOnYoutube: '在 YouTube 上观看',
       otherLanguage: 'Version française',
-      captionsNote: '视频为英文，英文字幕已直接嵌入画面。',
+      captionsNote: '视频没有旁白，画面中的文字为英文。',
     },
     sections: [
       {
@@ -799,7 +799,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       play: '動画を再生',
       watchOnYoutube: 'YouTube で見る',
       otherLanguage: 'Version française',
-      captionsNote: '動画は英語で、英語の字幕が映像に焼き込まれています。',
+      captionsNote: '動画にナレーションはなく、画面上のテキストは英語です。',
     },
     sections: [
       {
@@ -908,7 +908,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       play: '동영상 재생',
       watchOnYoutube: 'YouTube에서 보기',
       otherLanguage: 'Version française',
-      captionsNote: '영상은 영어이며, 영어 자막이 화면에 직접 들어가 있습니다.',
+      captionsNote: '영상에는 내레이션이 없으며, 화면의 텍스트는 영어입니다.',
     },
     sections: [
       {
@@ -1017,7 +1017,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       play: 'वीडियो चलाएँ',
       watchOnYoutube: 'YouTube पर देखें',
       otherLanguage: 'Version française',
-      captionsNote: 'वीडियो अंग्रेज़ी में है; अंग्रेज़ी उपशीर्षक वीडियो की छवि में ही शामिल हैं।',
+      captionsNote: 'वीडियो में कोई वॉइसओवर नहीं है; स्क्रीन पर लिखा टेक्स्ट अंग्रेज़ी में है।',
     },
     sections: [
       {
@@ -1126,7 +1126,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       play: 'تشغيل الفيديو',
       watchOnYoutube: 'المشاهدة على YouTube',
       otherLanguage: 'Version française',
-      captionsNote: 'الفيديو باللغة الإنجليزية، مع ترجمة مكتوبة بالإنجليزية مدمجة في الصورة.',
+      captionsNote: 'الفيديو بلا تعليق صوتي، والنصوص الظاهرة على الشاشة باللغة الإنجليزية.',
     },
     sections: [
       {
