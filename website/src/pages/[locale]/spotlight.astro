@@ -1,0 +1,16 @@
+---
+import '../../styles/video.css';
+import '../../styles/article-video.css';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { SPOTLIGHT_ARTICLE_SLUG, articleLocales } from '../../lib/articles';
+import type { ArticleLocale } from '../../lib/articles';
+import { spotlightArticle } from '../../lib/spotlightArticle';
+
+export function getStaticPaths() {
+  return articleLocales.map((locale) => ({ params: { locale }, props: { locale } }));
+}
+
+const { locale } = Astro.props as { locale: ArticleLocale };
+const appUrl = import.meta.env.PUBLIC_APP_URL ?? 'https://app.maplespire.ca';
+---
+<ArticleLayout locale={locale} slug={SPOTLIGHT_ARTICLE_SLUG} document={spotlightArticle[locale]} appUrl={appUrl} />

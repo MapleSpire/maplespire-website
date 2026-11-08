@@ -1,0 +1,55 @@
+/* An article's video (ArticleLayout.astro + TourVideo.tsx embedded), layered on video.css:
+   the article titles the video, the chapters run under the player in the text column. */
+.article-video {
+  scroll-margin-top: 108px;
+  margin-top: 64px;
+}
+
+.article-video > h2 {
+  max-width: 700px;
+  margin: 0 0 14px;
+  font-size: clamp(26px, 3vw, 40px);
+  line-height: 1.08;
+  letter-spacing: -.04em;
+}
+
+.article-video > p {
+  max-width: 780px;
+  margin: 0 0 26px;
+  color: var(--muted, #5f5b56);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.ms-video-layout.is-embedded {
+  margin-top: 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.ms-video-layout.is-embedded .ms-video-side {
+  display: grid;
+  gap: 4px;
+}
+
+.ms-video-layout.is-embedded .ms-video-chapters {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+}
+
+.ms-video-layout.is-embedded .ms-video-links {
+  margin-top: 12px;
+}
+
+.ms-video-layout.is-embedded .ms-video-note {
+  color: var(--muted, #6f6a64);
+}
+
+/* Keys, shortcuts and filter syntax (backtick runs, rendered as left-to-right code). */
+.article-body code {
+  padding: .08em .36em;
+  border-radius: 6px;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  color: var(--ink, #24272f);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .88em;
+  white-space: nowrap;
+}

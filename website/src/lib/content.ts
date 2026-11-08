@@ -87,6 +87,9 @@ export type SiteCopy = {
     items: Array<{ title: string; body: string }>;
     articleLabel: string;
     articleCta: string;
+    /** The link to the Spotlight article, under the Structurizr one. */
+    spotlightLabel: string;
+    spotlightCta: string;
   };
   openSource: {
     eyebrow: string;
@@ -228,6 +231,8 @@ export const copy: Record<Locale, SiteCopy> = {
       ],
       articleLabel: 'MapleSpire ou Structurizr : lequel tient à l’échelle d’une gouvernance d’entreprise?',
       articleCta: 'Lire la comparaison',
+      spotlightLabel: 'Spotlight : trouvez tout dans votre architecture avec ⌘K',
+      spotlightCta: 'Lire l’article',
     },
     openSource: {
       eyebrow: 'Open source',
@@ -386,6 +391,8 @@ export const copy: Record<Locale, SiteCopy> = {
       ],
       articleLabel: 'MapleSpire or Structurizr: which one scales to enterprise governance?',
       articleCta: 'Read the comparison',
+      spotlightLabel: 'Spotlight: find anything in your architecture with ⌘K',
+      spotlightCta: 'Read the article',
     },
     openSource: {
       eyebrow: 'Open source',
@@ -544,6 +551,8 @@ export const copy: Record<Locale, SiteCopy> = {
       ],
       articleLabel: 'MapleSpire o Structurizr: ¿cuál escala a la gobernanza de una gran empresa?',
       articleCta: 'Leer la comparativa',
+      spotlightLabel: 'Spotlight: encuentra cualquier cosa en tu arquitectura con ⌘K',
+      spotlightCta: 'Leer el artículo',
     },
     openSource: {
       eyebrow: 'Código abierto',
@@ -702,6 +711,8 @@ export const copy: Record<Locale, SiteCopy> = {
       ],
       articleLabel: 'MapleSpire o Structurizr: quale regge la governance di una grande azienda?',
       articleCta: 'Leggi il confronto',
+      spotlightLabel: 'Spotlight: trova qualsiasi cosa nella tua architettura con ⌘K',
+      spotlightCta: 'Leggi l’articolo',
     },
     openSource: {
       eyebrow: 'Open source',
@@ -860,6 +871,8 @@ export const copy: Record<Locale, SiteCopy> = {
       ],
       articleLabel: 'MapleSpire oder Structurizr: Welches Werkzeug trägt Governance im Unternehmensmaßstab?',
       articleCta: 'Vergleich lesen',
+      spotlightLabel: 'Spotlight: Mit ⌘K alles in Ihrer Architektur finden',
+      spotlightCta: 'Artikel lesen',
     },
     openSource: {
       eyebrow: 'Open Source',
@@ -1018,6 +1031,8 @@ export const copy: Record<Locale, SiteCopy> = {
       ],
       articleLabel: 'MapleSpire ou Structurizr: qual acompanha a governança de uma grande empresa?',
       articleCta: 'Ler a comparação',
+      spotlightLabel: 'Spotlight: encontre qualquer coisa na sua arquitetura com ⌘K',
+      spotlightCta: 'Ler o artigo',
     },
     openSource: {
       eyebrow: 'Código aberto',
@@ -1158,6 +1173,8 @@ export const copy: Record<Locale, SiteCopy> = {
       ],
       articleLabel: 'MapleSpire 与 Structurizr：哪一个更适合企业级治理？',
       articleCta: '阅读对比',
+      spotlightLabel: 'Spotlight：用 ⌘K 找到架构中的一切',
+      spotlightCta: '阅读文章',
     },
     openSource: {
       eyebrow: '开源',
@@ -1296,6 +1313,8 @@ export const copy: Record<Locale, SiteCopy> = {
       ],
       articleLabel: 'MapleSpire と Structurizr：企業のガバナンスに向いているのは？',
       articleCta: '比較を読む',
+      spotlightLabel: 'Spotlight：⌘K でアーキテクチャのすべてを見つける',
+      spotlightCta: '記事を読む',
     },
     openSource: {
       eyebrow: 'オープンソース',
@@ -1434,6 +1453,8 @@ export const copy: Record<Locale, SiteCopy> = {
       ],
       articleLabel: 'MapleSpire와 Structurizr: 엔터프라이즈 거버넌스에 더 잘 맞는 것은?',
       articleCta: '비교 읽기',
+      spotlightLabel: 'Spotlight: ⌘K로 아키텍처의 모든 것을 찾으세요',
+      spotlightCta: '글 읽기',
     },
     openSource: {
       eyebrow: '오픈 소스',
@@ -1572,6 +1593,8 @@ export const copy: Record<Locale, SiteCopy> = {
       ],
       articleLabel: 'MapleSpire या Structurizr: एंटरप्राइज़ गवर्नेंस के लिए कौन बेहतर है?',
       articleCta: 'तुलना पढ़ें',
+      spotlightLabel: 'Spotlight: ⌘K से अपने आर्किटेक्चर में कुछ भी खोजें',
+      spotlightCta: 'लेख पढ़ें',
     },
     openSource: {
       eyebrow: 'ओपन सोर्स',
@@ -1728,6 +1751,8 @@ export const copy: Record<Locale, SiteCopy> = {
       ],
       articleLabel: 'MapleSpire أم Structurizr: أيّهما يواكب الحوكمة على مستوى المؤسسات؟',
       articleCta: 'اقرأ المقارنة',
+      spotlightLabel: 'Spotlight: اعثر على أي شيء في بنيتك المعمارية باستخدام \u2066⌘K\u2069',
+      spotlightCta: 'اقرأ المقال',
     },
     openSource: {
       eyebrow: 'مفتوح المصدر',

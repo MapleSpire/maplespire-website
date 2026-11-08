@@ -10,6 +10,7 @@ const locales = ['fr', 'en', 'es', 'pt', 'it', 'de', 'zh', 'ja', 'ko', 'hi', 'ar
 // The comparison article is published in every locale.
 const articleLocales = locales;
 const articleSlug = 'maplespire-vs-structurizr';
+const spotlightSlug = 'spotlight';
 const languageUrls = {
   'fr-CA': 'https://maplespire.ca/fr/',
   'en-CA': 'https://maplespire.ca/en/',
@@ -66,6 +67,7 @@ test('the sitemap contains only canonical localized URLs with complete reciproca
       `https://maplespire.ca/${locale}/privacystatement/`,
     ]),
     ...articleLocales.map((locale) => `https://maplespire.ca/${locale}/${articleSlug}/`),
+    ...articleLocales.map((locale) => `https://maplespire.ca/${locale}/${spotlightSlug}/`),
   ].sort();
   assert.deepEqual(locations, expected);
   assert.ok(!sitemap.includes('<loc>https://maplespire.ca/</loc>'));
@@ -115,6 +117,42 @@ test('the Structurizr comparison article is prerendered in every locale with rec
     assert.match(html, /https:\/\/github\.com\/MapleSpire\/maplespire/);
     assert.doesNotMatch(html, /�|Ã.|Â.|â€|â€™/);
   }
+});
+
+test('the Spotlight article is prerendered in every locale with its video, alternates and structured data', async () => {
+  const spotlightAlternates = Object.fromEntries(Object.entries(languageUrls).map(([lang, url]) => [lang, `${url}${spotlightSlug}/`]));
+  const titles = new Set();
+  for (const locale of articleLocales) {
+    const html = await readFile(join(dist, locale, spotlightSlug, 'index.html'), 'utf8');
+    const youtubeId = locale === 'fr' ? 'fr5TGKGyUSY' : '-cyOGFnw9pQ';
+    const posterLanguage = locale === 'fr' ? 'fr' : 'en';
+    titles.add(capture(html, /<title>([^<]+)<\/title>/, `${locale} spotlight title`));
+    assert.equal((html.match(/<h1(?:\s|>)/g) ?? []).length, 1, `${locale} spotlight must contain one H1`);
+    assert.equal(capture(html, /<link rel="canonical" href="([^"]+)"/, `${locale} spotlight canonical`), `https://maplespire.ca/${locale}/${spotlightSlug}/`);
+    assert.deepEqual(alternateMap(html), spotlightAlternates);
+    assert.equal(capture(html, /<html\b[^>]*\sdir="([^"]+)"/, `${locale} spotlight dir`), locale === 'ar' ? 'rtl' : 'ltr');
+    assert.equal((html.match(/<table class="article-table">/g) ?? []).length, 1, `${locale} spotlight filter table`);
+    assert.match(html, /<code dir="ltr">tag:pii<\/code>/);
+    // The facade: local poster, no YouTube frame until play, chapters as timestamp links.
+    assert.ok(html.includes(`src="/media/video-spotlight-${posterLanguage}.webp"`), `${locale} spotlight poster`);
+    assert.ok(existsSync(join(dist, 'media', `video-spotlight-${posterLanguage}.webp`)));
+    assert.doesNotMatch(html, /<iframe/);
+    assert.ok(html.includes(`href="https://www.youtube.com/watch?v=${youtubeId}&amp;t=37s"`), `${locale} spotlight chapter link`);
+    assert.match(html, /<astro-island[^>]+component-url="\/_astro\/TourVideo[^"]*"[^>]+client="visible"/);
+    const graph = JSON.parse(capture(html, /<script type="application\/ld\+json">([^<]+)<\/script>/, `${locale} spotlight JSON-LD`));
+    assert.deepEqual(graph['@graph'].map((node) => node['@type']), ['TechArticle', 'BreadcrumbList', 'VideoObject']);
+    const [article, , video] = graph['@graph'];
+    assert.equal(article.video['@id'], video['@id']);
+    assert.equal(article.datePublished, '2026-11-08');
+    assert.equal(video.embedUrl, `https://www.youtube-nocookie.com/embed/${youtubeId}`);
+    assert.equal(video.duration, 'PT1M11S');
+    assert.equal(video.thumbnailUrl[0], `https://maplespire.ca/media/video-spotlight-${posterLanguage}.png`);
+    assert.equal(capture(html, /<meta property="og:image" content="([^"]+)"/, `${locale} spotlight og:image`), video.thumbnailUrl[0]);
+    assert.doesNotMatch(html, /�|Ã.|Â.|â€|â€™/);
+  }
+  assert.equal(titles.size, articleLocales.length);
+  const sitemap = await readFile(join(dist, 'sitemap-0.xml'), 'utf8');
+  assert.match(sitemap, /<loc>https:\/\/maplespire\.ca\/ar\/spotlight\/<\/loc><lastmod>2026-11-08<\/lastmod>.*?<video:player_loc>https:\/\/www\.youtube-nocookie\.com\/embed\/-cyOGFnw9pQ<\/video:player_loc>/);
 });
 
 test('localized HTML has unique metadata, absolute self-canonicals and reciprocal hreflang', async () => {
@@ -200,9 +238,11 @@ test('llms.txt and llms-full.txt summarize the product for AI crawlers', async (
   assert.match(summary, /https:\/\/github\.com\/MapleSpire\/maplespire/);
   for (const locale of locales) assert.ok(summary.includes(`https://maplespire.ca/${locale}/`), `llms.txt links ${locale}`);
   for (const locale of articleLocales) assert.ok(summary.includes(`https://maplespire.ca/${locale}/${articleSlug}/`));
+  for (const locale of articleLocales) assert.ok(summary.includes(`https://maplespire.ca/${locale}/${spotlightSlug}/`));
   const full = await readFile(join(dist, 'llms-full.txt'), 'utf8');
   assert.match(full, /## Frequently asked questions/);
   assert.match(full, /### Structurizr/);
+  assert.match(full, /## Spotlight: find anything in your architecture with ⌘K/);
   assert.doesNotMatch(full, /Apache|undefined|\[object Object\]/);
   const robots = await readFile(join(dist, 'robots.txt'), 'utf8');
   for (const bot of ['GPTBot', 'ClaudeBot', 'PerplexityBot', 'Google-Extended']) assert.match(robots, new RegExp(`^User-agent: ${bot}$`, 'm'));

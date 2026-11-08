@@ -1,29 +1,35 @@
 import type { Locale } from './content';
 
 /**
- * The product tour on YouTube. Each locale plays its own recording when `tourVideos`
- * has one, and the English recording otherwise (captions on YouTube). Shared by the
- * landing section, the VideoObject structured data, the video sitemap and llms.txt,
- * so the four never drift apart.
+ * The MapleSpire videos on YouTube, in sets: the product tour (landing page) and the
+ * Spotlight presentation (Spotlight article). Each locale plays its own recording when
+ * the set has one, and the English recording otherwise. Shared by the pages, the
+ * VideoObject structured data, the video sitemap and llms.txt, so they never drift apart.
  *
- * Adding a recording for another locale is one entry in `tourVideos` (its own
- * youtubeId, title, description and chapters). Its poster is used only once the
- * language is listed in `posterLanguages` (files `public/media/video-tour-<lang>.{webp,png}`);
- * until then the English poster stands in.
+ * Adding a recording for another locale is one entry in the set (its own youtubeId,
+ * title, description and chapters). Its poster is used only once the language is listed
+ * in `posterLanguages` (files `public/media/video-<set>-<lang>.{webp,png}`); until then
+ * the English poster stands in.
  */
 
 export const YOUTUBE_CHANNEL_URL = 'https://www.youtube.com/@MapleSpire';
 
-/** Languages that have a poster in `public/media/` (video.test.ts checks the files exist). */
+/** The video sets: `tour` on every landing page, `spotlight` in the Spotlight article. */
+export type VideoSetId = 'tour' | 'spotlight';
+export const videoSetIds: readonly VideoSetId[] = ['tour', 'spotlight'];
+
+/** Languages that have a poster in `public/media/` for every set (video.test.ts checks the files exist). */
 export const posterLanguages: ReadonlySet<Locale> = new Set<Locale>(['en', 'fr']);
 
 /** The poster, in the video's language when one exists, else English: WebP on the page, PNG for crawlers (thumbnails). */
-export const videoPosterPath = (video: { language: Locale }, format: 'webp' | 'png' = 'webp') =>
-  `/media/video-tour-${posterLanguages.has(video.language) ? video.language : 'en'}.${format}`;
+export const videoPosterPath = (video: { language: Locale; set?: VideoSetId }, format: 'webp' | 'png' = 'webp') =>
+  `/media/video-${video.set ?? 'tour'}-${posterLanguages.has(video.language) ? video.language : 'en'}.${format}`;
 
 export type VideoLanguage = Locale;
 
 export type TourVideo = {
+  /** The set the recording belongs to; the product tour when absent. */
+  set?: VideoSetId;
   language: VideoLanguage;
   htmlLang: string;
   youtubeId: string;
@@ -37,8 +43,11 @@ export type TourVideo = {
 
 const shared = { duration: 'PT2M29S', uploadDate: '2026-10-18T12:00:00-04:00' } as const;
 
+/** A set of recordings of one video: English is the fallback for every locale without its own. */
+export type VideoSet = { en: TourVideo; fr: TourVideo } & Partial<Record<Locale, TourVideo>>;
+
 /** English is the fallback for every locale without its own recording; French has one. */
-export const tourVideos: { en: TourVideo; fr: TourVideo } & Partial<Record<Locale, TourVideo>> = {
+export const tourVideos: VideoSet = {
   en: {
     ...shared,
     language: 'en',
@@ -91,10 +100,59 @@ export const tourVideos: { en: TourVideo; fr: TourVideo } & Partial<Record<Local
   },
 };
 
-export const tourVideoFor = (locale: Locale): TourVideo => tourVideos[locale] ?? tourVideos.en;
-export const videoLanguageFor = (locale: Locale): VideoLanguage => tourVideoFor(locale).language;
+const spotlightShared = { set: 'spotlight', duration: 'PT1M11S', uploadDate: '2026-11-08T12:00:00-05:00' } as const;
+
+/** Spotlight, the global search (⌘K): a French and an English recording, captions burned into the image. */
+export const spotlightVideos: VideoSet = {
+  en: {
+    ...spotlightShared,
+    language: 'en',
+    htmlLang: 'en',
+    youtubeId: '-cyOGFnw9pQ',
+    title: 'Spotlight: find anything in your architecture with ⌘K | MapleSpire',
+    description:
+      'A 71-second presentation of Spotlight, the global search of MapleSpire: press ⌘K to search objects, diagrams, flows, decision records and actions at once, with forgiving matching, plain-language filters, scopes and keyboard actions.',
+    chapters: [
+      { start: 0, label: 'Intro: open Spotlight with ⌘K and search everything' },
+      { start: 18, label: 'Accents, typos and filters' },
+      { start: 37, label: 'Scopes, tips and jumping to a result' },
+      { start: 53, label: 'Keyboard actions and wrap-up' },
+    ],
+  },
+  fr: {
+    ...spotlightShared,
+    language: 'fr',
+    htmlLang: 'fr',
+    youtubeId: 'fr5TGKGyUSY',
+    title: 'Spotlight : trouvez tout dans votre architecture avec ⌘K | MapleSpire',
+    description:
+      'Une présentation de 71 secondes de Spotlight, la recherche globale de MapleSpire : ⌘K cherche à la fois objets, diagrammes, flux, décisions d’architecture et actions, en tolérant accents et fautes de frappe, avec des filtres en langage courant, des portées et des actions au clavier.',
+    chapters: [
+      { start: 0, label: 'Intro : ouvrir Spotlight avec ⌘K et tout chercher' },
+      { start: 18, label: 'Accents, fautes de frappe et filtres' },
+      { start: 37, label: 'Portées, astuces et navigation vers un résultat' },
+      { start: 54, label: 'Actions au clavier et conclusion' },
+    ],
+  },
+};
+
+export const videoSets: Record<VideoSetId, VideoSet> = { tour: tourVideos, spotlight: spotlightVideos };
+
+/** The recording a locale plays: its own when the set has one, else English. */
+export const tourVideoFor = (locale: Locale, set: VideoSetId = 'tour'): TourVideo => videoSets[set][locale] ?? videoSets[set].en;
+export const videoLanguageFor = (locale: Locale, set: VideoSetId = 'tour'): VideoLanguage => tourVideoFor(locale, set).language;
 /** The "other language" link: English from a page that plays a non-English recording, French from one that plays English. */
-export const alternateTourVideoFor = (locale: Locale): TourVideo => (videoLanguageFor(locale) === 'en' ? tourVideos.fr : tourVideos.en);
+export const alternateTourVideoFor = (locale: Locale, set: VideoSetId = 'tour'): TourVideo =>
+  (videoLanguageFor(locale, set) === 'en' ? videoSets[set].fr : videoSets[set].en);
+/** Length in seconds of an ISO 8601 duration such as PT2M29S. */
+export const durationSeconds = (video: Pick<TourVideo, 'duration'>): number => {
+  const match = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(video.duration);
+  if (!match) throw new Error(`Unsupported ISO 8601 duration: ${video.duration}`);
+  const [, hours = '0', minutes = '0', seconds = '0'] = match;
+  return Number(hours) * 3600 + Number(minutes) * 60 + Number(seconds);
+};
+/** m:ss, for chapters and the poster's duration badge. */
+export const videoClock = (seconds: number) => `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
 export const youtubeWatchUrl = (video: TourVideo) => `https://www.youtube.com/watch?v=${video.youtubeId}`;
 /** youtube-nocookie: no YouTube cookie until the visitor presses play. */
 export const youtubeEmbedUrl = (video: TourVideo) => `https://www.youtube-nocookie.com/embed/${video.youtubeId}`;
@@ -104,6 +162,9 @@ export const youtubeEmbedUrl = (video: TourVideo) => `https://www.youtube-nocook
  * `captionsNote` describes the recording that plays, so a locale that gains its own
  * recording updates both lines here along with its `tourVideos` entry.
  */
+/** The player's own labels, for a page that titles the video itself (the Spotlight article). */
+export type VideoPlayerCopy = Pick<VideoSectionCopy, 'play' | 'watchOnYoutube' | 'otherLanguage' | 'captionsNote'>;
+
 export type VideoSectionCopy = {
   eyebrow: string;
   title: string;
@@ -239,7 +300,7 @@ export function videoObject(video: TourVideo, siteUrl: string, pageUrl: string) 
       '@type': 'Clip',
       name: chapter.label,
       startOffset: chapter.start,
-      endOffset: video.chapters[index + 1]?.start ?? 149,
+      endOffset: video.chapters[index + 1]?.start ?? durationSeconds(video),
       url: `${watch}&t=${chapter.start}s`,
     })),
   };

@@ -43,6 +43,16 @@
       "served": "dist/media/video-tour-fr.webp"
     },
     {
+      "id": "video-spotlight-en",
+      "reference": "public/media/video-spotlight-en.png",
+      "served": "dist/media/video-spotlight-en.webp"
+    },
+    {
+      "id": "video-spotlight-fr",
+      "reference": "public/media/video-spotlight-fr.png",
+      "served": "dist/media/video-spotlight-fr.webp"
+    },
+    {
       "id": "closeup",
       "reference": "public/media/story-closeup.jpeg",
       "served": "dist/media/story-closeup.jpeg"

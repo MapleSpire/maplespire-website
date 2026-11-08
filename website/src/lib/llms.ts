@@ -1,7 +1,8 @@
 import { alternativeProducts, alternativesCopy } from './alternatives';
-import { STRUCTURIZR_ARTICLE_SLUG, articleLocales, structurizrArticle } from './articles';
+import { SPOTLIGHT_ARTICLE_SLUG, STRUCTURIZR_ARTICLE_SLUG, articleLocales, structurizrArticle } from './articles';
 import { LICENSE_ID, LICENSE_URL, REPOSITORY_URL, copy, localeOptions } from './content';
-import { YOUTUBE_CHANNEL_URL, tourVideos, youtubeWatchUrl } from './video';
+import { spotlightArticle } from './spotlightArticle';
+import { YOUTUBE_CHANNEL_URL, spotlightVideos, tourVideos, videoClock, youtubeWatchUrl } from './video';
 
 /**
  * Plain-text summaries for LLM crawlers and answer engines (https://llmstxt.org).
@@ -13,6 +14,8 @@ const appUrl = 'https://app.maplespire.ca';
 const en = copy.en;
 const article = structurizrArticle.en;
 const articleUrl = (locale: string) => `${siteOrigin}/${locale}/${STRUCTURIZR_ARTICLE_SLUG}/`;
+const spotlight = spotlightArticle.en;
+const spotlightUrl = (locale: string) => `${siteOrigin}/${locale}/${SPOTLIGHT_ARTICLE_SLUG}/`;
 
 const summary = [
   `> MapleSpire is a free, open-source (${LICENSE_ID}) and self-hostable C4 architecture modeling tool.`,
@@ -37,6 +40,8 @@ const keyFacts = [
 const videoLinks = [
   `- [${tourVideos.en.title}](${youtubeWatchUrl(tourVideos.en)}): 2:29 product tour in English, English and French captions`,
   `- [${tourVideos.fr.title}](${youtubeWatchUrl(tourVideos.fr)}): the same tour narrated in French`,
+  `- [${spotlightVideos.en.title}](${youtubeWatchUrl(spotlightVideos.en)}): 1:11 presentation of Spotlight, the global search, in English with English on-screen captions`,
+  `- [${spotlightVideos.fr.title}](${youtubeWatchUrl(spotlightVideos.fr)}): the same presentation in French, with French on-screen captions`,
 ];
 
 export function renderLlmsTxt(): string {
@@ -53,6 +58,7 @@ export function renderLlmsTxt(): string {
     '',
     ...localeOptions.map((option) => `- [${copy[option.locale].meta.title}](${siteOrigin}/${option.locale}/): ${option.name} landing page`),
     ...articleLocales.map((locale) => `- [${structurizrArticle[locale].title}](${articleUrl(locale)}): ${structurizrArticle[locale].description}`),
+    ...articleLocales.map((locale) => `- [${spotlightArticle[locale].title}](${spotlightUrl(locale)}): ${spotlightArticle[locale].description}`),
     '',
     '## Product',
     '',
@@ -66,7 +72,7 @@ export function renderLlmsTxt(): string {
     '',
     '## Optional',
     '',
-    `- [Full text for LLMs](${siteOrigin}/llms-full.txt): landing copy, FAQ, market comparison and the Structurizr article in one file`,
+    `- [Full text for LLMs](${siteOrigin}/llms-full.txt): landing copy, FAQ, market comparison, the Structurizr article and the Spotlight article in one file`,
     `- [Terms of service](${siteOrigin}/en/termsofservice/)`,
     `- [Privacy statement](${siteOrigin}/en/privacystatement/)`,
     '',
@@ -161,6 +167,40 @@ export function renderLlmsFullTxt(): string {
     article.verdict,
     '',
     ...articleBody,
+    `## ${spotlight.title}`,
+    '',
+    `Source page: ${spotlightUrl('en')} (French: ${spotlightUrl('fr')}). ${spotlight.updatedLabel} ${spotlight.updatedDate}.`,
+    '',
+    spotlight.summary,
+    '',
+    spotlight.verdict,
+    '',
+    ...(spotlight.video
+      ? [
+          `### ${spotlight.video.title}`,
+          '',
+          spotlightVideos.en.description,
+          '',
+          ...spotlightVideos.en.chapters.map((chapter) => `- ${videoClock(chapter.start)} ${chapter.label}`),
+          '',
+        ]
+      : []),
+    ...spotlight.sections.map((section) => [
+      `### ${section.title}`,
+      '',
+      ...(section.lead ? [section.lead, ''] : []),
+      ...(section.table
+        ? [
+            `| ${section.table.columns.join(' | ')} |`,
+            `| ${section.table.columns.map(() => '---').join(' | ')} |`,
+            ...section.table.rows.map((row) => `| ${row.join(' | ')} |`),
+            '',
+          ]
+        : []),
+      ...(section.paragraphs ?? []).flatMap((paragraph) => [paragraph, '']),
+      ...(section.bullets ?? []).map((bullet) => `- ${bullet}`),
+      ...(section.bullets ? [''] : []),
+    ].join('\n')),
     '## Contact',
     '',
     'support@maplespire.ca',

@@ -4,29 +4,38 @@ import '../styles/legal.css';
 import '../styles/article.css';
 import '../styles/rtl.css';
 import { REPOSITORY_URL, localeOptions } from '../lib/content';
-import { STRUCTURIZR_ARTICLE_SLUG, articleLocales } from '../lib/articles';
-import type { ArticleDocument, ArticleLocale } from '../lib/articles';
+import { articleLocales } from '../lib/articles';
+import type { ArticleDocument, ArticleLocale, ArticleSlug } from '../lib/articles';
 import { legalCopy } from '../lib/legal';
 import { serializeJsonLd } from '../lib/jsonLd';
+import { tourVideoFor, videoObject, videoPosterPath } from '../lib/video';
+import TourVideo from '../components/TourVideo';
+import ArticleText from '../components/ArticleText.astro';
 
 interface Props {
   locale: ArticleLocale;
+  slug: ArticleSlug;
   document: ArticleDocument;
   appUrl: string;
+  /** What the article is about besides MapleSpire itself (schema.org nodes). */
+  about?: Array<Record<string, string>>;
 }
 
-const { locale, document, appUrl } = Astro.props;
+const { locale, slug, document, appUrl, about = [] } = Astro.props;
 const labels = legalCopy[locale];
 const localeMeta = localeOptions.find((option) => option.locale === locale) ?? localeOptions[0];
 const siteUrl = new URL('/', Astro.site ?? Astro.url.origin);
-const pathFor = (target: string) => `/${target}/${STRUCTURIZR_ARTICLE_SLUG}/`;
+const pathFor = (target: string) => `/${target}/${slug}/`;
 const canonical = new URL(pathFor(locale), siteUrl);
+// An article with a video shares its poster (PNG, like the video thumbnail); the others the site card.
+const video = document.video ? tourVideoFor(locale, document.video.set) : null;
 const ogImage = new URL(
-  locale === 'fr' ? '/social/maplespire-og-fr.png' : '/social/maplespire-og.png',
+  video ? videoPosterPath(video, 'png') : locale === 'fr' ? '/social/maplespire-og-fr.png' : '/social/maplespire-og.png',
   siteUrl,
 );
 const alternates = articleLocales.map((target) => localeOptions.find((option) => option.locale === target)!);
 const homeUrl = new URL(`/${locale}/`, siteUrl);
+const citations = document.sections.flatMap((section) => section.links ?? []).map((link) => link.url);
 const schema = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -44,11 +53,9 @@ const schema = {
       author: { '@id': `${siteUrl.href}#organization` },
       publisher: { '@id': `${siteUrl.href}#organization` },
       isPartOf: { '@id': `${siteUrl.href}#website` },
-      about: [
-        { '@id': `${siteUrl.href}#software` },
-        { '@type': 'SoftwareApplication', name: 'Structurizr', url: 'https://structurizr.com/' },
-      ],
-      citation: document.sections.flatMap((section) => section.links ?? []).map((link) => link.url),
+      about: [{ '@id': `${siteUrl.href}#software` }, ...about],
+      ...(citations.length ? { citation: citations } : {}),
+      ...(video ? { video: { '@id': `${canonical.href}#video` } } : {}),
     },
     {
       '@type': 'BreadcrumbList',
@@ -57,6 +64,9 @@ const schema = {
         { '@type': 'ListItem', position: 2, name: document.seoTitle, item: canonical.href },
       ],
     },
+    ...(video
+      ? [{ ...videoObject(video, siteUrl.href, canonical.href), publisher: { '@id': `${siteUrl.href}#organization` } }]
+      : []),
   ],
 };
 ---
@@ -138,6 +148,7 @@ const schema = {
     <main id="article-content" class="legal-main">
       <aside class="legal-index" aria-label={document.contentsLabel}>
         <p>{document.contentsLabel}</p>
+        {document.video && <a href={`#${document.video.id}`}>{document.video.title}</a>}
         {document.sections.map((section) => (
           <a href={`#${section.id}`}>{section.title}</a>
         ))}
@@ -154,10 +165,30 @@ const schema = {
           <p class="legal-important">{document.verdict}</p>
         </header>
 
+        {document.video && (
+          <section class="article-video" id={document.video.id} aria-labelledby={`${document.video.id}-title`}>
+            <h2 id={`${document.video.id}-title`}>{document.video.title}</h2>
+            <p><ArticleText text={document.video.body} /></p>
+            <TourVideo
+              client:visible
+              locale={locale}
+              set={document.video.set}
+              copy={{
+                play: document.video.play,
+                watchOnYoutube: document.video.watchOnYoutube,
+                otherLanguage: document.video.otherLanguage,
+                captionsNote: document.video.captionsNote,
+              }}
+              embedded
+            />
+          </section>
+        )}
+
         <div class="legal-sections">
           {document.sections.map((section) => (
             <section id={section.id}>
               <h2>{section.title}</h2>
+              {section.lead && <p><ArticleText text={section.lead} /></p>}
               {section.table && (
                 <div class="article-table-wrap">
                   <table class="article-table">
@@ -166,21 +197,21 @@ const schema = {
                       <tr>{section.table.columns.map((column) => <th scope="col">{column}</th>)}</tr>
                     </thead>
                     <tbody>
-                      {section.table.rows.map(([label, structurizr, maplespire]) => (
+                      {section.table.rows.map(([label, first, second]) => (
                         <tr>
-                          <th scope="row">{label}</th>
-                          <td>{structurizr}</td>
-                          <td>{maplespire}</td>
+                          <th scope="row"><ArticleText text={label} /></th>
+                          <td><ArticleText text={first} /></td>
+                          <td><ArticleText text={second} /></td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
               )}
-              {section.paragraphs?.map((paragraph) => <p>{paragraph}</p>)}
+              {section.paragraphs?.map((paragraph) => <p><ArticleText text={paragraph} /></p>)}
               {section.bullets && (
                 <ul>
-                  {section.bullets.map((bullet) => <li>{bullet}</li>)}
+                  {section.bullets.map((bullet) => <li><ArticleText text={bullet} /></li>)}
                 </ul>
               )}
               {section.links && (
