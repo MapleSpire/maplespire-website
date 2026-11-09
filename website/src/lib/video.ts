@@ -111,7 +111,7 @@ export const spotlightVideos: VideoSet = {
     youtubeId: '-cyOGFnw9pQ',
     title: 'Spotlight: find anything in your architecture with ⌘K | MapleSpire',
     description:
-      'A 71-second presentation of Spotlight, the global search of MapleSpire: press ⌘K to search objects, diagrams, flows, decision records and actions at once, with forgiving matching, plain-language filters, scopes and keyboard actions.',
+      'A 71-second presentation of Spotlight, the global search of MapleSpire: press ⌘K to search objects, diagrams, flows, decision records and actions at once, ignoring accents and case, with plain-language filters, scopes and keyboard actions.',
     chapters: [
       { start: 0, label: 'Intro: open Spotlight with ⌘K and search everything' },
       { start: 18, label: 'Accents, typos and filters' },
@@ -126,7 +126,7 @@ export const spotlightVideos: VideoSet = {
     youtubeId: 'fr5TGKGyUSY',
     title: 'Spotlight : trouvez tout dans votre architecture avec ⌘K | MapleSpire',
     description:
-      'Une présentation de 71 secondes de Spotlight, la recherche globale de MapleSpire : ⌘K cherche à la fois objets, diagrammes, flux, décisions d’architecture et actions, en tolérant accents et fautes de frappe, avec des filtres en langage courant, des portées et des actions au clavier.',
+      'Une présentation de 71 secondes de Spotlight, la recherche globale de MapleSpire : ⌘K cherche à la fois objets, diagrammes, flux, décisions d’architecture et actions, sans tenir compte des accents ni de la casse, avec des filtres en langage courant, des portées et des actions au clavier.',
     chapters: [
       { start: 0, label: 'Intro : ouvrir Spotlight avec ⌘K et tout chercher' },
       { start: 18, label: 'Accents, fautes de frappe et filtres' },

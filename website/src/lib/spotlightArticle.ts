@@ -11,7 +11,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
     title: 'Spotlight : trouvez tout dans votre architecture avec ⌘K',
     seoTitle: 'Spotlight : la recherche globale de votre architecture C4 | MapleSpire',
     description:
-      'Spotlight est la recherche globale de MapleSpire : ⌘K retrouve n’importe quel objet, diagramme, flux, décision d’architecture ou action de votre workspace, avec des filtres et une navigation au clavier.',
+      'Spotlight est la recherche globale de MapleSpire : ⌘K retrouve n’importe quel objet, diagramme, flux, décision d’architecture ou action de votre espace de travail, avec des filtres et une navigation au clavier.',
     eyebrow: 'Nouveauté',
     updatedLabel: 'Publié le',
     updatedDate: '8 novembre 2026',
@@ -19,10 +19,10 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
     summary:
       'Où était ce service, déjà? Dans une grande architecture, la réponse se cache dans l’un des dizaines de diagrammes, flux et décisions d’architecture. Spotlight, la nouvelle recherche globale de MapleSpire, la retrouve de partout : ⌘K, quelques lettres, et vous y êtes.',
     verdict:
-      'En bref : un raccourci et une seule zone de recherche pour les objets du modèle, les groupes, les diagrammes, les flux, les décisions d’architecture, les connexions et les commandes. Elle tolère accents et fautes de frappe, ses filtres se lisent comme du langage courant, et elle couvre tout le workspace.',
+      'En bref : un raccourci et une seule zone de recherche pour les objets du modèle, les groupes, les diagrammes, les flux, les décisions d’architecture, les connexions et les commandes. Les accents et la casse ne comptent pas, un filtre mal tapé est corrigé, les filtres se lisent comme du langage courant, et la recherche couvre tout l’espace de travail.',
     contentsLabel: 'Sommaire',
     backLabel: 'Retour à l’accueil',
-    ctaTitle: 'Appuyez sur ⌘K dans votre propre workspace.',
+    ctaTitle: 'Appuyez sur ⌘K dans votre propre espace de travail.',
     ctaBody:
       'MapleSpire est gratuit et open source (AGPL-3.0). Ouvrez l’application pour essayer Spotlight, ou auto-hébergez MapleSpire à partir du dépôt public.',
     ctaPrimary: 'Ouvrir l’application',
@@ -32,7 +32,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       set: 'spotlight',
       id: 'video',
       title: 'Spotlight en 71 secondes',
-      body: 'La vidéo montre l’ouverture de Spotlight, la recherche tolérante et les filtres, les portées et les actions au clavier.',
+      body: 'La vidéo montre l’ouverture de Spotlight, les accents et les fautes de frappe, les filtres, les portées et les actions au clavier.',
       play: 'Lire la vidéo',
       watchOnYoutube: 'Voir sur YouTube',
       otherLanguage: 'English version',
@@ -56,8 +56,8 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
         ],
       },
       {
-        id: 'tolerante',
-        title: 'Une recherche qui pardonne',
+        id: 'accents',
+        title: 'Accents, majuscules et fautes de frappe',
         bullets: [
           'Les accents et la casse ne comptent pas : `energie` trouve « Énergie ».',
           'Pendant la frappe, Spotlight complète le meilleur résultat en texte fantôme; `→` l’accepte.',
@@ -71,7 +71,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
           'Tapez une clé de filtre suivie d’une valeur pour resserrer les résultats. Pendant la saisie, Spotlight propose des valeurs (étiquettes, technologies, types…) et `↵` ajoute la valeur suggérée.',
         table: {
           caption: 'Exemples de filtres',
-          columns: ['Filtre', 'Exemple', 'Ce qu’il garde'],
+          columns: ['Filtre', 'Exemple', 'Résultat'],
           rows: [
             ['Type', '`kind:store`', 'Un seul type de résultat, ici les stockages de données'],
             ['Étiquette', '`tag:pii`', 'Les objets qui portent cette étiquette'],
@@ -108,9 +108,9 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       },
       {
         id: 'echelle',
-        title: 'Tout le workspace, même très grand',
+        title: 'Recherche dans tout l’espace de travail',
         paragraphs: [
-          'Dans un grand workspace, votre navigateur ne détient parfois qu’une partie du modèle. Spotlight interroge alors aussi le modèle de lecture du serveur et fusionne sa réponse avec les résultats locaux : la recherche couvre tout le workspace, avec le même classement.',
+          'Dans un grand espace de travail, votre navigateur ne détient parfois qu’une partie du modèle. Spotlight interroge alors aussi le modèle de lecture du serveur et fusionne sa réponse avec les résultats locaux : la recherche couvre tout l’espace de travail, avec le même classement.',
           'Si le serveur ne peut pas répondre, Spotlight vous le dit : il indique que les résultats sont partiels plutôt que de les présenter comme complets.',
         ],
       },
@@ -128,7 +128,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
     summary:
       'Where was that service again? In a large architecture, the answer hides in one of dozens of diagrams, flows and decision records. Spotlight, MapleSpire’s new global search, finds it from anywhere: press ⌘K, type a few letters, and you are there.',
     verdict:
-      'In short: one shortcut and one search box for model objects, groups, diagrams, flows, decision records, connections and commands. It forgives accents and typos, its filters read like plain language, and it covers the whole workspace.',
+      'In short: one shortcut and one search box for model objects, groups, diagrams, flows, decision records, connections and commands. Accents and case don’t matter, a mistyped filter gets a correction, filters read like plain language, and the search covers the whole workspace.',
     contentsLabel: 'Contents',
     backLabel: 'Back to home',
     ctaTitle: 'Press ⌘K in your own workspace.',
@@ -141,7 +141,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       set: 'spotlight',
       id: 'video',
       title: 'Spotlight in 71 seconds',
-      body: 'The video shows how to open Spotlight, forgiving search and filters, scopes, and keyboard actions.',
+      body: 'The video shows how to open Spotlight, accents and typos, filters, scopes, and keyboard actions.',
       play: 'Play the video',
       watchOnYoutube: 'Watch on YouTube',
       otherLanguage: 'Version française',
@@ -165,8 +165,8 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
         ],
       },
       {
-        id: 'forgiving',
-        title: 'Forgiving by design',
+        id: 'accents',
+        title: 'Accents, case and typos',
         bullets: [
           'Accents and case do not matter: `energie` finds “Énergie”.',
           'As you type, Spotlight completes the top hit in ghost text; `→` accepts it.',
@@ -180,7 +180,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
           'Type a filter key followed by a value to narrow the results. While you type, Spotlight suggests values (tags, technologies, kinds…) and `↵` adds the suggested value.',
         table: {
           caption: 'Filter examples',
-          columns: ['Filter', 'Example', 'What it keeps'],
+          columns: ['Filter', 'Example', 'Result'],
           rows: [
             ['Kind', '`kind:store`', 'One kind of result, here data stores'],
             ['Tag', '`tag:pii`', 'Objects that carry the tag'],
@@ -217,7 +217,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       },
       {
         id: 'scale',
-        title: 'The whole workspace, however large',
+        title: 'Searches the whole workspace',
         paragraphs: [
           'In a large workspace, your browser may hold only part of the model. Spotlight then also asks the server’s read model and merges its answer with the local results, so the search covers the whole workspace, ranked the same way.',
           'If the server cannot answer, Spotlight tells you: it says the results are partial instead of presenting them as complete.',
@@ -237,7 +237,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
     summary:
       '¿Dónde estaba ese servicio? En una arquitectura grande, la respuesta se esconde entre decenas de diagramas, flujos y registros de decisiones. Spotlight, la nueva búsqueda global de MapleSpire, la encuentra desde cualquier lugar: pulsa ⌘K, escribe unas letras y listo.',
     verdict:
-      'En resumen: un atajo y un único cuadro de búsqueda para objetos del modelo, grupos, diagramas, flujos, registros de decisiones, conexiones y comandos. Perdona acentos y erratas, sus filtros se leen como lenguaje natural y abarca todo el workspace.',
+      'En resumen: un atajo y un único cuadro de búsqueda para objetos del modelo, grupos, diagramas, flujos, registros de decisiones, conexiones y comandos. Ignora acentos y mayúsculas, corrige los filtros mal escritos, sus filtros se leen como lenguaje natural y abarca todo el workspace.',
     contentsLabel: 'Índice',
     backLabel: 'Volver al inicio',
     ctaTitle: 'Pulsa ⌘K en tu propio workspace.',
@@ -250,7 +250,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       set: 'spotlight',
       id: 'video',
       title: 'Spotlight en 71 segundos',
-      body: 'El vídeo muestra cómo abrir Spotlight, la búsqueda tolerante y los filtros, los ámbitos y las acciones de teclado.',
+      body: 'El vídeo muestra cómo abrir Spotlight, los acentos y las erratas, los filtros, los ámbitos y las acciones de teclado.',
       play: 'Reproducir el vídeo',
       watchOnYoutube: 'Ver en YouTube',
       otherLanguage: 'Version française',
@@ -274,8 +274,8 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
         ],
       },
       {
-        id: 'forgiving',
-        title: 'Una búsqueda que perdona',
+        id: 'accents',
+        title: 'Acentos, mayúsculas y errores de escritura',
         bullets: [
           'Ni los acentos ni las mayúsculas importan: `energie` encuentra «Énergie».',
           'Mientras escribes, Spotlight completa el mejor resultado en texto fantasma; `→` lo acepta.',
@@ -289,7 +289,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
           'Escribe una clave de filtro seguida de un valor para acotar los resultados. Mientras escribes, Spotlight sugiere valores (etiquetas, tecnologías, tipos…) y `↵` añade el valor sugerido.',
         table: {
           caption: 'Ejemplos de filtros',
-          columns: ['Filtro', 'Ejemplo', 'Qué conserva'],
+          columns: ['Filtro', 'Ejemplo', 'Resultado'],
           rows: [
             ['Tipo', '`kind:store`', 'Un solo tipo de resultado, aquí los almacenes de datos'],
             ['Etiqueta', '`tag:pii`', 'Los objetos que llevan la etiqueta'],
@@ -326,7 +326,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       },
       {
         id: 'scale',
-        title: 'Todo el workspace, por grande que sea',
+        title: 'Búsqueda en todo el workspace',
         paragraphs: [
           'En un workspace grande, puede que tu navegador solo tenga una parte del modelo. Spotlight consulta entonces también el modelo de lectura del servidor y combina su respuesta con los resultados locales, de modo que la búsqueda abarca todo el workspace, con la misma clasificación.',
           'Si el servidor no puede responder, Spotlight te lo dice: indica que los resultados son parciales en lugar de presentarlos como completos.',
@@ -346,7 +346,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
     summary:
       'Onde estava mesmo aquele serviço? Em uma arquitetura grande, a resposta se esconde entre dezenas de diagramas, fluxos e registros de decisões. O Spotlight, a nova busca global do MapleSpire, encontra a resposta de qualquer lugar: pressione ⌘K, digite algumas letras e pronto.',
     verdict:
-      'Em resumo: um atalho e uma única caixa de busca para objetos do modelo, grupos, diagramas, fluxos, registros de decisões, conexões e comandos. Ela tolera acentos e erros de digitação, seus filtros se leem como linguagem natural e ela cobre o workspace inteiro.',
+      'Em resumo: um atalho e uma única caixa de busca para objetos do modelo, grupos, diagramas, fluxos, registros de decisões, conexões e comandos. Ela ignora acentos e maiúsculas, corrige filtros digitados errado, seus filtros se leem como linguagem natural e ela cobre o workspace inteiro.',
     contentsLabel: 'Sumário',
     backLabel: 'Voltar ao início',
     ctaTitle: 'Pressione ⌘K no seu próprio workspace.',
@@ -359,7 +359,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       set: 'spotlight',
       id: 'video',
       title: 'Spotlight em 71 segundos',
-      body: 'O vídeo mostra como abrir o Spotlight, a busca tolerante e os filtros, os escopos e as ações pelo teclado.',
+      body: 'O vídeo mostra como abrir o Spotlight, os acentos e os erros de digitação, os filtros, os escopos e as ações pelo teclado.',
       play: 'Reproduzir o vídeo',
       watchOnYoutube: 'Assistir no YouTube',
       otherLanguage: 'Version française',
@@ -383,8 +383,8 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
         ],
       },
       {
-        id: 'forgiving',
-        title: 'Feita para perdoar',
+        id: 'accents',
+        title: 'Acentos, maiúsculas e erros de digitação',
         bullets: [
           'Acentos e maiúsculas não importam: `energie` encontra “Énergie”.',
           'Enquanto você digita, o Spotlight completa o melhor resultado em texto fantasma; `→` aceita a sugestão.',
@@ -398,7 +398,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
           'Digite uma chave de filtro seguida de um valor para refinar os resultados. Enquanto você digita, o Spotlight sugere valores (tags, tecnologias, tipos…) e `↵` adiciona o valor sugerido.',
         table: {
           caption: 'Exemplos de filtros',
-          columns: ['Filtro', 'Exemplo', 'O que ele mantém'],
+          columns: ['Filtro', 'Exemplo', 'Resultado'],
           rows: [
             ['Tipo', '`kind:store`', 'Um único tipo de resultado, aqui os armazenamentos de dados'],
             ['Tag', '`tag:pii`', 'Objetos que têm a tag'],
@@ -435,7 +435,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       },
       {
         id: 'scale',
-        title: 'O workspace inteiro, por maior que seja',
+        title: 'Busca em todo o workspace',
         paragraphs: [
           'Em um workspace grande, o seu navegador pode ter só parte do modelo. O Spotlight então consulta também o modelo de leitura do servidor e mescla a resposta com os resultados locais, para que a busca cubra o workspace inteiro, com a mesma ordenação.',
           'Se o servidor não puder responder, o Spotlight avisa: ele indica que os resultados são parciais em vez de apresentá-los como completos.',
@@ -455,7 +455,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
     summary:
       'Dov’era quel servizio? In una grande architettura, la risposta si nasconde tra decine di diagrammi, flussi e registri delle decisioni. Spotlight, la nuova ricerca globale di MapleSpire, la trova da qualsiasi punto: premi ⌘K, digita qualche lettera e ci sei.',
     verdict:
-      'In breve: una scorciatoia e un’unica casella di ricerca per oggetti del modello, gruppi, diagrammi, flussi, registri delle decisioni, connessioni e comandi. Perdona accenti e refusi, i suoi filtri si leggono come linguaggio naturale e copre l’intero workspace.',
+      'In breve: una scorciatoia e un’unica casella di ricerca per oggetti del modello, gruppi, diagrammi, flussi, registri delle decisioni, connessioni e comandi. Ignora accenti e maiuscole, corregge i filtri scritti male, i suoi filtri si leggono come linguaggio naturale e copre l’intero workspace.',
     contentsLabel: 'Indice',
     backLabel: 'Torna alla home',
     ctaTitle: 'Premi ⌘K nel tuo workspace.',
@@ -468,7 +468,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       set: 'spotlight',
       id: 'video',
       title: 'Spotlight in 71 secondi',
-      body: 'Il video mostra come aprire Spotlight, la ricerca tollerante e i filtri, gli ambiti e le azioni da tastiera.',
+      body: 'Il video mostra come aprire Spotlight, gli accenti e i refusi, i filtri, gli ambiti e le azioni da tastiera.',
       play: 'Riproduci il video',
       watchOnYoutube: 'Guarda su YouTube',
       otherLanguage: 'Version française',
@@ -492,8 +492,8 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
         ],
       },
       {
-        id: 'forgiving',
-        title: 'Una ricerca che perdona',
+        id: 'accents',
+        title: 'Accenti, maiuscole e refusi',
         bullets: [
           'Accenti e maiuscole non contano: `energie` trova “Énergie”.',
           'Mentre digiti, Spotlight completa il risultato migliore in testo fantasma; `→` lo accetta.',
@@ -507,7 +507,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
           'Digita una chiave di filtro seguita da un valore per restringere i risultati. Mentre digiti, Spotlight suggerisce dei valori (tag, tecnologie, tipi…) e `↵` aggiunge il valore suggerito.',
         table: {
           caption: 'Esempi di filtri',
-          columns: ['Filtro', 'Esempio', 'Cosa mantiene'],
+          columns: ['Filtro', 'Esempio', 'Risultato'],
           rows: [
             ['Tipo', '`kind:store`', 'Un solo tipo di risultato, qui gli archivi di dati'],
             ['Tag', '`tag:pii`', 'Gli oggetti che hanno il tag'],
@@ -544,7 +544,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       },
       {
         id: 'scale',
-        title: 'L’intero workspace, per quanto grande',
+        title: 'Ricerca in tutto il workspace',
         paragraphs: [
           'In un workspace grande, il browser può contenere solo una parte del modello. Spotlight interroga allora anche il modello di lettura del server e unisce la sua risposta ai risultati locali: la ricerca copre l’intero workspace, con lo stesso ordinamento.',
           'Se il server non può rispondere, Spotlight te lo dice: segnala che i risultati sono parziali invece di presentarli come completi.',
@@ -564,7 +564,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
     summary:
       'Wo war dieser Service noch gleich? In einer großen Architektur versteckt sich die Antwort in einem von Dutzenden Diagrammen, Flows und Architekturentscheidungen. Spotlight, die neue globale Suche von MapleSpire, findet sie von überall aus: ⌘K drücken, ein paar Buchstaben tippen, und Sie sind am Ziel.',
     verdict:
-      'Kurz gesagt: ein Tastenkürzel und ein einziges Suchfeld für Modellobjekte, Gruppen, Diagramme, Flows, Architekturentscheidungen, Verbindungen und Befehle. Die Suche verzeiht Akzente und Tippfehler, ihre Filter lesen sich wie Alltagssprache, und sie deckt den gesamten Workspace ab.',
+      'Kurz gesagt: ein Tastenkürzel und ein einziges Suchfeld für Modellobjekte, Gruppen, Diagramme, Flows, Architekturentscheidungen, Verbindungen und Befehle. Akzente sowie Groß- und Kleinschreibung spielen keine Rolle, ein falsch getippter Filter wird korrigiert, ihre Filter lesen sich wie Alltagssprache, und sie deckt den gesamten Workspace ab.',
     contentsLabel: 'Inhalt',
     backLabel: 'Zur Startseite',
     ctaTitle: 'Drücken Sie ⌘K in Ihrem eigenen Workspace.',
@@ -577,7 +577,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       set: 'spotlight',
       id: 'video',
       title: 'Spotlight in 71 Sekunden',
-      body: 'Das Video zeigt, wie Sie Spotlight öffnen, dazu die fehlertolerante Suche und die Filter, die Suchbereiche und die Aktionen per Tastatur.',
+      body: 'Das Video zeigt, wie Sie Spotlight öffnen, dazu Akzente und Tippfehler, die Filter, die Suchbereiche und die Aktionen per Tastatur.',
       play: 'Video abspielen',
       watchOnYoutube: 'Auf YouTube ansehen',
       otherLanguage: 'Version française',
@@ -601,8 +601,8 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
         ],
       },
       {
-        id: 'forgiving',
-        title: 'Von Grund auf fehlertolerant',
+        id: 'accents',
+        title: 'Akzente, Groß- und Kleinschreibung, Tippfehler',
         bullets: [
           'Akzente sowie Groß- und Kleinschreibung spielen keine Rolle: `energie` findet „Énergie“.',
           'Während Sie tippen, vervollständigt Spotlight den besten Treffer als Ghost-Text; `→` übernimmt ihn.',
@@ -616,7 +616,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
           'Geben Sie einen Filterschlüssel gefolgt von einem Wert ein, um die Ergebnisse einzugrenzen. Während der Eingabe schlägt Spotlight Werte vor (Tags, Technologien, Arten …), und `↵` übernimmt den vorgeschlagenen Wert.',
         table: {
           caption: 'Beispiele für Filter',
-          columns: ['Filter', 'Beispiel', 'Was übrig bleibt'],
+          columns: ['Filter', 'Beispiel', 'Ergebnis'],
           rows: [
             ['Art', '`kind:store`', 'Eine einzige Ergebnisart, hier Datenspeicher'],
             ['Tag', '`tag:pii`', 'Objekte, die den Tag tragen'],
@@ -653,7 +653,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       },
       {
         id: 'scale',
-        title: 'Der ganze Workspace, egal wie groß',
+        title: 'Suche im gesamten Workspace',
         paragraphs: [
           'In einem großen Workspace hält Ihr Browser unter Umständen nur einen Teil des Modells. Spotlight fragt dann zusätzlich das Lesemodell des Servers ab und führt dessen Antwort mit den lokalen Ergebnissen zusammen: So deckt die Suche den ganzen Workspace ab, mit derselben Rangfolge.',
           'Kann der Server nicht antworten, sagt Spotlight Ihnen das: Es weist darauf hin, dass die Ergebnisse unvollständig sind, statt sie als vollständig darzustellen.',
@@ -673,7 +673,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
     summary:
       '那个服务到底在哪儿？在大型架构里，答案往往藏在几十张图表、流程和决策记录中的某一处。MapleSpire 全新的全局搜索 Spotlight 让你在任何地方都能找到它：按下 ⌘K，输入几个字母，即可直达。',
     verdict:
-      '简而言之：一个快捷键、一个搜索框，涵盖模型对象、分组、图表、流程、决策记录、连接和命令。它能容忍重音和拼写错误，筛选条件读起来就像日常语言，而且覆盖整个 workspace。',
+      '简而言之：一个快捷键、一个搜索框，涵盖模型对象、分组、图表、流程、决策记录、连接和命令。它不区分重音和大小写，拼错的筛选条件会得到纠正，筛选条件读起来就像日常语言，而且覆盖整个 workspace。',
     contentsLabel: '目录',
     backLabel: '返回首页',
     ctaTitle: '在你自己的 workspace 里按下 ⌘K。',
@@ -686,7 +686,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       set: 'spotlight',
       id: 'video',
       title: '71 秒了解 Spotlight',
-      body: '视频演示了如何打开 Spotlight，以及容错搜索与筛选、搜索范围和键盘操作。',
+      body: '视频演示了如何打开 Spotlight，以及重音与拼写错误、筛选、搜索范围和键盘操作。',
       play: '播放视频',
       watchOnYoutube: '在 YouTube 上观看',
       otherLanguage: 'Version française',
@@ -710,8 +710,8 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
         ],
       },
       {
-        id: 'forgiving',
-        title: '为容错而设计',
+        id: 'accents',
+        title: '重音、大小写与拼写错误',
         bullets: [
           '重音和大小写都不影响结果：`energie` 也能找到“Énergie”。',
           '输入时，Spotlight 会以浅色提示文字（ghost text）补全最佳匹配；按 `→` 即可接受。',
@@ -725,7 +725,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
           '输入筛选键再加一个值，即可缩小结果范围。输入过程中，Spotlight 会建议可用的值（标签、技术、类型……），按 `↵` 即可添加建议的值。',
         table: {
           caption: '筛选示例',
-          columns: ['筛选', '示例', '保留的结果'],
+          columns: ['筛选', '示例', '结果'],
           rows: [
             ['类型', '`kind:store`', '只保留一种结果，这里是数据存储'],
             ['标签', '`tag:pii`', '带有该标签的对象'],
@@ -762,7 +762,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       },
       {
         id: 'scale',
-        title: '覆盖整个 workspace，无论多大',
+        title: '搜索整个 workspace',
         paragraphs: [
           '在大型 workspace 中，浏览器可能只持有模型的一部分。此时 Spotlight 还会查询服务器的读模型，并将其返回的结果与本地结果合并，因此搜索能覆盖整个 workspace，排序方式也完全一致。',
           '如果服务器无法响应，Spotlight 会明确告诉你：它会注明结果不完整，而不是把它们当作完整结果呈现。',
@@ -782,7 +782,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
     summary:
       'あのサービス、どこにあったっけ？大規模なアーキテクチャでは、その答えは何十もの図、フロー、意思決定記録のどこかに埋もれています。MapleSpire の新しいグローバル検索 Spotlight なら、どこからでも見つけられます。⌘K を押して数文字入力するだけで、すぐにたどり着けます。',
     verdict:
-      'ひとことで言えば、一つのショートカットと一つの検索ボックスで、モデルオブジェクト、グループ、図、フロー、意思決定記録、接続、コマンドを探せます。アクセントやタイプミスに寛容で、フィルターは普段の言葉のように読め、workspace 全体を対象にします。',
+      'ひとことで言えば、一つのショートカットと一つの検索ボックスで、モデルオブジェクト、グループ、図、フロー、意思決定記録、接続、コマンドを探せます。アクセントや大文字小文字を区別せず、打ち間違えたフィルターには修正候補を示し、フィルターは普段の言葉のように読め、workspace 全体を対象にします。',
     contentsLabel: '目次',
     backLabel: 'ホームに戻る',
     ctaTitle: 'お使いの workspace で ⌘K を押してみてください。',
@@ -795,7 +795,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       set: 'spotlight',
       id: 'video',
       title: '71 秒でわかる Spotlight',
-      body: 'この動画では、Spotlight の開き方、ミスに寛容な検索とフィルター、スコープ、キーボードからのアクションを紹介します。',
+      body: 'この動画では、Spotlight の開き方、アクセントとタイプミス、フィルター、スコープ、キーボードからのアクションを紹介します。',
       play: '動画を再生',
       watchOnYoutube: 'YouTube で見る',
       otherLanguage: 'Version française',
@@ -819,8 +819,8 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
         ],
       },
       {
-        id: 'forgiving',
-        title: 'ミスに寛容な設計',
+        id: 'accents',
+        title: 'アクセント・大文字小文字・タイプミス',
         bullets: [
           'アクセントや大文字・小文字は区別しません。`energie` で「Énergie」が見つかります。',
           '入力中、Spotlight は最上位の一致をゴーストテキストで補完します。`→` で確定できます。',
@@ -834,7 +834,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
           'フィルターキーに続けて値を入力すると、結果を絞り込めます。入力中は Spotlight が値の候補（タグ、テクノロジー、種類など）を示し、`↵` で候補の値を追加できます。',
         table: {
           caption: 'フィルターの例',
-          columns: ['フィルター', '例', '残る結果'],
+          columns: ['フィルター', '例', '結果'],
           rows: [
             ['種類', '`kind:store`', '一種類の結果だけ。この例ではデータストア'],
             ['タグ', '`tag:pii`', 'そのタグが付いたオブジェクト'],
@@ -871,7 +871,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       },
       {
         id: 'scale',
-        title: 'どれほど大きくても workspace 全体を',
+        title: 'workspace 全体を検索',
         paragraphs: [
           '大規模な workspace では、ブラウザーがモデルの一部しか保持していないことがあります。その場合、Spotlight はサーバーの読み取りモデルにも問い合わせ、その応答をローカルの結果とマージします。こうして検索は workspace 全体を対象とし、並び順も変わりません。',
           'サーバーが応答できない場合、Spotlight はそのことを伝えます。結果を完全なものとして見せるのではなく、結果が部分的であると表示します。',
@@ -891,7 +891,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
     summary:
       '그 서비스가 어디 있었더라? 큰 아키텍처에서는 답이 수십 개의 다이어그램, 흐름, 의사결정 기록 가운데 어딘가에 숨어 있습니다. MapleSpire의 새로운 전역 검색 Spotlight는 어디서든 그것을 찾아 줍니다. ⌘K를 누르고 몇 글자만 입력하면 바로 그곳에 도착합니다.',
     verdict:
-      '한마디로, 모델 객체, 그룹, 다이어그램, 흐름, 의사결정 기록, 연결, 명령을 위한 하나의 단축키와 하나의 검색 상자입니다. 악센트와 오타를 너그럽게 받아 주고, 필터는 일상 언어처럼 읽히며, workspace 전체를 검색합니다.',
+      '한마디로, 모델 객체, 그룹, 다이어그램, 흐름, 의사결정 기록, 연결, 명령을 위한 하나의 단축키와 하나의 검색 상자입니다. 악센트와 대소문자를 구분하지 않고 잘못 입력한 필터는 바로잡아 주며, 필터는 일상 언어처럼 읽히며, workspace 전체를 검색합니다.',
     contentsLabel: '목차',
     backLabel: '홈으로 돌아가기',
     ctaTitle: '여러분의 workspace에서 ⌘K를 눌러 보세요.',
@@ -904,7 +904,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       set: 'spotlight',
       id: 'video',
       title: '71초로 보는 Spotlight',
-      body: '영상에서는 Spotlight를 여는 방법, 너그러운 검색과 필터, 범위, 키보드 작업을 보여 줍니다.',
+      body: '영상에서는 Spotlight를 여는 방법, 악센트와 오타, 필터, 범위, 키보드 작업을 보여 줍니다.',
       play: '동영상 재생',
       watchOnYoutube: 'YouTube에서 보기',
       otherLanguage: 'Version française',
@@ -928,8 +928,8 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
         ],
       },
       {
-        id: 'forgiving',
-        title: '실수를 너그럽게 받아 주는 검색',
+        id: 'accents',
+        title: '악센트, 대소문자, 오타',
         bullets: [
           '악센트와 대소문자는 구분하지 않습니다. `energie`로 “Énergie”를 찾을 수 있습니다.',
           '입력하는 동안 Spotlight가 가장 잘 맞는 결과를 흐린 글자로 미리 완성해 보여 주고, `→`로 이를 수락합니다.',
@@ -943,7 +943,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
           '필터 키 뒤에 값을 입력해 결과를 좁히세요. 입력하는 동안 Spotlight가 값(태그, 기술, 종류…)을 제안하고, `↵`로 제안된 값을 추가합니다.',
         table: {
           caption: '필터 예시',
-          columns: ['필터', '예시', '남기는 결과'],
+          columns: ['필터', '예시', '결과'],
           rows: [
             ['종류', '`kind:store`', '한 종류의 결과만, 여기서는 데이터 저장소'],
             ['태그', '`tag:pii`', '해당 태그가 붙은 객체'],
@@ -980,7 +980,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       },
       {
         id: 'scale',
-        title: '아무리 커도, workspace 전체를',
+        title: 'workspace 전체 검색',
         paragraphs: [
           '큰 workspace에서는 브라우저가 모델의 일부만 가지고 있을 수 있습니다. 이때 Spotlight는 서버의 읽기 모델에도 질의하고 그 응답을 로컬 결과와 병합하므로, 같은 순위 방식으로 workspace 전체를 검색합니다.',
           '서버가 응답하지 못하면 Spotlight가 알려 줍니다. 결과를 완전한 것처럼 보여 주지 않고, 결과가 일부뿐이라고 표시합니다.',
@@ -1000,7 +1000,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
     summary:
       'वह सर्विस आख़िर थी कहाँ? बड़े आर्किटेक्चर में जवाब दर्जनों आरेखों, फ़्लो और निर्णय रिकॉर्ड में से किसी एक में छिपा होता है। MapleSpire की नई ग्लोबल खोज, Spotlight, उसे कहीं से भी ढूँढ़ निकालती है: ⌘K दबाएँ, कुछ अक्षर टाइप करें, और आप वहीं पहुँच जाते हैं।',
     verdict:
-      'संक्षेप में: मॉडल ऑब्जेक्ट, समूह, आरेख, फ़्लो, निर्णय रिकॉर्ड, कनेक्शन और कमांड के लिए एक ही शॉर्टकट और एक ही खोज बॉक्स। यह एक्सेंट और टाइपिंग की गलतियों को माफ़ कर देता है, इसके फ़िल्टर आम भाषा की तरह पढ़े जाते हैं, और यह पूरे workspace को कवर करता है।',
+      'संक्षेप में: मॉडल ऑब्जेक्ट, समूह, आरेख, फ़्लो, निर्णय रिकॉर्ड, कनेक्शन और कमांड के लिए एक ही शॉर्टकट और एक ही खोज बॉक्स। यह एक्सेंट और केस को अनदेखा करता है, गलत टाइप किए गए फ़िल्टर का सुधार सुझाता है, इसके फ़िल्टर आम भाषा की तरह पढ़े जाते हैं, और यह पूरे workspace को कवर करता है।',
     contentsLabel: 'विषय-सूची',
     backLabel: 'होम पर लौटें',
     ctaTitle: 'अपने ही workspace में ⌘K दबाएँ।',
@@ -1013,7 +1013,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       set: 'spotlight',
       id: 'video',
       title: '71 सेकंड में Spotlight',
-      body: 'वीडियो दिखाता है कि Spotlight कैसे खोलें, गलतियाँ माफ़ करने वाली खोज और फ़िल्टर, स्कोप, और कीबोर्ड से कार्रवाइयाँ।',
+      body: 'वीडियो दिखाता है कि Spotlight कैसे खोलें, एक्सेंट और टाइपिंग की गलतियाँ, फ़िल्टर, स्कोप, और कीबोर्ड से कार्रवाइयाँ।',
       play: 'वीडियो चलाएँ',
       watchOnYoutube: 'YouTube पर देखें',
       otherLanguage: 'Version française',
@@ -1037,8 +1037,8 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
         ],
       },
       {
-        id: 'forgiving',
-        title: 'गलतियों को माफ़ करने वाली खोज',
+        id: 'accents',
+        title: 'एक्सेंट, केस और टाइपिंग की गलतियाँ',
         bullets: [
           'एक्सेंट और छोटे-बड़े अक्षरों से कोई फ़र्क़ नहीं पड़ता: `energie` से “Énergie” मिल जाता है।',
           'टाइप करते समय Spotlight सबसे अच्छे परिणाम को हल्के घोस्ट टेक्स्ट में पूरा करता है; `→` उसे स्वीकार करता है।',
@@ -1052,7 +1052,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
           'परिणाम सीमित करने के लिए फ़िल्टर कुंजी और उसके बाद कोई मान टाइप करें। टाइप करते समय Spotlight मान सुझाता है (टैग, टेक्नोलॉजी, प्रकार…) और `↵` सुझाया गया मान जोड़ देता है।',
         table: {
           caption: 'फ़िल्टर के उदाहरण',
-          columns: ['फ़िल्टर', 'उदाहरण', 'क्या रखता है'],
+          columns: ['फ़िल्टर', 'उदाहरण', 'परिणाम'],
           rows: [
             ['प्रकार', '`kind:store`', 'एक ही प्रकार के परिणाम, यहाँ डेटा स्टोर'],
             ['टैग', '`tag:pii`', 'वे ऑब्जेक्ट जिन पर यह टैग लगा है'],
@@ -1089,7 +1089,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       },
       {
         id: 'scale',
-        title: 'पूरा workspace, चाहे कितना भी बड़ा हो',
+        title: 'पूरे workspace में खोज',
         paragraphs: [
           'बड़े workspace में आपके ब्राउज़र के पास मॉडल का केवल एक हिस्सा हो सकता है। तब Spotlight सर्वर के रीड मॉडल से भी पूछता है और उसके जवाब को स्थानीय परिणामों के साथ मिला देता है, ताकि खोज पूरे workspace को कवर करे और क्रम भी वही रहे।',
           'अगर सर्वर जवाब नहीं दे पाता, तो Spotlight आपको बताता है: वह परिणामों को पूरा बताने के बजाय साफ़ कहता है कि वे आंशिक हैं।',
@@ -1109,7 +1109,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
     summary:
       'أين كانت تلك الخدمة يا ترى؟ في بنية معمارية كبيرة، يختبئ الجواب في واحد من عشرات المخططات والتدفقات وسجلات القرارات. ويعثر عليه Spotlight، البحث الشامل الجديد في MapleSpire، من أي مكان: اضغط \u2066⌘K\u2069، واكتب بضعة أحرف، وها أنت هناك.',
     verdict:
-      'باختصار: اختصار واحد ومربع بحث واحد لعناصر النموذج والمجموعات والمخططات والتدفقات وسجلات القرارات والاتصالات والأوامر. يتسامح مع علامات التشكيل والأخطاء الإملائية، وتُقرأ مرشّحاته كلغة عادية، ويغطي مساحة العمل بأكملها.',
+      'باختصار: اختصار واحد ومربع بحث واحد لعناصر النموذج والمجموعات والمخططات والتدفقات وسجلات القرارات والاتصالات والأوامر. يتجاهل علامات التشكيل وحالة الأحرف، ويقترح تصحيحًا للمرشّح المكتوب خطأً، وتُقرأ مرشّحاته كلغة عادية، ويغطي مساحة العمل بأكملها.',
     contentsLabel: 'المحتويات',
     backLabel: 'العودة إلى الرئيسية',
     ctaTitle: 'اضغط \u2066⌘K\u2069 في مساحة عملك الخاصة.',
@@ -1122,7 +1122,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       set: 'spotlight',
       id: 'video',
       title: 'Spotlight في 71 ثانية',
-      body: 'يعرض الفيديو كيفية فتح Spotlight، والبحث المتسامح مع الأخطاء والمرشّحات، والنطاقات، والإجراءات عبر لوحة المفاتيح.',
+      body: 'يعرض الفيديو كيفية فتح Spotlight، وعلامات التشكيل والأخطاء الإملائية، والمرشّحات، والنطاقات، والإجراءات عبر لوحة المفاتيح.',
       play: 'تشغيل الفيديو',
       watchOnYoutube: 'المشاهدة على YouTube',
       otherLanguage: 'Version française',
@@ -1146,8 +1146,8 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
         ],
       },
       {
-        id: 'forgiving',
-        title: 'بحث متسامح مع الأخطاء',
+        id: 'accents',
+        title: 'علامات التشكيل وحالة الأحرف والأخطاء الإملائية',
         bullets: [
           'لا تهمّ علامات التشكيل ولا حالة الأحرف: كتابة `energie` تعثر على «Énergie».',
           'أثناء الكتابة، يُكمل Spotlight أفضل نتيجة بنص خافت؛ ويقبلها `→`.',
@@ -1161,7 +1161,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
           'اكتب مفتاح مرشّح متبوعًا بقيمة لتضييق النتائج. وأثناء الكتابة يقترح Spotlight قيمًا (وسوم، تقنيات، أنواع…) ويضيف `↵` القيمة المقترحة.',
         table: {
           caption: 'أمثلة على المرشّحات',
-          columns: ['المرشّح', 'مثال', 'ما يُبقيه'],
+          columns: ['المرشّح', 'مثال', 'النتيجة'],
           rows: [
             ['النوع', '`kind:store`', 'نوع واحد من النتائج، وهنا مخازن البيانات'],
             ['الوسم', '`tag:pii`', 'العناصر التي تحمل الوسم'],
@@ -1198,7 +1198,7 @@ export const spotlightArticle: Record<ArticleLocale, ArticleDocument> = {
       },
       {
         id: 'scale',
-        title: 'مساحة العمل كاملةً، مهما كبرت',
+        title: 'البحث في مساحة العمل كلها',
         paragraphs: [
           'في مساحة عمل كبيرة، قد لا يحمل متصفحك إلا جزءًا من النموذج. عندها يستعلم Spotlight أيضًا نموذج القراءة على الخادم ويدمج إجابته مع النتائج المحلية، فيغطي البحث مساحة العمل بأكملها، بالترتيب نفسه.',
           'إذا تعذّر على الخادم الإجابة، يخبرك Spotlight بذلك: فهو يشير إلى أن النتائج جزئية بدلًا من عرضها على أنها كاملة.',
