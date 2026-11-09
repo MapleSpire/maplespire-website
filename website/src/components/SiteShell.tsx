@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { REPOSITORY_URL, localeOptions } from '../lib/content';
 import type { Locale, SiteCopy } from '../lib/content';
 import { legalCopy } from '../lib/legal';
-import { structurizrArticlePath } from '../lib/articles';
+import { spotlightArticlePath, structurizrArticlePath } from '../lib/articles';
 import { alternativesCopy, filterAlternativeProducts, statusTone } from '../lib/alternatives';
 import type { AlternativeFilter } from '../lib/alternatives';
 import {
@@ -693,6 +693,10 @@ export default function SiteShell({ content, appUrl, contactEndpoint }: SiteShel
           <a className="ms-governance-article" href={structurizrArticlePath(content.locale)}>
             <span>{content.governance.articleLabel}</span>
             <b>{content.governance.articleCta}<i aria-hidden="true">→</i></b>
+          </a>
+          <a className="ms-governance-article" href={spotlightArticlePath(content.locale)}>
+            <span>{content.governance.spotlightLabel}</span>
+            <b>{content.governance.spotlightCta}<i aria-hidden="true">→</i></b>
           </a>
         </section>
 

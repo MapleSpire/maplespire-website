@@ -1,6 +1,6 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
-import { articleLocales, structurizrArticle } from '../../lib/articles';
+import { STRUCTURIZR_ARTICLE_SLUG, articleLocales, structurizrArticle } from '../../lib/articles';
 import type { ArticleLocale } from '../../lib/articles';
 
 export function getStaticPaths() {
@@ -9,5 +9,6 @@ export function getStaticPaths() {
 
 const { locale } = Astro.props as { locale: ArticleLocale };
 const appUrl = import.meta.env.PUBLIC_APP_URL ?? 'https://app.maplespire.ca';
+const about = [{ '@type': 'SoftwareApplication', name: 'Structurizr', url: 'https://structurizr.com/' }];
 ---
-<ArticleLayout locale={locale} document={structurizrArticle[locale]} appUrl={appUrl} />
+<ArticleLayout locale={locale} slug={STRUCTURIZR_ARTICLE_SLUG} document={structurizrArticle[locale]} appUrl={appUrl} about={about} />

@@ -1,6 +1,9 @@
 import { localeOptions } from './content';
-import { STRUCTURIZR_ARTICLE_SLUG, articleLocales, structurizrArticle } from './articles';
-import { tourVideoFor, videoPosterPath, youtubeEmbedUrl } from './video';
+import { SPOTLIGHT_ARTICLE_SLUG, STRUCTURIZR_ARTICLE_SLUG, articleLocales, structurizrArticle } from './articles';
+import type { ArticleSlug } from './articles';
+import { spotlightArticle } from './spotlightArticle';
+import { durationSeconds, tourVideoFor, videoPosterPath, youtubeEmbedUrl } from './video';
+import type { VideoSetId } from './video';
 import type { Locale } from './content';
 
 const siteOrigin = 'https://maplespire.ca';
@@ -26,32 +29,32 @@ const urlEntry = (location: string, pathForLocale: (locale: string) => string, e
   `<url><loc>${escapeXml(absolute(location))}</loc>${alternateLinks(pathForLocale)}${extra}</url>`
 );
 
-/** Google video sitemap entry for the product tour embedded on each landing page. */
-const videoEntry = (locale: Locale) => {
-  const video = tourVideoFor(locale);
+/** Google video sitemap entry for a video embedded on a page: the product tour on each landing page by default. */
+const videoEntry = (locale: Locale, set: VideoSetId = 'tour') => {
+  const video = tourVideoFor(locale, set);
   return [
     '<video:video>',
     `<video:thumbnail_loc>${escapeXml(absolute(videoPosterPath(video, 'png')))}</video:thumbnail_loc>`,
     `<video:title>${escapeXml(video.title)}</video:title>`,
     `<video:description>${escapeXml(video.description)}</video:description>`,
     `<video:player_loc>${escapeXml(youtubeEmbedUrl(video))}</video:player_loc>`,
-    '<video:duration>149</video:duration>',
+    `<video:duration>${durationSeconds(video)}</video:duration>`,
     `<video:publication_date>${escapeXml(video.uploadDate)}</video:publication_date>`,
     '<video:family_friendly>yes</video:family_friendly>',
     '</video:video>',
   ].join('');
 };
 
-const articleEntry = (location: string) => {
+const articleEntry = (location: string, slug: ArticleSlug = STRUCTURIZR_ARTICLE_SLUG, lastmod = structurizrArticle.en.isoDate, extra = '') => {
   const links = [
     ...localeOptions
       .filter((option) => (articleLocales as readonly string[]).includes(option.locale))
       .map((option) => (
-        `<xhtml:link rel="alternate" hreflang="${escapeXml(option.htmlLang)}" href="${escapeXml(absolute(`/${option.locale}/${STRUCTURIZR_ARTICLE_SLUG}/`))}" />`
+        `<xhtml:link rel="alternate" hreflang="${escapeXml(option.htmlLang)}" href="${escapeXml(absolute(`/${option.locale}/${slug}/`))}" />`
       )),
-    `<xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(absolute(`/en/${STRUCTURIZR_ARTICLE_SLUG}/`))}" />`,
+    `<xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(absolute(`/en/${slug}/`))}" />`,
   ].join('');
-  return `<url><loc>${escapeXml(absolute(location))}</loc><lastmod>${structurizrArticle.en.isoDate}</lastmod>${links}</url>`;
+  return `<url><loc>${escapeXml(absolute(location))}</loc><lastmod>${lastmod}</lastmod>${links}${extra}</url>`;
 };
 
 export function renderSitemap(): string {
@@ -63,12 +66,19 @@ export function renderSitemap(): string {
   )));
 
   const articleEntries = articleLocales.map((locale) => articleEntry(`/${locale}/${STRUCTURIZR_ARTICLE_SLUG}/`));
+  const spotlightEntries = articleLocales.map((locale) => articleEntry(
+    `/${locale}/${SPOTLIGHT_ARTICLE_SLUG}/`,
+    SPOTLIGHT_ARTICLE_SLUG,
+    spotlightArticle.en.isoDate,
+    videoEntry(locale, 'spotlight'),
+  ));
 
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">',
     ...landingEntries,
     ...articleEntries,
+    ...spotlightEntries,
     ...legalEntries,
     '</urlset>',
   ].join('');

@@ -1,0 +1,11 @@
+---
+/** Article text with its backtick runs rendered as left-to-right code (see inlineCode). */
+import { inlineCode } from '../lib/articles';
+
+interface Props {
+  text: string;
+}
+
+const parts = inlineCode(Astro.props.text);
+---
+{parts.map((part) => (part.code ? <code dir="ltr">{part.text}</code> : part.text))}

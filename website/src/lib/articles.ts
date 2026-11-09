@@ -1,8 +1,11 @@
 import { localeOptions } from './content';
 import type { Locale } from './content';
+import type { VideoPlayerCopy, VideoSetId } from './video';
 
 export const STRUCTURIZR_ARTICLE_SLUG = 'maplespire-vs-structurizr';
-/** The comparison article is published in every site locale (structurizrArticle is a full Record). */
+export const SPOTLIGHT_ARTICLE_SLUG = 'spotlight';
+export type ArticleSlug = typeof STRUCTURIZR_ARTICLE_SLUG | typeof SPOTLIGHT_ARTICLE_SLUG;
+/** Every article is published in every site locale (each article is a full Record). */
 export const articleLocales: readonly Locale[] = localeOptions.map(({ locale }) => locale);
 export type ArticleLocale = Locale;
 
@@ -10,9 +13,27 @@ export function isArticleLocale(locale: Locale): locale is ArticleLocale {
   return articleLocales.includes(locale);
 }
 
+/** An article in a given language, English if one were ever missing. */
+export function articlePath(slug: ArticleSlug, locale: Locale) {
+  return `/${isArticleLocale(locale) ? locale : 'en'}/${slug}/`;
+}
+
 /** Each landing page links to the article in its own language, English if one were ever missing. */
 export function structurizrArticlePath(locale: Locale) {
-  return `/${isArticleLocale(locale) ? locale : 'en'}/${STRUCTURIZR_ARTICLE_SLUG}/`;
+  return articlePath(STRUCTURIZR_ARTICLE_SLUG, locale);
+}
+
+export function spotlightArticlePath(locale: Locale) {
+  return articlePath(SPOTLIGHT_ARTICLE_SLUG, locale);
+}
+
+/**
+ * Article text marks keys, shortcuts and filter syntax with backticks (`tag:pii`); the
+ * layout renders those runs as left-to-right code, so an Arabic paragraph never reorders
+ * `-legacy` or `in:"Payments"`. llms-full.txt keeps the backticks as Markdown.
+ */
+export function inlineCode(text: string): Array<{ code: boolean; text: string }> {
+  return text.split('`').map((part, index) => ({ code: index % 2 === 1, text: part })).filter((part) => part.text.length > 0);
 }
 
 export type ArticleTable = {
@@ -24,10 +45,21 @@ export type ArticleTable = {
 export type ArticleSection = {
   id: string;
   title: string;
+  /** A paragraph shown before the table, when the section opens with one. */
+  lead?: string;
   paragraphs?: string[];
   bullets?: string[];
   table?: ArticleTable;
   links?: Array<{ label: string; url: string }>;
+};
+
+/** A video shown between the article's introduction and its sections. */
+export type ArticleVideo = VideoPlayerCopy & {
+  set: VideoSetId;
+  /** Section id, also listed first in the table of contents. */
+  id: string;
+  title: string;
+  body: string;
 };
 
 export type ArticleDocument = {
@@ -48,6 +80,7 @@ export type ArticleDocument = {
   ctaSecondary: string;
   /** The skip link to the article body. */
   skipLabel: string;
+  video?: ArticleVideo;
   sections: ArticleSection[];
 };
 
