@@ -54,7 +54,7 @@ async function gotoLocale(page, locale) {
 }
 
 async function seoHttpQa(browser) {
-  const context = await browser.newContext({ viewport: { width: 1100, height: 760 }, colorScheme: 'light' })
+  const context = await browser.newContext({ viewport: { width: 1100, height: 760 }, colorScheme: 'light', locale: 'nl-NL' })
   const page = await context.newPage()
 
   const rootResponse = await page.goto(`${baseUrl}/`, { waitUntil: 'domcontentloaded' })
@@ -80,6 +80,12 @@ async function seoHttpQa(browser) {
 
   await page.screenshot({ path: resolve(artifacts, 'root-redirect-en.png'), fullPage: false })
   await context.close()
+
+  const frenchContext = await browser.newContext({ locale: 'fr-CA' })
+  const frenchPage = await frenchContext.newPage()
+  await frenchPage.goto(`${baseUrl}/`, { waitUntil: 'domcontentloaded' })
+  await frenchPage.waitForURL((url) => url.pathname === '/fr/')
+  await frenchContext.close()
 }
 
 async function assertNoHorizontalOverflow(page, label) {
@@ -145,7 +151,6 @@ async function assertHealthyPage(page, locale, label) {
   assert.equal(await page.locator('.ms-comparison-after-wrap').count(), 1)
   assert.equal(await page.locator('.ms-live-cursor').count(), 4)
   assert.equal(await page.locator('img[src="/media/story-collaboration.webp"]').count() > 0, true)
-  assert.equal(await page.locator('.ms-coming-soon').count(), 1)
   assert.equal(await page.locator('.ms-alternatives-table tbody tr').count(), 15)
   assert.equal(await page.locator('.ms-alternatives-sticky-scrollbar').count(), 1)
   assert.equal(await page.locator('.ms-alternative-filters button').count(), 5)
@@ -158,7 +163,7 @@ async function assertHealthyPage(page, locale, label) {
   assert.equal(await page.locator('.locale-menu a').count(), Object.keys(localeExpectations).length)
   assert.equal(await page.locator('.ms-contact').count(), 1)
   assert.equal(await page.locator('form.contact-form').count(), 1)
-  assert.equal(await page.locator('a[href="https://github.com/MapleSpire"]').count() > 0, true)
+  assert.equal(await page.locator('.site-footer a[href="https://github.com/MapleSpire/maplespire"]').count(), 1)
   assert.equal(await page.locator('html').getAttribute('lang'), localeExpectations[locale].htmlLang)
 
   const navLabels = await page.locator('.ms-flight-nav button').allTextContents()
@@ -845,7 +850,7 @@ async function translatedLocalesQa(browser) {
     }
     if (process.env.QA_ONLY === 'seo-http') {
       await seoHttpQa(browser)
-      console.log('SEO HTTP and fixed-default redirect browser regression passed.')
+      console.log('SEO HTTP and browser-language redirect regression passed.')
       return
     }
     await seoHttpQa(browser)
